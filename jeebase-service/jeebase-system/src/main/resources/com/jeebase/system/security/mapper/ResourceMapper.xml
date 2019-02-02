@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeebase.system.security.mapper.ResourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jeebase.system.security.entity.Resource">
+        <id column="id" property="id" />
+        <result column="resource_name" property="resourceName" />
+        <result column="parent_id" property="parentId" />
+        <result column="resource_key" property="resourceKey" />
+        <result column="resource_type" property="resourceType" />
+        <result column="resource_icon" property="resourceIcon" />
+        <result column="resource_path" property="resourcePath" />
+        <result column="resource_url" property="resourceUrl" />
+        <result column="resource_level" property="resourceLevel" />
+        <result column="resource_show" property="resourceShow" />
+        <result column="resource_cache" property="resourceCache" />
+        <result column="description" property="description" />
+        <result column="create_time" property="createTime" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="operator" property="operator" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, resource_name, parent_id, resource_key, resource_type, resource_icon, resource_path, resource_url, resource_level, resource_show, resource_cache, description, create_time, creator, update_time, operator, del_flag
+    </sql>
+    
+    <!-- 根据用户名查询用户权限 -->
+	<select id="queryResourceByUserId" resultType="com.jeebase.system.security.entity.Resource" parameterType="Integer">
+		SELECT DISTINCT
+		D.id,
+		D.resource_name,
+		D.parent_id,
+		D.resource_key,
+		D.resource_type,
+		D.resource_icon,
+		D.resource_path,
+		D.resource_url,
+		D.resource_cache,
+		D.resource_show,
+		D.resource_level
+		FROM t_sys_user A
+		INNER JOIN t_sys_user_role B ON A.id = B.user_id AND B.del_flag = 0
+		INNER JOIN t_sys_role_resource C ON B.role_id = C.role_id AND C.del_flag = 0
+		INNER JOIN t_sys_resource D ON C.resource_id = D.id AND D.resource_type = 2 AND D.del_flag = 0
+		WHERE A.id = #{userId} AND A.del_flag = 0 ORDER BY resource_level
+	</select>
+	
+	<!-- 使用存储过程查询树，推荐使用 -->
+	<select id="queryResourceTreeProc" parameterType="com.jeebase.system.security.entity.Resource" resultType="com.jeebase.system.security.entity.Resource" statementType="CALLABLE">
+		CALL queryResourceList(#{parentId,mode=IN})
+	</select>
+
+</mapper>

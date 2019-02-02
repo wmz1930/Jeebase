@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeebase.system.security.mapper.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jeebase.system.security.entity.Role">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="role_name" property="roleName" />
+        <result column="role_key" property="roleKey" />
+        <result column="role_level" property="roleLevel" />
+        <result column="role_status" property="roleStatus" />
+        <result column="description" property="description" />
+        <result column="create_time" property="createTime" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="operator" property="operator" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, parent_id, role_name, role_key, role_level, role_status, description, create_time, creator, update_time, operator, del_flag
+    </sql>
+    
+    <!-- 分页查询角色列表 -->
+	<select id="selectRoleList" resultType="com.jeebase.system.security.entity.Role" parameterType="com.jeebase.system.security.entity.Role">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM t_sys_role
+		WHERE del_flag = 0
+		<if test="role.id != null and role.id != ''">
+			AND id = #{role.id}
+		</if>
+		<if test="role.roleName != null and role.roleName != ''">
+			AND role_name = #{role.roleName}
+		</if>
+		<if test="role.roleKey != null and role.roleKey != ''">
+			AND role_key = #{role.roleKey}
+		</if>
+		<if test="role.roleLevel != null and role.roleLevel != ''">
+			AND role_level = #{role.roleLevel}
+		</if>
+		<if test="role.roleStatus != null and role.roleStatus != ''">
+			AND role_status = #{role.roleStatus}
+		</if>
+		ORDER BY create_time DESC
+	</select>
+
+</mapper>

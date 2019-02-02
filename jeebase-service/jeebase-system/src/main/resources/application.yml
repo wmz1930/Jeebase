@@ -1,0 +1,34 @@
+server:
+    session-timeout: 1800
+    #tomcat:
+    #    max-threads: 1000
+    #    min-spare-threads: 30
+    port: 8080
+    uri-encoding: utf-8
+system:
+    #注册用户默认密码
+    defaultPwd: 123456
+    #注册用户默认角色ID
+    defaultRoleId: 100
+    #用户每日收取短信上限
+    smsTimes: 15
+    #不同终端用户的超时时间（web用户3小时，app，微信，小程序时间自己定半年或永久）Long型，后面记得加l
+    expireTime: "{web: 10800000l, app: 15768000000l}"
+security:
+    basic:
+        enabled: false
+spring:
+    jackson:
+      time-zone: GMT+8
+      date-format: yyyy-MM-dd HH:mm:ss
+    profiles: 
+      active: dev
+    http:
+      multipart:
+        max-file-size: 500MB
+        max-request-size: 20MB
+    devtools:
+      restart:
+        enabled: true
+    cache:
+      type: GENERIC

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeebase.system.common.mapper.LogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jeebase.system.common.entity.Log">
+        <id column="id" property="id" />
+        <result column="method_name" property="methodName" />
+        <result column="in_params" property="inParams" />
+        <result column="out_params" property="outParams" />
+        <result column="log_type" property="logType" />
+        <result column="operation_name" property="operationName" />
+        <result column="operation_ip" property="operationIp" />
+        <result column="create_time" property="createTime" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="operator" property="operator" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, method_name, in_params, out_params, log_type, operation_name, operation_ip, create_time, creator, update_time, operator, del_flag
+    </sql>
+
+    <!-- 分页查询操作日志 -->
+    <select id="selectLogList" resultType="com.jeebase.system.common.dto.LogInfo" parameterType="com.jeebase.system.common.dto.QueryLog">
+        SELECT DISTINCT
+        A.id,
+        A.method_name,
+        A.in_params,
+        A.out_params,
+        A.log_type,
+        A.operation_name,
+        A.operation_ip,
+        A.create_time,
+        B.user_name creator
+        FROM t_sys_log A
+        INNER JOIN t_sys_user B ON A.creator = B.id AND B.del_flag = 0
+        WHERE A.del_flag = 0
+        <trim prefix="AND (" suffix=")" prefixOverrides="AND">
+            <if test="log.methodName != null and log.methodName != ''">
+                AND A.method_name like concat('%', #{log.methodName}, '%')
+            </if>
+            <if test="log.logType != null and log.logType != ''">
+                AND A.log_type = #{log.logType}
+            </if>
+            <if test="log.creator != null and log.creator != ''">
+                AND B.user_name like concat('%', #{log.creator}, '%')
+            </if>
+            <if test="log.startTime != null">
+                AND A.create_time &gt;= #{log.startTime}
+            </if>
+            <if test="log.endTime != null">
+                AND A.create_time &lt;= #{log.endTime}
+            </if>
+        </trim>
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

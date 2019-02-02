@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeebase.system.security.mapper.UserMapper">
+
+     <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jeebase.system.security.entity.User">
+        <id column="id" property="id" />
+        <result column="user_account" property="userAccount" />
+        <result column="user_nick_name" property="userNickName" />
+        <result column="user_name" property="userName" />
+        <result column="user_sex" property="userSex" />
+        <result column="user_email" property="userEmail" />
+        <result column="user_mobile" property="userMobile" />
+        <result column="user_password" property="userPassword" />
+        <result column="user_status" property="userStatus" />
+        <result column="head_img_url" property="headImgUrl" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="area" property="area" />
+        <result column="street" property="street" />
+        <result column="description" property="description" />
+        <result column="create_time" property="createTime" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="operator" property="operator" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_account, user_nick_name, user_name, user_sex, user_email, user_mobile, user_password, user_status, head_img_url, province, city, area, street, description, create_time, creator, update_time, operator, del_flag
+    </sql>
+    
+    <!-- 分页查询用户列表 -->
+	<select id="selectUserList" resultType="com.jeebase.system.security.dto.UserInfo" parameterType="com.jeebase.system.security.entity.User">
+		SELECT DISTINCT
+		A.id AS id,
+		A.user_account AS userAccount,
+		A.user_nick_name AS userNickName,
+		A.user_name AS userName,
+		A.user_sex AS userSex,
+		A.user_email AS userEmail,
+		A.user_mobile AS userMobile,
+		A.user_password AS userPassword,
+		A.user_status AS userStatus,
+		A.head_img_url AS headImgUrl,
+		A.province AS province,
+		D.name AS provinceName,
+		A.city AS city,
+		E.name AS cityName,
+		A.area AS area,
+		A.street AS street,
+		A.description AS description,
+		A.create_time AS createTime,
+		A.creator AS creator,
+		A.update_time AS updateTime,
+		A.OPERATOR AS operator,
+		C.id AS roleId,
+		C.role_key AS roleKey,
+		C.role_name AS roleName
+		FROM t_sys_user A
+		INNER JOIN t_sys_user_role B ON A.id = B.user_id AND B.del_flag = 0
+		INNER JOIN t_sys_role C ON B.role_id = C.id AND C.del_flag = 0
+		LEFT JOIN t_sys_district D ON A.province = D.code
+		LEFT JOIN t_sys_district E ON A.city = E.code
+		WHERE A.del_flag = 0
+		<if test="user.id != null and user.id != ''">
+			AND A.id = #{user.id}
+		</if>
+		<trim prefix="AND (" suffix=")" prefixOverrides="AND">
+			<if test="user.userAccount != null and user.userAccount != ''">
+				AND A.user_account like concat('%', #{user.userAccount}, '%')
+			</if>
+			<if test="user.userNickName != null and user.userNickName != ''">
+				AND A.user_nick_name like concat('%', #{user.userNickName}, '%')
+			</if>
+			<if test="user.userName != null and user.userName != ''">
+				AND A.user_name like concat('%', #{user.userName}, '%')
+			</if>
+			<if test="user.userMobile != null and user.userMobile != ''">
+				AND A.user_mobile like concat('%', #{user.userMobile}, '%')
+			</if>
+			<if test="user.userEmail != null and user.userEmail != ''">
+				AND A.user_email like concat('%', #{user.userEmail}, '%')
+			</if>
+			<if test="user.userStatus != null and user.userStatus != ''">
+				AND A.user_status = #{user.userStatus}
+			</if>
+			<if test="user.roleId != null and user.roleId != ''">
+				AND B.role_id = #{user.roleId}
+			</if>
+		</trim>
+		ORDER BY createTime DESC
+	</select>
+
+</mapper>

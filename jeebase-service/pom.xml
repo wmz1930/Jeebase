@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.8.RELEASE</version>
+   </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.jeebase</groupId>
+  <artifactId>jeebase</artifactId>
+  <version>0.0.1</version>
+  <packaging>pom</packaging>
+  <name>jeebase</name>
+  <modules>
+    <module>jeebase-common</module>
+    <module>jeebase-system</module>
+  </modules>
+  
+  <properties>
+        <start-class>com.jeebase.system.SpringbootApplication</start-class>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <mybatis-plus-boot-starter.version>3.0.5</mybatis-plus-boot-starter.version>
+        <fastjson.version>1.2.39</fastjson.version>
+        <druid-version>1.1.9</druid-version>
+        <slf4j-api.version>1.7.25</slf4j-api.version>
+        <reflections.version>0.9.10</reflections.version>
+        <guava.version>23.0</guava.version>
+        <commons-lang3.version>3.4</commons-lang3.version>
+        <jsoup.version>1.8.1</jsoup.version>
+        <velocity.version>1.7</velocity.version>
+        <shiro-spring.version>1.4.0</shiro-spring.version>
+        <java-jwt.version>3.4.1</java-jwt.version>
+        <poi.version>3.17</poi.version>
+        <dom4j.version>1.6.1</dom4j.version>
+        <pinyin4j.version>2.5.0</pinyin4j.version>
+        <gson.version>2.7</gson.version>
+        <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
+        <scala-bcrypt_2.10.version>2.3</scala-bcrypt_2.10.version>
+        <rest-assured.version>2.9.0</rest-assured.version>
+        <ant.version>1.9.7</ant.version>
+        <velocity.version>1.7</velocity.version>
+        <j2cache.version>2.7.5-release</j2cache.version>
+        <freemarker.version>2.3.28</freemarker.version>
+        <swagger2.version>2.9.2</swagger2.version>
+        <qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
+        <aliyun-sms-core.version>3.3.1</aliyun-sms-core.version>
+        <aliyun-sms-dysmsapi.version>1.0.0</aliyun-sms-dysmsapi.version>
+        <easyexcel.version>1.1.2-beta4</easyexcel.version>
+  </properties>
+    
+  <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <version>${shiro-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.belerweb</groupId>
+                <artifactId>pinyin4j</artifactId>
+                <version>${pinyin4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+            <!-- j2cache -->
+            <dependency>
+                 <groupId>net.oschina.j2cache</groupId>
+                 <artifactId>j2cache-spring-boot-starter</artifactId>
+                 <version>${j2cache.version}</version>
+            </dependency>
+            <!-- mybatis-plus begin -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+            <!-- mybatis-plus end -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <scope>runtime</scope>
+                <version>${mysql-connector-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.t3hnar</groupId>
+                <artifactId>scala-bcrypt_2.10</artifactId>
+                <version>${scala-bcrypt_2.10.version}</version>
+            </dependency>
+            <!-- JUnit test dependency -->
+            <dependency>
+                <groupId>com.jayway.restassured</groupId>
+                <artifactId>rest-assured</artifactId>
+                <version>${rest-assured.version}</version>
+            </dependency>
+            
+            <!-- httpclient所需包 -->
+            <dependency>
+                <groupId>commons-httpclient</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>3.1</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-codec</artifactId>
+                        <groupId>commons-codec</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+             <!-- /http所需包 -->
+             
+            <!-- 文件压缩 -->
+            <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant</artifactId>
+                <version>${ant.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+
+            <!--fast json-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            
+            <dependency>
+              <groupId>com.qiniu</groupId>
+              <artifactId>qiniu-java-sdk</artifactId>
+              <version>${qiniu.version}</version>
+            </dependency>
+            
+            <!-- aliyun短信 -->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>3.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <!-- swagger2 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <!-- 设定主资源目录  -->
+                <directory>src/main/java</directory>
+                <!-- maven default生命周期，process-resources阶段执行maven-resources-plugin插件的resources目标处理主资源目下的资源文件时，只处理如下配置中包含的资源类型 -->
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <!-- maven default生命周期，process-resources阶段执行maven-resources-plugin插件的resources目标处理主资源目下的资源文件时，不处理如下配置中包含的资源类型（剔除下如下配置中包含的资源类型）-->
+                <excludes>
+                    <exclude>**/*.yaml</exclude>
+                </excludes>
+                <!-- maven default生命周期，process-resources阶段执行maven-resources-plugin插件的resources目标处理主资源目下的资源文件时，指定处理后的资源文件输出目录，默认是${build.outputDirectory}指定的目录-->
+                <!--<targetPath>${build.outputDirectory}</targetPath> -->
+                <!-- maven default生命周期，process-resources阶段执行maven-resources-plugin插件的resources目标处理主资源目下的资源文件时，是否对主资源目录开启资源过滤 -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- Srping Boot 打包工具 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 指定JDK编译版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
