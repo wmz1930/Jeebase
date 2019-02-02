@@ -1,0 +1,492 @@
+<template>
+  <div class="app-container">
+    <div class="filter-container">
+      <el-input :placeholder="$t('userTable.userName')" v-model="listQuery.userName" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
+      <el-input :placeholder="$t('userTable.userMobile')" v-model="listQuery.userMobile" style="width: 150px;" class="filter-item" maxlength="11" @keyup.enter.native="handleFilter"/>
+      <el-input :placeholder="$t('userTable.userEmail')" v-model="listQuery.userEmail" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
+      <el-select v-model="listQuery.roleId" :placeholder="$t('userTable.roleName')" clearable style="width: 150px" class="filter-item">
+        <el-option v-for="item in roleList" :key="item.key" :label="item.roleName" :value="item.id"/>
+      </el-select>
+      <el-select v-model="listQuery.userStatus" :placeholder="$t('userTable.userStatus')" clearable style="width: 150px" class="filter-item">
+        <el-option v-for="item in statusOption" :key="item.key" :label="item.label" :value="item.key"/>
+      </el-select>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
+      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
+    </div>
+
+    <el-table
+      v-loading="listLoading"
+      :key="tableKey"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;">
+      <el-table-column :label="$t('userTable.id')" align="center" width="65">
+        <template slot-scope="scope">
+          <span>{{ scope.row.id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('userTable.userAccount')" width="" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.userAccount }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('userTable.userName')" width="" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.userName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('userTable.userMobile')" width="" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.userMobile }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('userTable.userEmail')" width="" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.userEmail }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('userTable.roleName')" width="" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.roleName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('userTable.userSex')" width="" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.userSex | sexNameFilter }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('userTable.createTime')" width="" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('userTable.userStatus')" class-name="status-col" width="100">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.userStatus | statusFilter">{{ scope.row.userStatus | statusNameFilter }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="false" width="110px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.areas }}</span>
+          <span>{{ scope.row.roleId }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <el-button v-if="scope.row.userStatus!='1'" size="mini" type="success" @click="handleModifyStatus(scope.row,'1')">{{ $t('userTable.enable') }}
+          </el-button>
+          <el-button v-if="scope.row.userStatus!='0' && scope.row.userStatus!='2'" size="mini" @click="handleModifyStatus(scope.row,'0')">{{ $t('userTable.disable') }}
+          </el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{ $t('table.delete') }}
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.current" :limit.sync="listQuery.size" @pagination="getList" />
+
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form ref="userForm" :model="userForm" :rules="rules" label-width="100px" class="userForm" style="width: 400px; margin-left:50px;">
+        <el-form-item :label="$t('userTable.userAccount')" prop="userAccount">
+          <el-input v-model="userForm.userAccount" placeholder="输入用户账号" maxlength="32"/>
+        </el-form-item>
+        <el-form-item :label="$t('userTable.userNickName')" prop="userNickName">
+          <el-input v-model="userForm.userNickName" placeholder="输入用户昵称" maxlength="32"/>
+        </el-form-item>
+        <el-form-item :label="$t('userTable.userName')" prop="userName">
+          <el-input v-model="userForm.userName" placeholder="输入用户姓名" maxlength="32"/>
+        </el-form-item>
+        <el-form-item :label="$t('userTable.userMobile')" prop="userMobile">
+          <el-input v-model="userForm.userMobile" placeholder="输入用户手机号码" maxlength="11"/>
+        </el-form-item>
+        <el-form-item :label="$t('userTable.userEmail')" prop="userEmail">
+          <el-input v-model="userForm.userEmail" placeholder="输入用户电子邮箱" maxlength="32"/>
+        </el-form-item>
+        <el-form-item :label="$t('userTable.roleName')" prop="roleId">
+          <el-select v-model="userForm.roleId" class="filter-item" placeholder="选择用户角色" style="width: 100%;">
+            <el-option v-for="item in roleList" :key="item.key" :label="item.roleName" :value="item.id"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('userTable.area')" prop="province">
+          <el-cascader v-model="userForm.areas" :options="provinceOptions" :props="props" filterable change-on-select style="width:100%;"/>
+        </el-form-item>
+        <el-form-item :label="$t('userTable.userSex')" prop="userSex">
+          <el-radio-group v-model="userForm.userSex">
+            <el-radio :label="1">男性</el-radio>
+            <el-radio :label="0">女性</el-radio>
+            <el-radio :label="2">保密</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item :label="$t('userTable.userStatus')" prop="userStatus">
+          <el-radio-group v-model="userForm.userStatus">
+            <el-radio :label="1">启用</el-radio>
+            <el-radio :label="0">禁用</el-radio>
+            <el-radio :label="2">未激活</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item :label="$t('userTable.description')">
+          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="userForm.description" type="textarea" placeholder="请输入备注信息"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{ $t('table.confirm') }}</el-button>
+        <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { fetchList, createUser, deleteUser, updateUser, updateUserStatus, fetchRoleList } from '@/api/system/user'
+import waves from '@/directive/waves' // 水波纹指令
+import { parseTime } from '@/utils'
+import Data from '@/api/pcaa'
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+
+export default {
+  name: 'UserTable',
+  components: { Pagination },
+  directives: {
+    waves
+  },
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        1: 'success',
+        2: 'info',
+        0: 'danger'
+      }
+      return statusMap[status]
+    },
+    statusNameFilter(status) {
+      const statusNameMap = {
+        1: '启用',
+        2: '未激活',
+        0: '禁用'
+      }
+      return statusNameMap[status]
+    },
+    sexNameFilter(sex) {
+      const sexNameMap = {
+        1: '男',
+        2: '保密',
+        0: '女'
+      }
+      return sexNameMap[sex]
+    }
+  },
+  data() {
+    return {
+      tableKey: 0,
+      roleList: null,
+      provinceOptions: null,
+      props: {
+        children: 'children'
+      },
+      list: null,
+      total: 0,
+      listLoading: true,
+      listQuery: {
+        current: 1,
+        size: 20,
+        userName: '',
+        userMobile: '',
+        userEmail: '',
+        roleId: '',
+        userStatus: ''
+      },
+      statusOption: [
+        { label: '启用', key: '1' },
+        { label: '禁用', key: '0' },
+        { label: '未激活', key: '2' }
+      ],
+      dialogFormVisible: false,
+      dialogStatus: '',
+      textMap: {
+        update: '编辑',
+        create: '添加'
+      },
+      userForm: {
+        id: '',
+        userAccount: '',
+        userNickName: '',
+        userName: '',
+        userMobile: '',
+        userEmail: '',
+        roleId: '',
+        userSex: 1,
+        userStatus: 1,
+        areas: [],
+        description: ''
+      },
+      rules: {
+        userAccount: [
+          { required: true, message: '请输入用户账号', trigger: 'blur' },
+          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
+        ],
+        userNickName: [
+          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }
+        ],
+        userName: [
+          { required: true, message: '请输入用户姓名', trigger: 'blur' },
+          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }
+        ],
+        userMobile: [
+          {
+            pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+            required: true,
+            message: '请输入正确的手机号',
+            trigger: 'blur'
+          },
+          {
+            min: 11,
+            max: 11,
+            message: '长度在 11 到 11 个字符',
+            trigger: 'blur'
+          }
+        ],
+        userEmail: [
+          {
+            type: 'email',
+            required: true,
+            message: '请输入正确的邮箱',
+            trigger: 'blur'
+          },
+          { min: 5, max: 32, message: '长度在 5 到 32 个字符', trigger: 'blur' }
+        ],
+        roleId: [
+          { required: true, message: '请选择用户角色', trigger: 'change' }
+        ],
+        userSex: [
+          { required: true, message: '请选择用户性别', trigger: 'change' }
+        ],
+        userStatus: [
+          { required: true, message: '请选择用户状态', trigger: 'change' }
+        ],
+        description: [
+          { required: true, message: '请填写备注信息', trigger: 'blur' }
+        ]
+      },
+      downloadLoading: false
+    }
+  },
+  created() {
+    this.getList()
+    this.getRoleList()
+    this.getAreaList()
+  },
+  methods: {
+    getList() {
+      this.listLoading = true
+      fetchList(this.listQuery).then(response => {
+        this.list = response.data
+        this.total = response.count
+        this.listLoading = false
+      })
+    },
+    getRoleList() {
+      this.listLoading = true
+      fetchRoleList().then(response => {
+        this.roleList = response.data
+        this.listLoading = false
+      })
+    },
+    getAreaList() {
+      var options = []
+      for (var key in Data['86']) {
+        var citys = []
+        for (var keyc in Data[key]) {
+          var areas = []
+          for (var keya in Data[keyc]) {
+            var area = { value: keya, label: Data[keyc][keya] }
+            areas.push(area)
+          }
+          var city = { value: keyc, label: Data[key][keyc], children: areas }
+          citys.push(city)
+        }
+        var province = { value: key, label: Data['86'][key], children: citys }
+        options.push(province)
+      }
+      this.provinceOptions = options
+    },
+    handleFilter() {
+      this.listQuery.current = 1
+      this.getList()
+    },
+    resetUserForm() {
+      this.userForm = {
+        id: '',
+        userAccount: '',
+        userNickName: '',
+        userName: '',
+        userMobile: '',
+        userEmail: '',
+        roleId: '',
+        userSex: 1,
+        userStatus: 1,
+        area: [],
+        description: ''
+      }
+    },
+    handleCreate() {
+      this.resetUserForm()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['userForm'].clearValidate()
+      })
+    },
+    createData() {
+      this.$refs['userForm'].validate(valid => {
+        if (valid) {
+          createUser(this.userForm).then(() => {
+            this.dialogFormVisible = false
+            this.handleFilter()
+            this.$message({
+              message: '创建成功',
+              type: 'success'
+            })
+          })
+        }
+      })
+    },
+    handleUpdate(row) {
+      this.userForm = Object.assign({}, row) // copy obj
+      if (!this.userForm.areas || this.userForm.areas.length === 0) {
+        this.userForm.areas = [
+          this.userForm.province,
+          this.userForm.city,
+          this.userForm.area
+        ]
+      }
+      this.userForm.userStatus = parseInt(this.userForm.userStatus)
+      this.userForm.userSex = parseInt(this.userForm.userSex)
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['userForm'].clearValidate()
+      })
+    },
+    updateData() {
+      this.$refs['userForm'].validate(valid => {
+        if (valid) {
+          updateUser(this.userForm).then(() => {
+            for (const v of this.list) {
+              if (v.id === this.userForm.id) {
+                const index = this.list.indexOf(v)
+                for (const role of this.roleList) {
+                  if (role.id === this.userForm.roleId) {
+                    this.userForm.roleName = role.roleName
+                    break
+                  }
+                }
+                this.list.splice(index, 1, this.userForm)
+                break
+              }
+            }
+            this.dialogFormVisible = false
+            this.$message({
+              message: '更新成功',
+              type: 'success'
+            })
+          })
+        }
+      })
+    },
+    handleDelete(row) {
+      this.$confirm(
+        '此操作将永久删除该用户：' + row.userName + ', 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      )
+        .then(() => {
+          this.listLoading = true
+          deleteUser(row.id).then(() => {
+            this.listLoading = false
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            const index = this.list.indexOf(row)
+            this.list.splice(index, 1)
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    handleModifyStatus(row, status) {
+      this.listLoading = true
+      updateUserStatus(row.id, status).then(() => {
+        this.listLoading = false
+        row.userStatus = status
+        this.$message({
+          message: '状态修改成功',
+          type: 'success'
+        })
+      })
+    },
+    handleDownload() {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = [
+          '序号',
+          '账号',
+          '姓名',
+          '手机号',
+          '邮箱',
+          '角色',
+          '性别',
+          '注册时间',
+          '状态'
+        ]
+        const filterVal = [
+          'id',
+          'userAccount',
+          'userName',
+          'userMobile',
+          'userEmail',
+          'roleName',
+          'userSex',
+          'createTime',
+          'userStatus'
+        ]
+        const data = this.formatJson(filterVal, this.list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: '用户列表'
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j === 'createTime') {
+            return parseTime(v[j])
+          } else if (j === 'userSex') {
+            return this.$options.filters['sexNameFilter'](v[j])
+          } else if (j === 'userStatus') {
+            return this.$options.filters['statusNameFilter'](v[j])
+          } else {
+            return v[j]
+          }
+        })
+      )
+    }
+  }
+}
+</script>
