@@ -1,0 +1,7 @@
+/jeebase-service/jeebase-common/target
+/jeebase-service/jeebase-common/jeebase-common.iml
+/jeebase-service/jeebase-system/jeebase-system.iml
+/jeebase-service/jeebase-system/target
+/jeebase-vue/node_modules
+/jeebase-service/.idea
+/jeebase-service/jeebase.iml
