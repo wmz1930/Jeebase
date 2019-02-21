@@ -10,8 +10,7 @@ controller:
     scanPackage:
         classpath*:com/jeebase/*/*/controller/*.class
 logging:
-  #path: D:\\jeebase
-  path: /opt/server/logs
+  path: D:\\jeebase\\logs
   config: classpath:config/logback-spring.xml
 spring:
   datasource:
@@ -19,7 +18,7 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1/jeebase?useUnicode=true&characterEncoding=utf8
     username: root
-    password: 此处填写druid加密后的密码
+    password: Ivsq2GcFWRfjqPUP4hhlPWpqJo9C51z3PSCOpI7dSA3OVIkKJ1gjD1uFT7Nj5nUJGrIZH96LkdcaYTLfIjsglw==
     initialSize: 1
     minIdle: 3
     maxActive: 20
@@ -39,7 +38,7 @@ spring:
     # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
     filters: config,stat,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKNspmE6u9YVEt0icqbQhjP+cMzRXUaYz0uLHodyygQkoMzWyl7DlHdE6AhyKN5zmPE9bmAT3zyNM0OObCXP50UCAwEAAQ==
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJWk6iOtnXNdOrO8V/AzG894T1Jmu5izG8gFgeojrdnbYobZPvKwo436H2SZnCbCy1ua7yj63JoBEUhW1OiCbbsCAwEAAQ==
     # 合并多个DruidDataSource的监控数据
     useGlobalDataSourceStat: true
 mybatis-plus:

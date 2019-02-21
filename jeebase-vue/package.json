@@ -1,8 +1,8 @@
 {
-  "name": "vue-element-admin",
+  "name": "jeebase-vue",
   "version": "3.9.3",
   "description": "A magical vue admin. Typical templates for enterprise applications. Newest development stack of vue. Lots of awesome features",
-  "author": "Pan <panfree23@gmail.com>",
+  "author": "Jeebase <wanglei@jeebase.com>",
   "license": "MIT",
   "scripts": {
     "dev": "cross-env BABEL_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -21,6 +21,12 @@
   },
   "keywords": [
     "vue",
+    "springboot",
+    "java",
+    "spring",
+    "mybatis",
+    "shiro",
+    "jwt",
     "element-ui",
     "admin",
     "management-system",
@@ -28,10 +34,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PanJiaChen/vue-element-admin.git"
+    "url": "git+https://github.com/wmz1930/Jeebase.git"
   },
   "bugs": {
-    "url": "https://github.com/PanJiaChen/vue-element-admin/issues"
+    "url": "https://github.com/wmz1930/Jeebase/issues"
   },
   "dependencies": {
     "axios": "0.18.0",
@@ -53,7 +59,6 @@
     "nprogress": "0.2.0",
     "screenfull": "3.3.3",
     "showdown": "1.8.6",
-    "simplemde": "1.11.2",
     "sortablejs": "1.7.0",
     "vue": "2.5.17",
     "vue-count-to": "1.0.13",
@@ -120,7 +125,7 @@
     "webpack": "4.16.5",
     "webpack-bundle-analyzer": "2.13.1",
     "webpack-cli": "3.1.0",
-    "webpack-dev-server": "3.1.5",
+    "webpack-dev-server": "^3.2.0",
     "webpack-merge": "4.1.4"
   },
   "engines": {
