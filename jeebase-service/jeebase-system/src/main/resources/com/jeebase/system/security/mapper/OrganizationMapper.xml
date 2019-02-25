@@ -11,6 +11,10 @@
         <result column="organization_key" property="organizationKey" />
         <result column="organization_icon" property="organizationIcon" />
         <result column="organization_level" property="organizationLevel" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="area" property="area" />
+        <result column="street" property="street" />
         <result column="description" property="description" />
         <result column="create_time" property="createTime" />
         <result column="creator" property="creator" />
@@ -21,7 +25,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, parent_id, organization_type, organization_name, organization_key, organization_icon, organization_level, description, create_time, creator, update_time, operator, del_flag
+        id, parent_id, organization_type, organization_name, organization_key, organization_icon, organization_level, province, city, area, street, description, create_time, creator, update_time, operator, del_flag
     </sql>
     
     <!-- 使用存储过程查询树，推荐使用 -->

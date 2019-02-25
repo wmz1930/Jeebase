@@ -22,6 +22,7 @@ public class UserInfo
     private String userStatus;
     private Long time;
     private Integer roleId;
+    private String roleIds;
     private String roleKey;
     private String roleName;
     private List<String> roles;
@@ -33,6 +34,7 @@ public class UserInfo
     private String city;
     private String cityName;
     private String area;
+    private String street;
     private String description;
     private Date createTime;
     
@@ -136,6 +138,16 @@ public class UserInfo
         this.roleId = roleId;
     }
 
+
+    public String getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(String roleIds) {
+        this.roleIds = roleIds;
+    }
+
+
     public String getRoleKey()
     {
         return roleKey;
@@ -212,6 +224,13 @@ public class UserInfo
         this.area = area;
     }
 
+
+    public String getStreet() {
+        return street;
+    }
+    public void setStreet(String street) {
+        this.street = street;
+    }
     public String getUserStatus()
     {
         return userStatus;

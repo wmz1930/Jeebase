@@ -118,8 +118,9 @@ public class CreateUser implements Serializable
     private String area;
     
     /**
-     * vue级联选择
+     * 地区数组
      */
+    @ApiModelProperty(value = "用户地区ID数组")
     private List<String> areas;
     
     /**
@@ -134,9 +135,14 @@ public class CreateUser implements Serializable
     @ApiModelProperty(value = "备注")
     @Size(min=0,max=255,message="备注信息长度不正确")
     private String description;
-    
-    @ApiModelProperty(value = "用户角色ID")
+
     private Integer roleId;
+
+    /**
+     * 角色数组
+     */
+    @ApiModelProperty(value = "用户角色ID数组")
+    private List<Integer> roleIds;
 
     public Integer getId()
     {
@@ -296,6 +302,15 @@ public class CreateUser implements Serializable
     public void setRoleId( Integer roleId )
     {
         this.roleId = roleId;
+    }
+
+
+    public List<Integer> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(List<Integer> roleIds) {
+        this.roleIds = roleIds;
     }
 
     public List<String> getAreas() {

@@ -28,6 +28,11 @@
           <span>{{ scope.row.organizationLevel }}</span>
         </template>
       </el-table-column>
+      <el-table-column v-if="false" width="110px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.areas }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('table.actions')" width="300">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleCreate(scope.row)">{{ $t('table.add') }}</el-button>
@@ -56,6 +61,12 @@
         <el-form-item :label="$t('organizationTable.organizationLevel')" prop="organizationLevel">
           <el-input v-model.number="organizationForm.organizationLevel" placeholder="输入组织排序" maxlength="32"/>
         </el-form-item>
+        <el-form-item :label="$t('organizationTable.area')" prop="province">
+          <el-cascader v-model="organizationForm.areas" :options="provinceOptions" :props="props" clearable filterable change-on-select style="width:100%;" />
+        </el-form-item>
+        <el-form-item :label="$t('organizationTable.street')" prop="street">
+          <el-input v-model="organizationForm.street" placeholder="详细地址" maxlength="120"/>
+        </el-form-item>
         <el-form-item :label="$t('organizationTable.description')">
           <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model.trim="organizationForm.description" type="textarea" placeholder="请输入备注信息"/>
         </el-form-item>
@@ -77,6 +88,7 @@
 import { fetchList, createOrganization, deleteOrganization, updateOrganization } from '@/api/system/organization'
 import waves from '@/directive/waves' // 水波纹指令
 import TreeTable from '@/components/TreeTable'
+import Data from '@/api/pcaa'
 import treeToArray from './customEval'
 
 export default {
@@ -100,6 +112,10 @@ export default {
     return {
       func: treeToArray,
       expandAll: false,
+      provinceOptions: null,
+      props: {
+        children: 'children'
+      },
       list: [],
       baseList: [],
       rootFlag: false,
@@ -131,6 +147,8 @@ export default {
         organizationType: '1',
         organizationIcon: '',
         organizationLevel: '',
+        areas: [],
+        street: '',
         children: [], // 必须加，否则新增的节点不显示
         description: ''
       },
@@ -162,6 +180,7 @@ export default {
   },
   created() {
     this.getList()
+    this.getAreaList()
   },
   methods: {
     getList() {
@@ -172,6 +191,24 @@ export default {
         this.listLoading = false
       })
     },
+    getAreaList() {
+      var options = []
+      for (var key in Data['86']) {
+        var citys = []
+        for (var keyc in Data[key]) {
+          var areas = []
+          for (var keya in Data[keyc]) {
+            var area = { value: keya, label: Data[keyc][keya] }
+            areas.push(area)
+          }
+          var city = { value: keyc, label: Data[key][keyc], children: areas }
+          citys.push(city)
+        }
+        var province = { value: key, label: Data['86'][key], children: citys }
+        options.push(province)
+      }
+      this.provinceOptions = options
+    },
     resetOrganizationForm() {
       this.organizationForm = {
         id: '',
@@ -181,6 +218,8 @@ export default {
         organizationType: '1',
         organizationIcon: '',
         organizationLevel: '',
+        areas: [],
+        street: '',
         children: [], // 必须加，否则新增的节点不显示
         description: ''
       }
@@ -215,7 +254,6 @@ export default {
               this.createDataCallBack(this.list)
               this.createDataCallBack(this.baseList)
             }
-            debugger
             this.$message({
               message: '创建成功',
               type: 'success'
@@ -241,6 +279,13 @@ export default {
     },
     handleUpdate(row) {
       this.organizationForm = Object.assign({}, row) // copy obj
+      if (!this.organizationForm.areas || this.organizationForm.areas.length === 0) {
+        this.organizationForm.areas = [
+          this.organizationForm.province,
+          this.organizationForm.city,
+          this.organizationForm.area
+        ]
+      }
       // JSON不接受循环对象——引用它们自己的对象
       delete this.organizationForm.parent
       delete this.organizationForm.children

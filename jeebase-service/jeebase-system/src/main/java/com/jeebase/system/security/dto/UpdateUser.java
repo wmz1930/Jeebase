@@ -1,6 +1,8 @@
 
 package com.jeebase.system.security.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -87,6 +89,12 @@ public class UpdateUser implements Serializable
     private String description;
     
     private Integer roleId;
+
+    /**
+     * 角色数组
+     */
+    @ApiModelProperty(value = "用户角色ID数组")
+    private List<Integer> roleIds;
     
     private String newPwd;
     
@@ -260,6 +268,15 @@ public class UpdateUser implements Serializable
     public void setRoleId( Integer roleId )
     {
         this.roleId = roleId;
+    }
+
+
+    public List<Integer> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(List<Integer> roleIds) {
+        this.roleIds = roleIds;
     }
 
     public String getNewPwd() {

@@ -71,7 +71,8 @@
       <el-table-column v-if="false" width="110px">
         <template slot-scope="scope">
           <span>{{ scope.row.areas }}</span>
-          <span>{{ scope.row.roleId }}</span>
+          <span>{{ scope.row.street }}</span>
+          <span>{{ scope.row.roleIds }}</span>
         </template>
       </el-table-column>
 
@@ -107,12 +108,15 @@
           <el-input v-model="userForm.userEmail" placeholder="输入用户电子邮箱" maxlength="32"/>
         </el-form-item>
         <el-form-item :label="$t('userTable.roleName')" prop="roleId">
-          <el-select v-model="userForm.roleId" class="filter-item" placeholder="选择用户角色" style="width: 100%;">
+          <el-select v-model="userForm.roleIds" class="filter-item" multiple placeholder="选择用户角色" style="width: 100%;">
             <el-option v-for="item in roleList" :key="item.key" :label="item.roleName" :value="item.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('userTable.area')" prop="province">
-          <el-cascader v-model="userForm.areas" :options="provinceOptions" :props="props" filterable change-on-select style="width:100%;"/>
+        <el-form-item :label="$t('userTable.area')" prop="areas">
+          <el-cascader v-model="userForm.areas" :options="provinceOptions" :props="props" clearable filterable change-on-select style="width:100%;"/>
+        </el-form-item>
+        <el-form-item :label="$t('userTable.street')" prop="street">
+          <el-input v-model="userForm.street" placeholder="详细地址" maxlength="120"/>
         </el-form-item>
         <el-form-item :label="$t('userTable.userSex')" prop="userSex">
           <el-radio-group v-model="userForm.userSex">
@@ -197,7 +201,7 @@ export default {
         userName: '',
         userMobile: '',
         userEmail: '',
-        roleId: '',
+        roleIds: [],
         userStatus: ''
       },
       statusOption: [
@@ -218,10 +222,11 @@ export default {
         userName: '',
         userMobile: '',
         userEmail: '',
-        roleId: '',
+        roleIds: [],
         userSex: 1,
         userStatus: 1,
         areas: [],
+        street: '',
         description: ''
       },
       rules: {
@@ -259,7 +264,7 @@ export default {
           },
           { min: 5, max: 32, message: '长度在 5 到 32 个字符', trigger: 'blur' }
         ],
-        roleId: [
+        roleIds: [
           { required: true, message: '请选择用户角色', trigger: 'change' }
         ],
         userSex: [
@@ -326,10 +331,11 @@ export default {
         userName: '',
         userMobile: '',
         userEmail: '',
-        roleId: '',
+        roleIds: [],
         userSex: 1,
         userStatus: 1,
         area: [],
+        street: '',
         description: ''
       }
     },
@@ -364,6 +370,16 @@ export default {
           this.userForm.area
         ]
       }
+
+      if (!(this.userForm.roleIds instanceof Array)) {
+        var roleIds = this.userForm.roleIds.split(',')
+        var arrRoleIds = []
+        for (var roleId of roleIds) {
+          arrRoleIds.push(parseInt(roleId))
+        }
+        this.userForm.roleIds = arrRoleIds
+      }
+
       this.userForm.userStatus = parseInt(this.userForm.userStatus)
       this.userForm.userSex = parseInt(this.userForm.userSex)
       this.dialogStatus = 'update'
@@ -379,12 +395,15 @@ export default {
             for (const v of this.list) {
               if (v.id === this.userForm.id) {
                 const index = this.list.indexOf(v)
+                var arrRoleNames = []
                 for (const role of this.roleList) {
-                  if (role.id === this.userForm.roleId) {
-                    this.userForm.roleName = role.roleName
-                    break
+                  for (var roleId of this.userForm.roleIds) {
+                    if (role.id === roleId) {
+                      arrRoleNames.push(role.roleName)
+                    }
                   }
                 }
+                this.userForm.roleName = arrRoleNames.join()
                 this.list.splice(index, 1, this.userForm)
                 break
               }

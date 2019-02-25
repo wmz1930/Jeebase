@@ -2,9 +2,11 @@ package com.jeebase.system.security.controller;
 
 import java.util.List;
 
+import com.jeebase.common.base.Constant;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +67,12 @@ public class OrganizationController {
     public Result<Organization> create(@RequestBody CreateOrganization org) {
         Organization orgEntity = new Organization();
         BeanCopier.create(CreateOrganization.class, Organization.class, false).copy(org, orgEntity, null);
+        List<String> areas = org.getAreas();
+        if (!CollectionUtils.isEmpty(areas)) {
+            orgEntity.setProvince(areas.get(Constant.Address.PROVINCE));
+            orgEntity.setCity(areas.get(Constant.Address.CITY));
+            orgEntity.setArea(areas.get(Constant.Address.AREA));
+        }
         boolean result = organizationService.save(orgEntity);
         if (result) {
             return new Result<Organization>().success("添加成功").put(orgEntity);
@@ -83,6 +91,12 @@ public class OrganizationController {
     public Result<Organization> update(@RequestBody UpdateOrganization org) {
         Organization orgEntity = new Organization();
         BeanCopier.create(UpdateOrganization.class, Organization.class, false).copy(org, orgEntity, null);
+        List<String> areas = org.getAreas();
+        if (!CollectionUtils.isEmpty(areas)) {
+            orgEntity.setProvince(areas.get(Constant.Address.PROVINCE));
+            orgEntity.setCity(areas.get(Constant.Address.CITY));
+            orgEntity.setArea(areas.get(Constant.Address.AREA));
+        }
         boolean result = organizationService.updateById(orgEntity);
         if (result) {
             return new Result<Organization>().success("修改成功").put(orgEntity);

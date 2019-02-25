@@ -1,7 +1,10 @@
 package com.jeebase.system.security.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -43,6 +46,36 @@ public class CreateOrganization implements Serializable {
      * 组织级别（排序）
      */
     private Integer organizationLevel;
+
+    /**
+     * 省
+     */
+    @ApiModelProperty(value = "省")
+    private String province;
+
+    /**
+     * 市
+     */
+    @ApiModelProperty(value = "市")
+    private String city;
+
+    /**
+     * 区
+     */
+    @ApiModelProperty(value = "区")
+    private String area;
+
+    /**
+     * 地区数组
+     */
+    private List<String> areas;
+
+    /**
+     * 街道详细地址
+     */
+    @ApiModelProperty(value = "街道详细地址")
+    private String street;
+
     /**
      * 描述
      */
@@ -120,6 +153,46 @@ public class CreateOrganization implements Serializable {
 
     public void setOrganizationLevel(Integer organizationLevel) {
         this.organizationLevel = organizationLevel;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public List<String> getAreas() {
+        return areas;
+    }
+
+    public void setAreas(List<String> areas) {
+        this.areas = areas;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getDescription() {

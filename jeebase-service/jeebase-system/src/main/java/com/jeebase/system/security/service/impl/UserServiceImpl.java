@@ -70,7 +70,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new BusinessException("账号已经存在");
         }
         Integer roleId = user.getRoleId();
-        if (null == roleId) {
+        List<Integer> roleIds = user.getRoleIds();
+        if (null == roleId && CollectionUtils.isEmpty(roleIds)) {
             // 默认值，改成配置
             roleId = defaultRoleId;
         }
@@ -97,8 +98,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             user.setUserPassword(cryptPwd);
             UserRole userRole = new UserRole();
             userRole.setUserId(userEntity.getId());
-            userRole.setRoleId(roleId);
-            result = userRoleService.save(userRole);
+            if(!CollectionUtils.isEmpty(roleIds))
+            {
+                for (Integer role : roleIds)
+                {
+                    userRole.setRoleId(role);
+                    result = userRoleService.save(userRole);
+                }
+            }
+            else
+            {
+                userRole.setRoleId(roleId);
+                result = userRoleService.save(userRole);
+            }
         }
         return result;
     }
@@ -136,18 +148,58 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("id", userEntity.getId());
         boolean result = this.update(userEntity, wrapper);
-        if (result && null != user.getRoleId()) {
-            UserRole userRole = new UserRole();
-            userRole.setUserId(userEntity.getId());
-            userRole.setRoleId(user.getRoleId());
-            QueryWrapper<UserRole> wp = new QueryWrapper<>();
-            wp.eq("user_id", userEntity.getId()).eq("role_id", user.getRoleId());
-            List<UserRole> urList = userRoleService.list(wp);
-            if (CollectionUtils.isEmpty(urList)) {
-                QueryWrapper<UserRole> wpd = new QueryWrapper<>();
-                wpd.eq("user_id", userEntity.getId());
-                userRoleService.remove(wpd);
-                result = userRoleService.save(userRole);
+        List<Integer> roleIds = user.getRoleIds();
+        if (result && (null != user.getRoleId() || !CollectionUtils.isEmpty(roleIds))) {
+            if(!CollectionUtils.isEmpty(roleIds))
+            {
+                //删除不存在的权限
+                QueryWrapper<UserRole> wp = new QueryWrapper<>();
+                wp.eq("user_id", userEntity.getId());
+                List<UserRole> urList = userRoleService.list(wp);
+                if (!CollectionUtils.isEmpty(urList)) {
+                    for (UserRole role : urList)
+                    {
+                        //如果这个权限不存在，则删除
+                        if (!roleIds.contains(role.getRoleId()))
+                        {
+                            QueryWrapper<UserRole> wpd = new QueryWrapper<>();
+                            wpd.eq("user_id", userEntity.getId()).eq("role_id", role.getRoleId());
+                            userRoleService.remove(wpd);
+                        }
+                    }
+                }
+
+                //新增库里不存在的权限
+                for (Integer role : roleIds)
+                {
+                    QueryWrapper<UserRole> oldWp = new QueryWrapper<>();
+                    oldWp.eq("user_id", userEntity.getId()).eq("role_id", role);
+                    UserRole oldUserRole = userRoleService.getOne(oldWp);
+                    //查询出库中存在的角色列表，如果更新中的存在则不操作，如果不存在则新增
+                    if(null == oldUserRole)
+                    {
+                        UserRole userRole = new UserRole();
+                        userRole.setUserId(userEntity.getId());
+                        userRole.setRoleId(role);
+                        result = userRoleService.save(userRole);
+                    }
+                }
+            }
+            else if(null != user.getRoleId())
+            {
+                UserRole userRole = new UserRole();
+                userRole.setUserId(userEntity.getId());
+                userRole.setRoleId(user.getRoleId());
+                QueryWrapper<UserRole> wp = new QueryWrapper<>();
+                wp.eq("user_id", userEntity.getId()).eq("role_id", user.getRoleId());
+                List<UserRole> urList = userRoleService.list(wp);
+                //如果这个权限不存在，则删除其他权限，保存这个权限
+                if (CollectionUtils.isEmpty(urList)) {
+                    QueryWrapper<UserRole> wpd = new QueryWrapper<>();
+                    wpd.eq("user_id", userEntity.getId());
+                    userRoleService.remove(wpd);
+                    result = userRoleService.save(userRole);
+                }
             }
         }
         return result;

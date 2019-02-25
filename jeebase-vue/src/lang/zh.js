@@ -76,6 +76,7 @@ export default {
     userSex: '性别',
     userStatus: '状态',
     area: '地区',
+    street: '详细地址',
     description: '备注',
     enable: '启用',
     disable: '禁用',
@@ -116,6 +117,8 @@ export default {
     organizationType: '组织类型',
     organizationIcon: '组织图标',
     organizationLevel: '组织排序',
+    area: '地区',
+    street: '详细地址',
     description: '备注'
   },
   dictTable: {

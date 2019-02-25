@@ -57,6 +57,22 @@ public class Organization implements Serializable {
     @TableField("organization_level")
     private Integer organizationLevel;
 
+    @ApiModelProperty(value = "省")
+    @TableField("province")
+    private String province;
+
+    @ApiModelProperty(value = "市")
+    @TableField("city")
+    private String city;
+
+    @ApiModelProperty(value = "区")
+    @TableField("area")
+    private String area;
+
+    @ApiModelProperty(value = "街道详细地址")
+    @TableField("street")
+    private String street;
+
     @ApiModelProperty(value = "描述")
     @TableField("description")
     private String description;
@@ -147,6 +163,39 @@ public class Organization implements Serializable {
 
     public void setOrganizationLevel(Integer organizationLevel) {
         this.organizationLevel = organizationLevel;
+    }
+
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getDescription() {

@@ -55,12 +55,12 @@
 		A.creator AS creator,
 		A.update_time AS updateTime,
 		A.OPERATOR AS operator,
-		C.id AS roleId,
-		C.role_key AS roleKey,
-		C.role_name AS roleName
+		GROUP_CONCAT(C.id) AS roleIds,
+		GROUP_CONCAT(C.role_key) AS roleKey,
+		GROUP_CONCAT(C.role_name) AS roleName
 		FROM t_sys_user A
 		INNER JOIN t_sys_user_role B ON A.id = B.user_id AND B.del_flag = 0
-		INNER JOIN t_sys_role C ON B.role_id = C.id AND C.del_flag = 0
+		LEFT JOIN t_sys_role C ON B.role_id = C.id AND C.del_flag = 0
 		LEFT JOIN t_sys_district D ON A.province = D.code
 		LEFT JOIN t_sys_district E ON A.city = E.code
 		WHERE A.del_flag = 0
@@ -90,6 +90,7 @@
 				AND B.role_id = #{user.roleId}
 			</if>
 		</trim>
+		GROUP BY A.id
 		ORDER BY createTime DESC
 	</select>
 
