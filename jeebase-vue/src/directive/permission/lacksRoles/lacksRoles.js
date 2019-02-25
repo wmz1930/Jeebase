@@ -7,17 +7,17 @@ export default{
     const roles = store.getters && store.getters.roles
 
     if (value && value instanceof Array && value.length > 0) {
-      const permissionRoles = value
+      const myRoles = value
 
-      const hasPermission = roles.some(role => {
-        return permissionRoles.includes(role)
+      const hasRoles = roles.some(role => {
+        return myRoles.includes(role)
       })
 
-      if (!hasPermission) {
+      if (hasRoles) {
         el.parentNode && el.parentNode.removeChild(el)
       }
     } else {
-      throw new Error(`need roles! Like v-permission="['admin','editor']"`)
+      throw new Error(`lack roles! Like v-lacksRoles="['admin','editor']"`)
     }
   }
 }

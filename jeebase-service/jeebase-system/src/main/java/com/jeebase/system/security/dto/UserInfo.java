@@ -26,6 +26,7 @@ public class UserInfo
     private String roleName;
     private List<String> roles;
     private List<Resource> resources;
+    private List<String> stringResources;
     private String headImgUrl;
     private String province;
     private String provinceName;
@@ -258,4 +259,13 @@ public class UserInfo
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+
+    public List<String> getStringResources() {
+        return stringResources;
+    }
+
+    public void setStringResources(List<String> stringResources) {
+        this.stringResources = stringResources;
+    }
 }

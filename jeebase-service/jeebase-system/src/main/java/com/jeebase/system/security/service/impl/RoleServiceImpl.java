@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -35,6 +36,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     RoleMapper roleMapper;
 
     @Autowired
+    @Lazy
     private IUserRoleService userRoleService;
 
     @Autowired

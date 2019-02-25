@@ -92,6 +92,18 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
+    @Cacheable(value = "resources", key = "'all_user_id_'.concat(#userId)")
+    public List<String> queryResourceListByUserId(Integer userId) {
+        List<Resource> resourceList = resourceMapper.queryResourceByUserId(userId);
+        List<String> menus = new ArrayList<String>();
+        // 组装子父级目录
+        for (Resource resource : resourceList) {
+            menus.add(resource.getResourceKey());
+        }
+        return menus;
+    }
+
+    @Override
     @Cacheable(value = "resources", key = "'parent_id_'.concat(#parentId)")
     public List<Resource> queryResourceByParentId(Integer parentId) {
         List<Resource> resourceList = resourceMapper.queryResourceTreeProc(parentId);

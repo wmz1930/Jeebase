@@ -153,6 +153,9 @@ public class LoginController {
         }
         List<Resource> resourceList = resourceService.queryResourceByUserId(userId);
         userInfo.setResources(resourceList);
+
+        List<String> resourceStringList = resourceService.queryResourceListByUserId(userId);
+        userInfo.setStringResources(resourceStringList);
         return new Result<UserInfo>().success().put(userInfo);
     }
     

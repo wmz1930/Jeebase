@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jeebase.common.base.domain.ZTree;
 import com.jeebase.system.security.entity.Resource;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * @author jeebase
@@ -18,6 +19,9 @@ public interface IResourceService extends IService<Resource> {
      * @return
      */
     List<Resource> queryResourceByUserId(Integer userId);
+
+    @Cacheable(value = "resources", key = "'all_user_id_'.concat(#userId)")
+    List<String> queryResourceListByUserId(Integer userId);
 
     /**
      * 查询资源权限列表

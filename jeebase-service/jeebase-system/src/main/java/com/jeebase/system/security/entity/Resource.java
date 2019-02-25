@@ -38,10 +38,11 @@ public class Resource implements Serializable {
     @TableField("parent_id")
     private Integer parentId;
 
-    @ApiModelProperty(value = "1、模块 2、菜单 3、按钮 4、链接")
+
     @TableField("resource_key")
     private String resourceKey;
 
+    @ApiModelProperty(value = "1、模块 2、菜单 3、按钮 4、链接")
     @TableField("resource_type")
     private String resourceType;
 

@@ -40,6 +40,9 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_PERMISSIONS: (state, permissions) => {
+      state.permissions = permissions
     }
   },
 
@@ -70,6 +73,7 @@ const user = {
 
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)
+            commit('SET_PERMISSIONS', data.stringResources)
           } else {
             reject('getInfo: roles must be a non-null array !')
           }
@@ -104,6 +108,7 @@ const user = {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
+          commit('SET_PERMISSIONS', [])
           removeToken()
           resolve()
         }).catch(error => {

@@ -19,12 +19,22 @@ import './errorLog' // error log
 import './permission' // permission control
 import './mock' // simulation data
 
+import hasAnyRoles from './directive/permission/hasAnyRoles/index' // hasAnyRoles
+import hasPermission from './directive/permission/hasPermission/index' // hasAnyRoles
+import lacksRoles from './directive/permission/lacksRoles/index' // hasAnyRoles
+import lacksPermission from './directive/permission/lacksPermission/index' // hasAnyRoles
+
 import * as filters from './filters' // global filters
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
+
+Vue.use(hasAnyRoles)
+Vue.use(hasPermission)
+Vue.use(lacksRoles)
+Vue.use(lacksPermission)
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
