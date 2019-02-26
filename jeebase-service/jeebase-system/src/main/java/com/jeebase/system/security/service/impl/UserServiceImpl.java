@@ -161,6 +161,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("id", userEntity.getId());
         boolean result = this.update(userEntity, wrapper);
+
+        Integer organizationId = user.getOrganizationId();
+        QueryWrapper<OrganizationUser> organizationUserWrapper = new QueryWrapper<>();
+        organizationUserWrapper.eq("user_id", userEntity.getId()).eq("organization_id", organizationId);
+        OrganizationUser orgUserOld = organizationUserService.getOne(organizationUserWrapper);
+        if (null == orgUserOld && null != organizationId)
+        {
+            QueryWrapper<OrganizationUser> organizationUserRemoveWrapper = new QueryWrapper<>();
+            organizationUserRemoveWrapper.eq("user_id", userEntity.getId());
+            organizationUserService.remove(organizationUserRemoveWrapper);
+            //保存用户和组织机构的关系
+            OrganizationUser orgUser = new OrganizationUser();
+            orgUser.setUserId(userEntity.getId());
+            orgUser.setOrganizationId(organizationId);
+            organizationUserService.save(orgUser);
+        }
+
         List<Integer> roleIds = user.getRoleIds();
         if (result && (null != user.getRoleId() || !CollectionUtils.isEmpty(roleIds))) {
             if(!CollectionUtils.isEmpty(roleIds))

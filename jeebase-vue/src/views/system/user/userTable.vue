@@ -85,6 +85,11 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('userTable.organization')" width="" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.organizationName }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('userTable.userAccount')" width="" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.userAccount }}</span>
@@ -365,8 +370,8 @@ export default {
     }
   },
   created() {
-    this.getOrgList()
     this.getList()
+    this.getOrgList()
     this.getRoleList()
     this.getAreaList()
   },
@@ -391,16 +396,20 @@ export default {
         this.listLoading = false
       })
     },
-    selectOrgListByLastId(orgOptions, lastId) {
-      if (this.orgList) {
-        var orgSelect = []
-        for (var org of this.orgList) {
-          orgSelect.push(org.id)
+    selectOrgListByLastId(orgList, lastId) {
+      // 递归查询机构父机构，用于展示已选中的机构
+      var orgStr = ''
+      if (orgList) {
+        for (var org of orgList) {
           if (lastId === org.id) {
-            orgOptions = orgSelect
+            return lastId
+          } else if (org.children) {
+            orgStr = org.id + ',' + this.selectOrgListByLastId(org.children, lastId)
+            return orgStr
           }
         }
       }
+      return orgStr
     },
     getRoleList() {
       this.listLoading = true
@@ -484,8 +493,11 @@ export default {
           this.userForm.area
         ]
       }
-      debugger
-      this.selectedOrgOptions[this.selectedOrgOptions.length - 1] = this.userForm.organizationId
+
+      if (this.userForm.organizationId) {
+        var orgStr = this.selectOrgListByLastId(this.orgList, this.userForm.organizationId) + ''
+        this.selectedOrgOptions = orgStr.split(',').map(Number)
+      }
 
       if (!(this.userForm.roleIds instanceof Array)) {
         var roleIds = this.userForm.roleIds.split(',')

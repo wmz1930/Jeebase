@@ -13,6 +13,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -80,10 +81,13 @@ public class UserRealm extends AuthorizingRealm {
                 }
             }
             List<Resource> resourceList = roleResourceService.queryResourceByRoleId(role.getId());
-            for (Resource res : resourceList) {
-                if (!StringUtils.isEmpty(res.getResourceKey())) {
-                    if (!StringUtils.isEmpty(res.getResourceKey().replace(" ", ""))) {
-                        permissions.add(res.getResourceKey());
+            if(!CollectionUtils.isEmpty(resourceList))
+            {
+                for (Resource res : resourceList) {
+                    if (!StringUtils.isEmpty(res.getResourceKey())) {
+                        if (!StringUtils.isEmpty(res.getResourceKey().replace(" ", ""))) {
+                            permissions.add(res.getResourceKey());
+                        }
                     }
                 }
             }
