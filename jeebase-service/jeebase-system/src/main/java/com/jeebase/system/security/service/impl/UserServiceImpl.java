@@ -2,6 +2,8 @@ package com.jeebase.system.security.service.impl;
 
 import java.util.List;
 
+import com.jeebase.system.security.entity.OrganizationUser;
+import com.jeebase.system.security.service.IOrganizationUserService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +44,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private IUserRoleService userRoleService;
 
+    @Autowired
+    private IOrganizationUserService organizationUserService;
+
     @Value("${system.defaultPwd}")
     private String defaultPwd;
 
@@ -69,6 +74,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (!CollectionUtils.isEmpty(userList)) {
             throw new BusinessException("账号已经存在");
         }
+
         Integer roleId = user.getRoleId();
         List<Integer> roleIds = user.getRoleIds();
         if (null == roleId && CollectionUtils.isEmpty(roleIds)) {
@@ -94,6 +100,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userEntity.setUserPassword(cryptPwd);
         boolean result = this.save(userEntity);
         if (result) {
+            //保存用户和组织机构的关系
+            Integer organizationId = user.getOrganizationId();
+            OrganizationUser orgUser = new OrganizationUser();
+            orgUser.setUserId(userEntity.getId());
+            orgUser.setOrganizationId(organizationId);
+            organizationUserService.save(orgUser);
+
             user.setId(userEntity.getId());
             user.setUserPassword(cryptPwd);
             UserRole userRole = new UserRole();

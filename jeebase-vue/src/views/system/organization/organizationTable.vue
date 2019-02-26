@@ -85,7 +85,7 @@
   Auth: Lei.j1ang
   Created: 2018/1/19-14:54
 */
-import { fetchList, createOrganization, deleteOrganization, updateOrganization } from '@/api/system/organization'
+import { fetchOrgList, createOrganization, deleteOrganization, updateOrganization } from '@/api/system/organization'
 import waves from '@/directive/waves' // 水波纹指令
 import TreeTable from '@/components/TreeTable'
 import Data from '@/api/pcaa'
@@ -185,7 +185,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.treeQuery).then(response => {
+      fetchOrgList(this.treeQuery).then(response => {
         this.list = response.data
         this.baseList = JSON.parse(JSON.stringify(response.data)) // 数组深复制
         this.listLoading = false

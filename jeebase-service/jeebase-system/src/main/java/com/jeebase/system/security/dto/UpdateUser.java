@@ -90,6 +90,9 @@ public class UpdateUser implements Serializable
     
     private Integer roleId;
 
+    @ApiModelProperty(value = "组织机构id")
+    private Integer organizationId;
+
     /**
      * 角色数组
      */
@@ -268,6 +271,15 @@ public class UpdateUser implements Serializable
     public void setRoleId( Integer roleId )
     {
         this.roleId = roleId;
+    }
+
+
+    public Integer getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Integer organizationId) {
+        this.organizationId = organizationId;
     }
 
 

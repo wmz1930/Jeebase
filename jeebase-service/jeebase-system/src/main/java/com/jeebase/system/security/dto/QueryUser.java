@@ -1,6 +1,8 @@
 
 package com.jeebase.system.security.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -78,6 +80,13 @@ public class QueryUser implements Serializable
     private List<String> areas;
     
     private Integer roleId;
+
+    private String startDate;
+
+    private String endDate;
+
+    @ApiModelProperty(value = "组织机构id")
+    private Integer organizationId;
 
     public Integer getId()
     {
@@ -209,6 +218,14 @@ public class QueryUser implements Serializable
         this.roleId = roleId;
     }
 
+    public Integer getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Integer organizationId) {
+        this.organizationId = organizationId;
+    }
+
     public List<String> getAreas() {
 		return areas;
 	}
@@ -216,6 +233,23 @@ public class QueryUser implements Serializable
 	public void setAreas(List<String> areas) {
 		this.areas = areas;
 	}
+
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 
 	@Override
     public String toString()

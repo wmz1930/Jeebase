@@ -22,6 +22,8 @@ public class UserInfo
     private String userStatus;
     private Long time;
     private Integer roleId;
+    private Integer organizationId;
+    private String organizationName;
     private String roleIds;
     private String roleKey;
     private String roleName;
@@ -137,6 +139,25 @@ public class UserInfo
     {
         this.roleId = roleId;
     }
+
+
+    public Integer getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Integer organizationId) {
+        this.organizationId = organizationId;
+    }
+
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
 
 
     public String getRoleIds() {

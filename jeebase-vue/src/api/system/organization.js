@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function fetchList(data) {
+export function fetchOrgList(data) {
   return request({
     url: '/organization/tree',
     method: 'get',

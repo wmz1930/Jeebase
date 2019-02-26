@@ -58,6 +58,7 @@ public class UserRole implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Integer getUserId() {
         return userId;
     }

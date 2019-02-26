@@ -138,6 +138,9 @@ public class CreateUser implements Serializable
 
     private Integer roleId;
 
+    @ApiModelProperty(value = "组织机构id")
+    private Integer organizationId;
+
     /**
      * 角色数组
      */
@@ -320,6 +323,15 @@ public class CreateUser implements Serializable
 	public void setAreas(List<String> areas) {
 		this.areas = areas;
 	}
+
+
+    public Integer getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Integer organizationId) {
+        this.organizationId = organizationId;
+    }
 
 	@Override
     public String toString()

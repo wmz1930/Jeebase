@@ -1,18 +1,75 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-input :placeholder="$t('userTable.userName')" v-model="listQuery.userName" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
-      <el-input :placeholder="$t('userTable.userMobile')" v-model="listQuery.userMobile" style="width: 150px;" class="filter-item" maxlength="11" @keyup.enter.native="handleFilter"/>
-      <el-input :placeholder="$t('userTable.userEmail')" v-model="listQuery.userEmail" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
-      <el-select v-model="listQuery.roleId" :placeholder="$t('userTable.roleName')" clearable style="width: 150px" class="filter-item">
-        <el-option v-for="item in roleList" :key="item.key" :label="item.roleName" :value="item.id"/>
-      </el-select>
-      <el-select v-model="listQuery.userStatus" :placeholder="$t('userTable.userStatus')" clearable style="width: 150px" class="filter-item">
-        <el-option v-for="item in statusOption" :key="item.key" :label="item.label" :value="item.key"/>
-      </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
+    <div class="filter-container-card">
+      <div class="text item">
+        <el-form label-width="80px">
+          <el-row >
+            <el-col :span="6">
+              <el-form-item :label="$t('userTable.organization')" prop="selectedOrgOptionsQuery">
+                <el-cascader
+                  :options="orgList"
+                  :props="propsOrg"
+                  :show-all-levels="false"
+                  v-model="selectedOrgOptionsQuery"
+                  :placeholder="$t('userTable.organization')"
+                  filterable
+                  clearable
+                  change-on-select
+                  style="width: 180px;"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" class="line">
+              <el-form-item :label="$t('userTable.userName')" prop="userName">
+                <el-input v-model="listQuery.userName" :placeholder="$t('userTable.userName')" style="width: 180px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" class="line">
+              <el-form-item :label="$t('userTable.userMobile')" prop="userMobile">
+                <el-input v-model="listQuery.userMobile" :placeholder="$t('userTable.userMobile')" style="width: 180px;" class="filter-item" maxlength="11" @keyup.enter.native="handleFilter"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" class="line">
+              <el-form-item :label="$t('userTable.userEmail')" prop="userEmail">
+                <el-input v-model="listQuery.userEmail" :placeholder="$t('userTable.userEmail')" style="width: 180px;" class="filter-item" maxlength="100" @keyup.enter.native="handleFilter"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item :label="$t('table.startDate')" prop="startDate">
+                <el-date-picker v-model.trim="listQuery.startDate" :placeholder="$t('table.startDate')" type="date" style="width: 180px;"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item :label="$t('table.endDate')" prop="endDate">
+                <el-date-picker v-model.trim="listQuery.endDate" :placeholder="$t('table.endDate')" type="date" style="width: 180px;"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item :label="$t('userTable.roleName')" prop="roleId">
+                <el-select v-model="listQuery.roleId" :placeholder="$t('userTable.roleName')" clearable style="width: 180px" class="filter-item">
+                  <el-option v-for="item in roleList" :key="item.key" :label="item.roleName" :value="item.id"/>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item :label="$t('userTable.userStatus')" prop="userStatus">
+                <el-select v-model="listQuery.userStatus" :placeholder="$t('userTable.userStatus')" clearable style="width: 180px" class="filter-item">
+                  <el-option v-for="item in statusOption" :key="item.key" :label="item.label" :value="item.key"/>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item style="float:right;">
+                <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
+                <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
+                <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
     </div>
 
     <el-table
@@ -76,9 +133,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" align="center" width="310" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <el-button plain type="primary" size="mini" style="width:68px;" @click="handleUpdate(scope.row)">{{ $t('userTable.permissionEdit') }}</el-button>
           <el-button v-if="scope.row.userStatus!='1'" size="mini" type="success" @click="handleModifyStatus(scope.row,'1')">{{ $t('userTable.enable') }}
           </el-button>
           <el-button v-if="scope.row.userStatus!='0' && scope.row.userStatus!='2'" size="mini" @click="handleModifyStatus(scope.row,'0')">{{ $t('userTable.disable') }}
@@ -92,6 +150,19 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="userForm" :model="userForm" :rules="rules" label-width="100px" class="userForm" style="width: 400px; margin-left:50px;">
+        <el-form-item :label="$t('userTable.organization')" prop="userAccount">
+          <el-cascader
+            :options="orgList"
+            :props="propsOrg"
+            :show-all-levels="false"
+            v-model="selectedOrgOptions"
+            :placeholder="$t('userTable.organization')"
+            filterable
+            clearable
+            change-on-select
+            style="width: 100%;"
+          />
+        </el-form-item>
         <el-form-item :label="$t('userTable.userAccount')" prop="userAccount">
           <el-input v-model="userForm.userAccount" placeholder="输入用户账号" maxlength="32"/>
         </el-form-item>
@@ -147,6 +218,7 @@
 
 <script>
 import { fetchList, createUser, deleteUser, updateUser, updateUserStatus, fetchRoleList } from '@/api/system/user'
+import { fetchOrgList } from '@/api/system/organization'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 import Data from '@/api/pcaa'
@@ -202,6 +274,7 @@ export default {
         userMobile: '',
         userEmail: '',
         roleIds: [],
+        organizationId: '',
         userStatus: ''
       },
       statusOption: [
@@ -212,8 +285,8 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '编辑',
-        create: '添加'
+        update: '编辑用户信息',
+        create: '添加用户'
       },
       userForm: {
         id: '',
@@ -223,6 +296,7 @@ export default {
         userMobile: '',
         userEmail: '',
         roleIds: [],
+        organizationId: '',
         userSex: 1,
         userStatus: 1,
         areas: [],
@@ -267,6 +341,9 @@ export default {
         roleIds: [
           { required: true, message: '请选择用户角色', trigger: 'change' }
         ],
+        organizationId: [
+          { required: true, message: '请选择组织机构', trigger: 'change' }
+        ],
         userSex: [
           { required: true, message: '请选择用户性别', trigger: 'change' }
         ],
@@ -277,10 +354,18 @@ export default {
           { required: true, message: '请填写备注信息', trigger: 'blur' }
         ]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      selectedOrgOptions: [],
+      selectedOrgOptionsQuery: [],
+      propsOrg: {
+        value: 'id',
+        label: 'organizationName'
+      },
+      orgList: []
     }
   },
   created() {
+    this.getOrgList()
     this.getList()
     this.getRoleList()
     this.getAreaList()
@@ -288,11 +373,34 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
+      if (this.selectedOrgOptionsQuery.length > 0) {
+        this.listQuery.organizationId = this.selectedOrgOptionsQuery[this.selectedOrgOptionsQuery.length - 1]
+      } else {
+        this.listQuery.organizationId = ''
+      }
       fetchList(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.count
         this.listLoading = false
       })
+    },
+    getOrgList() {
+      this.listLoading = true
+      fetchOrgList({ parentId: 0 }).then(response => {
+        this.orgList = response.data
+        this.listLoading = false
+      })
+    },
+    selectOrgListByLastId(orgOptions, lastId) {
+      if (this.orgList) {
+        var orgSelect = []
+        for (var org of this.orgList) {
+          orgSelect.push(org.id)
+          if (lastId === org.id) {
+            orgOptions = orgSelect
+          }
+        }
+      }
     },
     getRoleList() {
       this.listLoading = true
@@ -332,6 +440,7 @@ export default {
         userMobile: '',
         userEmail: '',
         roleIds: [],
+        organizationId: '',
         userSex: 1,
         userStatus: 1,
         area: [],
@@ -348,6 +457,11 @@ export default {
       })
     },
     createData() {
+      if (this.selectedOrgOptions.length > 0) {
+        this.userForm.organizationId = this.selectedOrgOptions[this.selectedOrgOptions.length - 1]
+      } else {
+        this.userForm.organizationId = ''
+      }
       this.$refs['userForm'].validate(valid => {
         if (valid) {
           createUser(this.userForm).then(() => {
@@ -370,6 +484,8 @@ export default {
           this.userForm.area
         ]
       }
+      debugger
+      this.selectedOrgOptions[this.selectedOrgOptions.length - 1] = this.userForm.organizationId
 
       if (!(this.userForm.roleIds instanceof Array)) {
         var roleIds = this.userForm.roleIds.split(',')
@@ -389,6 +505,11 @@ export default {
       })
     },
     updateData() {
+      if (this.selectedOrgOptions.length > 0) {
+        this.userForm.organizationId = this.selectedOrgOptions[this.selectedOrgOptions.length - 1]
+      } else {
+        this.userForm.organizationId = ''
+      }
       this.$refs['userForm'].validate(valid => {
         if (valid) {
           updateUser(this.userForm).then(() => {

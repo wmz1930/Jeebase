@@ -57,12 +57,16 @@
 		A.OPERATOR AS operator,
 		GROUP_CONCAT(C.id) AS roleIds,
 		GROUP_CONCAT(C.role_key) AS roleKey,
-		GROUP_CONCAT(C.role_name) AS roleName
+		GROUP_CONCAT(C.role_name) AS roleName,
+		G.id AS organizationId,
+		G.organization_name AS organizationName
 		FROM t_sys_user A
 		INNER JOIN t_sys_user_role B ON A.id = B.user_id AND B.del_flag = 0
 		LEFT JOIN t_sys_role C ON B.role_id = C.id AND C.del_flag = 0
 		LEFT JOIN t_sys_district D ON A.province = D.code
 		LEFT JOIN t_sys_district E ON A.city = E.code
+		INNER JOIN t_sys_organization_user F ON A.id = F.user_id AND F.del_flag = 0
+		INNER JOIN t_sys_organization G ON F.organization_id = G.id AND G.del_flag = 0
 		WHERE A.del_flag = 0
 		<if test="user.id != null and user.id != ''">
 			AND A.id = #{user.id}
@@ -88,6 +92,15 @@
 			</if>
 			<if test="user.roleId != null and user.roleId != ''">
 				AND B.role_id = #{user.roleId}
+			</if>
+			<if test="user.organizationId != null and user.organizationId != ''">
+				AND G.id = #{user.organizationId}
+			</if>
+			<if test="user.startDate != null and user.startDate != ''">
+				AND DATE_FORMAT(A.create_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{user.startDate},'%Y-%m-%d')
+			</if>
+			<if test="user.endDate != null and user.endDate != ''">
+				AND DATE_FORMAT(A.create_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{user.endDate},'%Y-%m-%d')
 			</if>
 		</trim>
 		GROUP BY A.id

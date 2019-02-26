@@ -3,6 +3,7 @@ package com.jeebase.system.security.controller;
 import java.util.List;
 
 import com.jeebase.common.base.Constant;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;

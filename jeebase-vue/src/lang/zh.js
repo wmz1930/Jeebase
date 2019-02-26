@@ -62,11 +62,14 @@ export default {
     publish: '发布',
     draft: '草稿',
     delete: '删除',
+    startDate: '开始时间',
+    endDate: '结束时间',
     cancel: '取 消',
     confirm: '确 定'
   },
   userTable: {
     id: '序号',
+    organization: '组织机构',
     userAccount: '账号',
     userNickName: '昵称',
     userName: '姓名',
@@ -80,7 +83,8 @@ export default {
     description: '备注',
     enable: '启用',
     disable: '禁用',
-    createTime: '注册时间'
+    createTime: '注册时间',
+    permissionEdit: '数据权限'
   },
   roleTable: {
     id: '序号',
