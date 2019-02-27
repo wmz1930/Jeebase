@@ -1,9 +1,23 @@
 package com.jeebase.system.security.service.impl;
 
-import java.util.List;
-
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jeebase.common.base.BusinessException;
+import com.jeebase.common.base.Constant;
+import com.jeebase.system.security.dto.CreateUser;
+import com.jeebase.system.security.dto.QueryUser;
+import com.jeebase.system.security.dto.UpdateUser;
+import com.jeebase.system.security.dto.UserInfo;
+import com.jeebase.system.security.entity.DataPermission;
 import com.jeebase.system.security.entity.OrganizationUser;
+import com.jeebase.system.security.entity.User;
+import com.jeebase.system.security.entity.UserRole;
+import com.jeebase.system.security.mapper.UserMapper;
+import com.jeebase.system.security.service.IDataPermissionService;
 import com.jeebase.system.security.service.IOrganizationUserService;
+import com.jeebase.system.security.service.IUserRoleService;
+import com.jeebase.system.security.service.IUserService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,20 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jeebase.common.base.BusinessException;
-import com.jeebase.common.base.Constant;
-import com.jeebase.system.security.dto.CreateUser;
-import com.jeebase.system.security.dto.QueryUser;
-import com.jeebase.system.security.dto.UpdateUser;
-import com.jeebase.system.security.dto.UserInfo;
-import com.jeebase.system.security.entity.User;
-import com.jeebase.system.security.entity.UserRole;
-import com.jeebase.system.security.mapper.UserMapper;
-import com.jeebase.system.security.service.IUserRoleService;
-import com.jeebase.system.security.service.IUserService;
+import java.util.List;
 
 /**
  * @ClassName: UserServiceImpl
@@ -46,6 +47,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     private IOrganizationUserService organizationUserService;
+
+    @Autowired
+    private IDataPermissionService dataPermissionService;
 
     @Value("${system.defaultPwd}")
     private String defaultPwd;
@@ -107,6 +111,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             orgUser.setOrganizationId(organizationId);
             organizationUserService.save(orgUser);
 
+            //默认增加用户所在机构数据权限值，但是否有操作权限还是会根据资源权限判断
+            DataPermission dataPermission = new DataPermission();
+            dataPermission.setUserId(userEntity.getId());
+            dataPermission.setOrganizationId(organizationId);
+            dataPermissionService.save(dataPermission);
+
+            //保存用户角色信息
             user.setId(userEntity.getId());
             user.setUserPassword(cryptPwd);
             UserRole userRole = new UserRole();
@@ -170,12 +181,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         {
             QueryWrapper<OrganizationUser> organizationUserRemoveWrapper = new QueryWrapper<>();
             organizationUserRemoveWrapper.eq("user_id", userEntity.getId());
+            OrganizationUser orgUserRemove = organizationUserService.getOne(organizationUserRemoveWrapper);
+            QueryWrapper<DataPermission> dataPermissionRemoveWrapper = new QueryWrapper<>();
+            dataPermissionRemoveWrapper.eq("user_id", userEntity.getId()).eq("organization_id", orgUserRemove.getOrganizationId());
+            //删除旧机构的数据权限
+            dataPermissionService.remove(dataPermissionRemoveWrapper);
+            //删除旧机构的组织机构关系
             organizationUserService.remove(organizationUserRemoveWrapper);
             //保存用户和组织机构的关系
             OrganizationUser orgUser = new OrganizationUser();
             orgUser.setUserId(userEntity.getId());
             orgUser.setOrganizationId(organizationId);
             organizationUserService.save(orgUser);
+            //默认增加用户所在机构数据权限值，但是否有操作权限还是会根据资源权限判断
+            DataPermission dataPermission = new DataPermission();
+            dataPermission.setUserId(userEntity.getId());
+            dataPermission.setOrganizationId(organizationId);
+            dataPermissionService.save(dataPermission);
         }
 
         List<Integer> roleIds = user.getRoleIds();
@@ -255,4 +277,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 userAccount));
         return this.getOne(ew);
     }
+
 }

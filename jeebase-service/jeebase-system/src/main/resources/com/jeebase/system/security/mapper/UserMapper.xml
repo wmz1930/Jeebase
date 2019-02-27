@@ -55,9 +55,10 @@
 		A.creator AS creator,
 		A.update_time AS updateTime,
 		A.OPERATOR AS operator,
-		GROUP_CONCAT(C.id) AS roleIds,
-		GROUP_CONCAT(C.role_key) AS roleKey,
-		GROUP_CONCAT(C.role_name) AS roleName,
+		GROUP_CONCAT(DISTINCT C.id) AS roleIds,
+		GROUP_CONCAT(DISTINCT C.role_key) AS roleKey,
+		GROUP_CONCAT(DISTINCT C.role_name) AS roleName,
+		GROUP_CONCAT(DISTINCT H.organization_id) AS dataPermission,
 		G.id AS organizationId,
 		G.organization_name AS organizationName
 		FROM t_sys_user A
@@ -65,6 +66,7 @@
 		LEFT JOIN t_sys_role C ON B.role_id = C.id AND C.del_flag = 0
 		LEFT JOIN t_sys_district D ON A.province = D.code
 		LEFT JOIN t_sys_district E ON A.city = E.code
+		LEFT JOIN t_sys_data_permission H ON A.id = H.user_id AND H.del_flag = 0
 		INNER JOIN t_sys_organization_user F ON A.id = F.user_id AND F.del_flag = 0
 		INNER JOIN t_sys_organization G ON F.organization_id = G.id AND G.del_flag = 0
 		WHERE A.del_flag = 0

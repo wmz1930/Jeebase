@@ -141,7 +141,7 @@
       <el-table-column :label="$t('table.actions')" align="center" width="310" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button plain type="primary" size="mini" style="width:68px;" @click="handleUpdate(scope.row)">{{ $t('userTable.permissionEdit') }}</el-button>
+          <el-button plain type="primary" size="mini" style="width:68px;" @click="handleDataPermission(scope.row)">{{ $t('userTable.permissionEdit') }}</el-button>
           <el-button v-if="scope.row.userStatus!='1'" size="mini" type="success" @click="handleModifyStatus(scope.row,'1')">{{ $t('userTable.enable') }}
           </el-button>
           <el-button v-if="scope.row.userStatus!='0' && scope.row.userStatus!='2'" size="mini" @click="handleModifyStatus(scope.row,'0')">{{ $t('userTable.disable') }}
@@ -218,11 +218,37 @@
         <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :visible.sync="dialogDataPermissionVisible" title="设置用户数据权限">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>组织机构列表</span>
+        </div>
+        <div class="text item">
+          <el-tree
+            ref="tree"
+            :data="orgList"
+            :props="propsOrg"
+            :default-expanded-keys="userCheckOrgPermission"
+            :default-checked-keys="userCheckOrgPermission"
+            show-checkbox
+            check-strictly
+            node-key="id"
+            class="filter-container-card"
+            highlight-current
+            @check-change="computeOrgPermission"/>
+        </div>
+      </el-card>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogDataPermissionVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="updateDataPermission">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchList, createUser, deleteUser, updateUser, updateUserStatus, fetchRoleList } from '@/api/system/user'
+import { fetchList, createUser, deleteUser, updateUser, updateUserStatus, fetchRoleList, updateUserDataPermission } from '@/api/system/user'
 import { fetchOrgList } from '@/api/system/organization'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
@@ -288,6 +314,7 @@ export default {
         { label: '未激活', key: '2' }
       ],
       dialogFormVisible: false,
+      dialogDataPermissionVisible: false,
       dialogStatus: '',
       textMap: {
         update: '编辑用户信息',
@@ -307,6 +334,11 @@ export default {
         areas: [],
         street: '',
         description: ''
+      },
+      dataPermissionForm: {
+        userId: '',
+        addDataPermissions: [],
+        removeDataPermissions: []
       },
       rules: {
         userAccount: [
@@ -366,7 +398,10 @@ export default {
         value: 'id',
         label: 'organizationName'
       },
-      orgList: []
+      orgList: [],
+      userCheckOrgPermission: [],
+      addOrgPermission: [],
+      removeOrgPermission: []
     }
   },
   created() {
@@ -404,12 +439,38 @@ export default {
           if (lastId === org.id) {
             return lastId
           } else if (org.children) {
-            orgStr = org.id + ',' + this.selectOrgListByLastId(org.children, lastId)
-            return orgStr
+            var childOrg = this.selectOrgListByLastId(org.children, lastId)
+            if (childOrg) {
+              orgStr = org.id + ',' + childOrg
+              return orgStr
+            }
           }
         }
       }
       return orgStr
+    },
+    computeOrgPermission(item, node) {
+      if (node) {
+        // 如果原先不存在，则添加到新增列表
+        if (this.userCheckOrgPermission.indexOf(item.id) === -1) {
+          this.addOrgPermission.push(item.id)
+        }
+        // 如果在删除列表中，则从删除列表中删除
+        var removeIndex = this.removeOrgPermission.indexOf(item.id)
+        if (removeIndex > -1) {
+          this.removeOrgPermission.splice(removeIndex, 1)
+        }
+      } else {
+        // 如果原先存在，则添加到删除列表
+        if (this.userCheckOrgPermission.indexOf(item.id) > -1) {
+          this.removeOrgPermission.push(item.id)
+        }
+        // 如果在新增列表中，则从新增列表中删除
+        var addIndex = this.addOrgPermission.indexOf(item.id)
+        if (addIndex > -1) {
+          this.addOrgPermission.splice(addIndex, 1)
+        }
+      }
     },
     getRoleList() {
       this.listLoading = true
@@ -457,6 +518,13 @@ export default {
         description: ''
       }
     },
+    resetDataPermissionForm() {
+      this.dataPermissionForm = {
+        userId: '',
+        addDataPermissions: [],
+        removeDataPermissions: []
+      }
+    },
     handleCreate() {
       this.resetUserForm()
       this.dialogStatus = 'create'
@@ -485,6 +553,7 @@ export default {
       })
     },
     handleUpdate(row) {
+      this.resetUserForm()
       this.userForm = Object.assign({}, row) // copy obj
       if (!this.userForm.areas || this.userForm.areas.length === 0) {
         this.userForm.areas = [
@@ -548,6 +617,35 @@ export default {
             })
           })
         }
+      })
+    },
+    handleDataPermission(row) {
+      this.dialogStatus = 'update'
+      this.dialogDataPermissionVisible = true
+      this.resetDataPermissionForm()
+      this.userForm = Object.assign({}, row)
+      if (this.$refs['tree']) {
+        this.$refs['tree'].setCheckedKeys([])
+      }
+      this.addOrgPermission = []
+      this.removeOrgPermission = []
+      if (this.userForm.dataPermission) {
+        this.userCheckOrgPermission = this.userForm.dataPermission.split(',').map(Number)
+      } else {
+        this.userCheckOrgPermission = []
+      }
+      this.dataPermissionForm.userId = this.userForm.id
+    },
+    updateDataPermission() {
+      this.dataPermissionForm.addDataPermissions = this.addOrgPermission
+      this.dataPermissionForm.removeDataPermissions = this.removeOrgPermission
+      updateUserDataPermission(this.dataPermissionForm).then(() => {
+        this.handleFilter()
+        this.dialogDataPermissionVisible = false
+        this.$message({
+          message: '更新成功',
+          type: 'success'
+        })
       })
     },
     handleDelete(row) {

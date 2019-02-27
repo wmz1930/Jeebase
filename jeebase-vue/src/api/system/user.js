@@ -69,3 +69,11 @@ export function fetchRoleList(data) {
     data
   })
 }
+
+export function updateUserDataPermission(data) {
+  return request({
+    url: '/user/update/data/permission',
+    method: 'post',
+    data
+  })
+}

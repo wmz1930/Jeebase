@@ -1,10 +1,10 @@
 
 package com.jeebase.system.security.dto;
 
+import com.jeebase.system.security.entity.Resource;
+
 import java.util.Date;
 import java.util.List;
-
-import com.jeebase.system.security.entity.Resource;
 
 /**
  * @author jeebase
@@ -27,6 +27,7 @@ public class UserInfo
     private String roleIds;
     private String roleKey;
     private String roleName;
+    private String dataPermission;
     private List<String> roles;
     private List<Resource> resources;
     private List<String> stringResources;
@@ -138,6 +139,15 @@ public class UserInfo
     public void setRoleId( Integer roleId )
     {
         this.roleId = roleId;
+    }
+
+
+    public String getDataPermission() {
+        return dataPermission;
+    }
+
+    public void setDataPermission(String dataPermission) {
+        this.dataPermission = dataPermission;
     }
 
 

@@ -1,37 +1,28 @@
 package com.jeebase.system.security.controller;
 
-import javax.validation.Valid;
-
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jeebase.common.annotation.auth.CurrentUser;
+import com.jeebase.common.annotation.log.AroundLog;
+import com.jeebase.common.base.PageResult;
+import com.jeebase.common.base.Result;
+import com.jeebase.system.security.dto.*;
+import com.jeebase.system.security.entity.User;
+import com.jeebase.system.security.service.IDataPermissionService;
+import com.jeebase.system.security.service.IUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jeebase.common.annotation.auth.CurrentUser;
-import com.jeebase.common.annotation.log.AroundLog;
-import com.jeebase.common.base.PageResult;
-import com.jeebase.common.base.Result;
-import com.jeebase.system.security.dto.CreateUser;
-import com.jeebase.system.security.dto.QueryUser;
-import com.jeebase.system.security.dto.UpdateUser;
-import com.jeebase.system.security.dto.UserInfo;
-import com.jeebase.system.security.entity.User;
-import com.jeebase.system.security.service.IUserService;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.validation.Valid;
 
 /**
  * @ClassName: UserController
@@ -46,6 +37,9 @@ public class UserController {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    IDataPermissionService dataPermissionService;
 
     @Value("${system.defaultPwd}")
     private String defaultPwd;
@@ -211,6 +205,22 @@ public class UserController {
         upUser.setAreas(user.getAreas());
         upUser.setId(tempUser.getId());
         boolean result = userService.updateUser(user);
+        if (result) {
+            return new Result<>().success("修改成功");
+        } else {
+            return new Result<>().error("修改失败");
+        }
+    }
+
+    /**
+     * 修改用户
+     */
+    @PostMapping("/update/data/permission")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "更新用户数据权限")
+    @AroundLog(name = "更新用户数据权限")
+    public Result<?> updateUserDataPermission(@RequestBody UpdateDataPermission updateDataPermission) {
+        boolean result = dataPermissionService.updateUserDataPermission(updateDataPermission);
         if (result) {
             return new Result<>().success("修改成功");
         } else {
