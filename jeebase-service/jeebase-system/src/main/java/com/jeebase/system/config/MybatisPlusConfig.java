@@ -1,6 +1,7 @@
 package com.jeebase.system.config;
 
 import com.jeebase.common.base.component.DataPermissionInterceptor;
+import com.jeebase.common.base.component.DataPermissionPaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,8 +36,8 @@ public class MybatisPlusConfig {
      * mybatis-plus分页插件
      */
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor page = new PaginationInterceptor();
+    public DataPermissionPaginationInterceptor paginationInterceptor() {
+        DataPermissionPaginationInterceptor page = new DataPermissionPaginationInterceptor();
         page.setDialectType("mysql");
         return page;
     }
