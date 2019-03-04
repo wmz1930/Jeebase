@@ -15,48 +15,35 @@
  */
 package com.jeebase.common.base.component;
 
-import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.MybatisDefaultParameterHandler;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.parser.ISqlParser;
-import com.baomidou.mybatisplus.core.parser.SqlInfo;
-import com.baomidou.mybatisplus.core.toolkit.*;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
-import com.baomidou.mybatisplus.extension.plugins.pagination.DialectFactory;
-import com.baomidou.mybatisplus.extension.plugins.pagination.DialectModel;
-import com.baomidou.mybatisplus.extension.toolkit.JdbcUtils;
-import com.baomidou.mybatisplus.extension.toolkit.SqlParserUtils;
-import com.jeebase.common.base.DataPermission;
+import com.jeebase.common.base.DataPermissionCondition;
 import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.Parenthesis;
+import net.sf.jsqlparser.expression.StringValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
-import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
-import net.sf.jsqlparser.parser.CCJSqlParserManager;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
-import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectBody;
-import net.sf.jsqlparser.util.deparser.ExpressionDeParser;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
-import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
-import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.RowBounds;
 
-import java.io.StringReader;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.*;
-
-import static java.util.stream.Collectors.joining;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * 分页拦截器
@@ -101,13 +88,13 @@ public class DataPermissionInterceptor extends AbstractSqlParserHandler implemen
         Object paramObj = boundSql.getParameterObject();
 
         // 判断参数里是否有DataPermission对象
-        DataPermission dataPermission = null;
-        if (paramObj instanceof DataPermission) {
-            dataPermission = (DataPermission) paramObj;
+        DataPermissionCondition dataPermissionCondition = null;
+        if (paramObj instanceof DataPermissionCondition) {
+            dataPermissionCondition = (DataPermissionCondition) paramObj;
         } else if (paramObj instanceof Map) {
             for (Object arg : ((Map) paramObj).values()) {
-                if (arg instanceof DataPermission) {
-                    dataPermission = (DataPermission) arg;
+                if (arg instanceof DataPermissionCondition) {
+                    dataPermissionCondition = (DataPermissionCondition) arg;
                     break;
                 }
             }
@@ -116,37 +103,86 @@ public class DataPermissionInterceptor extends AbstractSqlParserHandler implemen
         /*
          * 不需要数据权限直接进行下一步
          */
-        if (null == dataPermission) {
+        if (null == dataPermissionCondition) {
             return invocation.proceed();
+        }
+
+        // 如果没有配置orgId的别名，则默认给一个
+        if (StringUtils.isEmpty(dataPermissionCondition.getOrgIdAlias())) {
+            dataPermissionCondition.setOrgIdAlias("organiaztion_id");
+        }
+
+        String orgIdAlias = dataPermissionCondition.getOrgIdAlias();
+
+        List<String> orgIdList = dataPermissionCondition.getOrgIdList();
+
+        String userIdAlias = dataPermissionCondition.getUserIdAlias();
+
+        String userId = dataPermissionCondition.getUserId();
+
+        boolean ownQuery = dataPermissionCondition.isOwnQuery();
+
+        // 如果没有配置userId的别名，则默认给一个
+        if (ownQuery && StringUtils.isEmpty(dataPermissionCondition.getUserIdAlias())) {
+            dataPermissionCondition.setUserIdAlias("user_id");
         }
 
         // 先判断是什么操作，只支持SELECT，DELETE，UPDATE
         MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
         SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
         String originalSql = boundSql.getSql();
-        CCJSqlParserManager parser = new CCJSqlParserManager();
-        if (SqlCommandType.SELECT.equals(sqlCommandType)) {
+        if (SqlCommandType.SELECT.equals(sqlCommandType) || SqlCommandType.DELETE.equals(sqlCommandType)
+                || SqlCommandType.UPDATE.equals(sqlCommandType)) {
             Select select = (Select) CCJSqlParserUtil.parse(originalSql);
             SelectBody selectBody = select.getSelectBody();
             PlainSelect plainSelect = (PlainSelect)selectBody;
+
             Expression where = plainSelect.getWhere();
-            ExpressionDeParser expressionDeParser = new ExpressionDeParser();
-            plainSelect.getWhere().accept(expressionDeParser);
 
+            //拼接in
             InExpression inExpression = new InExpression();
+            inExpression.setLeftExpression(new StringValue("''"));
+            List<Expression> expressions = new ArrayList<Expression>();
 
-            EqualsTo equalsTo = new EqualsTo();
+            StringBuffer inSql = new StringBuffer(orgIdAlias);
+            inSql.append(" in ( ");
 
-            AndExpression andExpression = new AndExpression(inExpression,equalsTo);
+            //如果操作用户的数据权限不为空
+            if(!CollectionUtils.isEmpty(orgIdList))
+            {
+                for (String orgId : orgIdList)
+                {
+                    inSql.append("'").append(orgId).append("',");
+                }
+                inSql.deleteCharAt(inSql.length()-1).append(") ");
+            }
+            else
+            {
+                inSql.append("'NODATA'").append(" ) ");
+            }
 
-        }else if (SqlCommandType.DELETE.equals(sqlCommandType)){
+            //如果操作用户没有本部门的权限，但是可以查询自己的数据权限
+            if (ownQuery && !StringUtils.isEmpty(userIdAlias) && !StringUtils.isEmpty(userId))
+            {
+                inSql.append("or (").append(userIdAlias).append(" = '").append(userId).append("') ");
+            }
 
-        }else if (SqlCommandType.UPDATE.equals(sqlCommandType)){
+            Expression enhancedCondition =  CCJSqlParserUtil.parseCondExpression(inSql.toString());
 
+            if (where != null) {
+                Expression expressionWhere = new Parenthesis(where);
+                AndExpression andExpression = new AndExpression(expressionWhere, new Parenthesis(enhancedCondition));
+                plainSelect.setWhere(andExpression);
+            } else {
+                plainSelect.setWhere(enhancedCondition);
+            }
+
+            select.setSelectBody(plainSelect);
+
+            metaObject.setValue("delegate.boundSql.sql", select.toString());
         }else{
             return invocation.proceed();
         }
-
 
         return invocation.proceed();
     }
