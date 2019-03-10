@@ -1,14 +1,5 @@
 package com.jeebase.system.security.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jeebase.system.security.dto.UpdateRoleResource;
@@ -17,6 +8,14 @@ import com.jeebase.system.security.entity.RoleResource;
 import com.jeebase.system.security.mapper.RoleResourceMapper;
 import com.jeebase.system.security.service.IResourceService;
 import com.jeebase.system.security.service.IRoleResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author jeebase

@@ -1,12 +1,11 @@
 
 package com.jeebase.system.security.dto;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
 /**
  * <p>

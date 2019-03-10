@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeebase.wechat.member.mapper.WechatMemberMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jeebase.wechat.member.entity.WechatMember">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="parent_id" property="parentId" />
+        <result column="wechat_open_id" property="wechatOpenId" />
+        <result column="wechat_platform_open_id" property="wechatPlatformOpenId" />
+        <result column="wechat_union_id" property="wechatUnionId" />
+        <result column="nickname" property="nickname" />
+        <result column="realname" property="realname" />
+        <result column="telephone" property="telephone" />
+        <result column="user_type" property="userType" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="member_points" property="memberPoints" />
+        <result column="contry" property="contry" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="area" property="area" />
+        <result column="contact_address" property="contactAddress" />
+        <result column="gender" property="gender" />
+        <result column="birthday" property="birthday" />
+        <result column="remember" property="remember" />
+        <result column="register_time" property="registerTime" />
+        <result column="register_ip" property="registerIp" />
+        <result column="last_login_time" property="lastLoginTime" />
+        <result column="last_login_ip" property="lastLoginIp" />
+        <result column="comments" property="comments" />
+        <result column="create_time" property="createTime" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="operator" property="operator" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, parent_id, wechat_open_id, wechat_platform_open_id, wechat_union_id, nickname, realname, telephone, user_type, avatar_url, member_points, contry, province, city, area, contact_address, gender, birthday, remember, register_time, register_ip, last_login_time, last_login_ip, comments, create_time, creator, update_time, operator, del_flag
+    </sql>
+
+</mapper>

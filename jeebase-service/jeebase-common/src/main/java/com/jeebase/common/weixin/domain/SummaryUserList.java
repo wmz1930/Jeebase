@@ -7,17 +7,17 @@ import java.util.List;
  */
 public class SummaryUserList {
 
-    private List<WeiXinSummaryUser> list;
+    private List<WechatSummaryUser> list;
 
     private String errcode;
 
     private String errmsg;
 
-    public List<WeiXinSummaryUser> getList() {
+    public List<WechatSummaryUser> getList() {
         return list;
     }
 
-    public void setList(List<WeiXinSummaryUser> list) {
+    public void setList(List<WechatSummaryUser> list) {
         this.list = list;
     }
 

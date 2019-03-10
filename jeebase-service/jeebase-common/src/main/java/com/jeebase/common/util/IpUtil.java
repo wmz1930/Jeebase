@@ -2,10 +2,9 @@ package com.jeebase.common.util;
 
 import com.jeebase.common.base.Constant;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  *

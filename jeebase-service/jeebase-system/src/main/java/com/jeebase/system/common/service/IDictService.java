@@ -1,10 +1,10 @@
 package com.jeebase.system.common.service;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jeebase.system.common.dto.DictInfo;
 import com.jeebase.system.common.entity.Dict;
+
+import java.util.List;
 
 /**
  * <p>

@@ -6,7 +6,7 @@ import com.jeebase.common.weixin.domain.UserInfoWithCredentials;
  *
  * @author jeebase
  */
-public interface IWeiXinAppService {
+public interface IWechatAppService {
 
     /**
      * 获取用户信息

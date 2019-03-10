@@ -1,31 +1,23 @@
 package com.jeebase.system.security.controller;
 
-import java.util.List;
-
-import com.jeebase.common.base.Constant;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jeebase.common.annotation.log.AroundLog;
+import com.jeebase.common.base.Constant;
 import com.jeebase.common.base.Result;
 import com.jeebase.system.security.dto.CreateOrganization;
 import com.jeebase.system.security.dto.UpdateOrganization;
 import com.jeebase.system.security.entity.Organization;
 import com.jeebase.system.security.service.IOrganizationService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>

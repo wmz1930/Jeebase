@@ -1,11 +1,10 @@
 package com.jeebase.system.common.service.impl;
 
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jeebase.system.common.entity.District;
 import com.jeebase.system.common.mapper.DistrictMapper;
 import com.jeebase.system.common.service.IDistrictService;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>

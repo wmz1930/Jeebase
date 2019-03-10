@@ -1,21 +1,20 @@
 package com.jeebase.system.security.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jeebase.common.base.BusinessException;
 import com.jeebase.common.base.domain.ZTree;
 import com.jeebase.system.security.entity.Organization;
 import com.jeebase.system.security.mapper.OrganizationMapper;
 import com.jeebase.system.security.service.IOrganizationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author jeebase

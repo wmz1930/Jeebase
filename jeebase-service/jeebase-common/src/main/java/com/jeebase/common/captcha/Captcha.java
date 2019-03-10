@@ -1,7 +1,6 @@
 package com.jeebase.common.captcha;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.io.OutputStream;
 
 public abstract class Captcha extends Randoms {

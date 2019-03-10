@@ -1,28 +1,5 @@
 package com.jeebase.system.security.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jeebase.common.annotation.auth.CurrentUser;
 import com.jeebase.common.annotation.auth.NoAuthentication;
@@ -34,26 +11,35 @@ import com.jeebase.common.base.component.JwtComponent;
 import com.jeebase.common.captcha.GifCaptcha;
 import com.jeebase.common.captcha.util.CaptchaUtil;
 import com.jeebase.common.sms.service.ISmsService;
-import com.jeebase.system.security.dto.CreateUser;
-import com.jeebase.system.security.dto.LoginUser;
-import com.jeebase.system.security.dto.PwdUser;
-import com.jeebase.system.security.dto.RegisterUser;
-import com.jeebase.system.security.dto.SmsDto;
-import com.jeebase.system.security.dto.UpdateUser;
-import com.jeebase.system.security.dto.UserInfo;
+import com.jeebase.system.security.dto.*;
 import com.jeebase.system.security.entity.Resource;
 import com.jeebase.system.security.entity.Role;
 import com.jeebase.system.security.entity.User;
 import com.jeebase.system.security.service.IResourceService;
 import com.jeebase.system.security.service.IUserRoleService;
 import com.jeebase.system.security.service.IUserService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import net.oschina.j2cache.CacheChannel;
 import net.oschina.j2cache.CacheObject;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * @ClassName: LoginController

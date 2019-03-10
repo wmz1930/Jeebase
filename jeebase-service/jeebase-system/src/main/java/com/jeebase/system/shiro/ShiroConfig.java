@@ -1,13 +1,9 @@
 package com.jeebase.system.shiro;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.Filter;
-
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jeebase.common.base.Constant;
+import com.jeebase.system.security.entity.Resource;
+import com.jeebase.system.security.service.IResourceService;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -20,10 +16,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.jeebase.common.base.Constant;
-import com.jeebase.system.security.entity.Resource;
-import com.jeebase.system.security.service.IResourceService;
+import javax.servlet.Filter;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 

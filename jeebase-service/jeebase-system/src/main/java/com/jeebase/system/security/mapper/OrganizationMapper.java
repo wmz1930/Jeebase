@@ -1,9 +1,9 @@
 package com.jeebase.system.security.mapper;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jeebase.system.security.entity.Organization;
+
+import java.util.List;
 
 /**
  * <p>

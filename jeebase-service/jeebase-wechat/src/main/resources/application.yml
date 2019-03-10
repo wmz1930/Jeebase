@@ -1,0 +1,18 @@
+security:
+    basic:
+        enabled: false
+spring:
+    jackson:
+      time-zone: GMT+8
+      date-format: yyyy-MM-dd HH:mm:ss
+    profiles: 
+      active: dev
+    http:
+      multipart:
+        max-file-size: 500MB
+        max-request-size: 20MB
+    devtools:
+      restart:
+        enabled: true
+    cache:
+      type: GENERIC

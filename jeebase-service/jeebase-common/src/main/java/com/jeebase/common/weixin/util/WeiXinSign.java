@@ -1,5 +1,9 @@
 package com.jeebase.common.weixin.util;
 
+import com.jeebase.common.base.BusinessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -7,11 +11,6 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.jeebase.common.base.BusinessException;
 
 /**
  *

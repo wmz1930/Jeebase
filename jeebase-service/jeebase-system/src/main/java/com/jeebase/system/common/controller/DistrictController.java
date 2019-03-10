@@ -1,18 +1,17 @@
 package com.jeebase.system.common.controller;
 
-import java.util.List;
-
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jeebase.common.annotation.auth.NoAuthentication;
+import com.jeebase.common.base.Result;
+import com.jeebase.system.common.entity.District;
+import com.jeebase.system.common.service.IDistrictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.jeebase.common.annotation.auth.NoAuthentication;
-import com.jeebase.common.base.Result;
-import com.jeebase.system.common.entity.District;
-import com.jeebase.system.common.service.IDistrictService;
+import java.util.List;
 
 /**
  * <p>

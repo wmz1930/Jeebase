@@ -1,7 +1,7 @@
 package com.jeebase.system.security.mapper;
 
-import com.jeebase.system.security.entity.DataPermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jeebase.system.security.entity.DataPermission;
 
 /**
  * <p>

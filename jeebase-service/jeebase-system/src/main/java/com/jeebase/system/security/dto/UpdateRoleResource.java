@@ -1,8 +1,8 @@
 package com.jeebase.system.security.dto;
 
-import java.util.List;
-
 import com.jeebase.system.security.entity.RoleResource;
+
+import java.util.List;
 
 /**
  * @author jeebase

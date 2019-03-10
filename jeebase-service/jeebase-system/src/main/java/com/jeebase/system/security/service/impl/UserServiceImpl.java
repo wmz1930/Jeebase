@@ -57,6 +57,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Value("${system.defaultRoleId}")
     private Integer defaultRoleId;
 
+    @Value("${system.defaultOrgId}")
+    private int defaultOrgId;
+
     @Override
     public Page<UserInfo> selectUserList(Page<UserInfo> page, QueryUser user) {
         Page<UserInfo> pageUserInfo = userMapper.selectUserList(page, user);
@@ -77,6 +80,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         List<User> userList = this.list(ew);
         if (!CollectionUtils.isEmpty(userList)) {
             throw new BusinessException("账号已经存在");
+        }
+
+        if(null == user.getOrganizationId())
+        {
+            user.setOrganizationId(defaultOrgId);
         }
 
         Integer roleId = user.getRoleId();

@@ -1,14 +1,5 @@
 package com.jeebase.system.security.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -22,6 +13,14 @@ import com.jeebase.system.security.mapper.RoleMapper;
 import com.jeebase.system.security.service.IRoleResourceService;
 import com.jeebase.system.security.service.IRoleService;
 import com.jeebase.system.security.service.IUserRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * @ClassName: RoleServiceImpl

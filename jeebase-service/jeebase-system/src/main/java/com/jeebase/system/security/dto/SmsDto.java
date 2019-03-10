@@ -1,12 +1,11 @@
 package com.jeebase.system.security.dto;
 
-import javax.validation.constraints.Pattern;
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.Pattern;
 
 /**
  * @author jeebase

@@ -1,9 +1,9 @@
 package com.jeebase.common.base.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @ClassName: ZTree

@@ -1,8 +1,8 @@
 package com.jeebase.system.security.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.jeebase.system.security.dto.UpdateDataPermission;
 import com.jeebase.system.security.entity.DataPermission;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>

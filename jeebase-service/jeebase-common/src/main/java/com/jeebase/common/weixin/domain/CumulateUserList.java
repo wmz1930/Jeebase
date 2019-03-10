@@ -7,17 +7,17 @@ import java.util.List;
  */
 public class CumulateUserList {
 
-    private List<WeiXinCumulateUser> list;
+    private List<WechatCumulateUser> list;
 
     private String errcode;
 
     private String errmsg;
 
-    public List<WeiXinCumulateUser> getList() {
+    public List<WechatCumulateUser> getList() {
         return list;
     }
 
-    public void setList(List<WeiXinCumulateUser> list) {
+    public void setList(List<WechatCumulateUser> list) {
         this.list = list;
     }
 

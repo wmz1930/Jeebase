@@ -1,8 +1,5 @@
 package com.jeebase.system.common.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jeebase.system.common.dto.LogInfo;
@@ -10,6 +7,8 @@ import com.jeebase.system.common.dto.QueryLog;
 import com.jeebase.system.common.entity.Log;
 import com.jeebase.system.common.mapper.LogMapper;
 import com.jeebase.system.common.service.ILogService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>

@@ -1,10 +1,7 @@
 package com.jeebase.system.config;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.jeebase.common.annotation.auth.NoAuthentication;
+import com.jeebase.common.base.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,14 +11,12 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import com.jeebase.common.annotation.auth.NoAuthentication;
-import com.jeebase.common.base.Constant;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @ClassName: MyCommandLineRunner

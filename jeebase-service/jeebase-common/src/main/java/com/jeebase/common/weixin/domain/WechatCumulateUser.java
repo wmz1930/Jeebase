@@ -3,7 +3,7 @@ package com.jeebase.common.weixin.domain;
 /**
  * @author jeebase
  */
-public class WeiXinCumulateUser {
+public class WechatCumulateUser {
 
     private String user_source;
 

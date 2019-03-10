@@ -1,6 +1,12 @@
 package com.jeebase.common.weixin.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.jeebase.common.base.BusinessException;
 import com.jeebase.common.base.Constant;
+import com.jeebase.common.weixin.domain.UserInfoWithCredentials;
+import com.jeebase.common.weixin.service.IWechatAppService;
+import com.jeebase.common.weixin.util.WeiXinSign;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +16,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.jeebase.common.base.BusinessException;
-import com.jeebase.common.weixin.domain.UserInfoWithCredentials;
-import com.jeebase.common.weixin.service.IWeiXinAppService;
-import com.jeebase.common.weixin.util.WeiXinSign;
-
 /**
  * @author jeebase
  */
 @Service("weiXinAppService")
-public class WeiXinAppServiceImpl implements IWeiXinAppService {
+public class WechatAppServiceImpl implements IWechatAppService {
 
     /**
      * 日志记录
      */
-    private static final Logger logger = LoggerFactory.getLogger(WeiXinAppServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(WechatAppServiceImpl.class);
 
     @Autowired
     private RestTemplate restTemplate;

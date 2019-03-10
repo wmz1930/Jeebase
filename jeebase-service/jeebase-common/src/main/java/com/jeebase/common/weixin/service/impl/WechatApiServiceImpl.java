@@ -2,16 +2,15 @@ package com.jeebase.common.weixin.service.impl;
 
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import com.alibaba.fastjson.JSONObject;
 import com.jeebase.common.base.BusinessException;
 import com.jeebase.common.weixin.domain.AccessToken;
 import com.jeebase.common.weixin.domain.AttentionUserList;
@@ -20,23 +19,25 @@ import com.jeebase.common.weixin.domain.JsapiTicket;
 import com.jeebase.common.weixin.domain.MsgSendRequest;
 import com.jeebase.common.weixin.domain.MsgSendResponse;
 import com.jeebase.common.weixin.domain.MsgTemplateList;
+import com.jeebase.common.weixin.domain.QueryOpenIdResponse;
+import com.jeebase.common.weixin.domain.SnsUserInfo;
 import com.jeebase.common.weixin.domain.SummaryUserList;
 import com.jeebase.common.weixin.domain.SummaryUserRequest;
 import com.jeebase.common.weixin.domain.UserListInfoRequest;
 import com.jeebase.common.weixin.domain.UserListInfoResponse;
-import com.jeebase.common.weixin.service.IWeiXinApiService;
+import com.jeebase.common.weixin.service.IWechatApiService;
 import com.jeebase.common.weixin.util.WeiXinSign;
 
 /**
  * @author jeebase
  */
 @Service("weiXinApiService")
-public class WeiXinApiServiceImpl implements IWeiXinApiService {
+public class WechatApiServiceImpl implements IWechatApiService {
 
     /**
      * 日志记录
      */
-    private static final Logger logger = LoggerFactory.getLogger(WeiXinApiServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(WechatApiServiceImpl.class);
 
     private static final String WEIXIN_TOKEN_KEY = "weiXin";
 
@@ -53,6 +54,10 @@ public class WeiXinApiServiceImpl implements IWeiXinApiService {
      */
     private String accessWebTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={appId}&secret={appSecret}&code={code}&grant_type=authorization_code";
 
+    /**
+     * 微信授权获取用户信息
+     */
+    private String querySnsUserInfoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token={accessToken}&openid={openId}&lang=zh_CN";
     /**
      * 获取帐号下所有模板信息
      */
@@ -96,6 +101,7 @@ public class WeiXinApiServiceImpl implements IWeiXinApiService {
     public String getAccessToken(String appId, String appSecret) {
         String tokenString = null;
         AccessToken accessToken = queryAccessToken(appId, appSecret);
+        logger.info("调用获取微信accessToken返回值：" + JSONObject.toJSON(accessToken));
         if (!StringUtils.isEmpty(accessToken.getAccess_token())) {
             tokenString = accessToken.getAccess_token();
         }
@@ -143,6 +149,7 @@ public class WeiXinApiServiceImpl implements IWeiXinApiService {
             String accessToken = getAccessToken(appId, appSecret);
             msgSendResponse = restTemplate.postForObject(sendTemplateMsgUrl, msgSend, MsgSendResponse.class,
                     accessToken);
+            logger.info("调用发送微信模板消息接口返回值：" + JSONObject.toJSON(msgSendResponse));
         } catch (Exception e) {
             logger.error("调用发送微信模板消息接口异常：" + e);
             throw new BusinessException("调用发送微信模板消息接口异常。");
@@ -251,21 +258,33 @@ public class WeiXinApiServiceImpl implements IWeiXinApiService {
     }
 
     @Override
-    public String queryAppId(String appId, String appSecret, String code) {
-        String openId = "";
+    public QueryOpenIdResponse queryAppId(String appId, String appSecret, String code) {
+        QueryOpenIdResponse queryOpenIdResponse = null;
         try {
-            logger.info("获取openID时code=" + code + "appId=" + appId + "secret=" + appSecret);
-            ResponseEntity<String> returnStr = restTemplate.getForEntity(accessWebTokenUrl, String.class, appId,
+            logger.info("获取openID时,code=" + code + "appId=" + appId + "secret=" + appSecret);
+            queryOpenIdResponse = restTemplate.getForObject(accessWebTokenUrl,QueryOpenIdResponse.class, appId,
                     appSecret, code);
-            JSONObject obj = JSONObject.parseObject(returnStr.getBody());
-            String returnId = (String) obj.get("openid");
-            if (!StringUtils.isEmpty(returnId)) {
-                openId = returnId;
-            }
+            logger.info("获取openID时接口返回值：" + JSONObject.toJSON(queryOpenIdResponse));
         } catch (Exception e) {
             logger.error("调用获取微信queryAppId接口异常：" + e);
         }
-        logger.info("获取openID时openid=" + openId);
-        return openId;
+        logger.info("获取openID时openid=" + queryOpenIdResponse.getOpenid());
+        return queryOpenIdResponse;
+    }
+    
+    /**
+     * 批量获取用户信息
+     */
+    @Override
+    public SnsUserInfo querySnsUserInfo(String accessToken, String openId) {
+        SnsUserInfo snsUserInfo = null;
+        try {
+            snsUserInfo = restTemplate.getForObject(querySnsUserInfoUrl, SnsUserInfo.class,
+                     accessToken, openId);
+        } catch (Exception e) {
+            logger.error("通过openid获取用户信息接口异常：" + e);
+            throw new BusinessException("通过openid获取用户信息接口异常。");
+        }
+        return snsUserInfo;
     }
 }

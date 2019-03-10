@@ -1,10 +1,10 @@
 package com.jeebase.system.common.mapper;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jeebase.system.common.dto.DictInfo;
 import com.jeebase.system.common.entity.Dict;
+
+import java.util.List;
 
 /**
  * <p>

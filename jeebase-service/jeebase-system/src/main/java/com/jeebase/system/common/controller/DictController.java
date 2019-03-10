@@ -1,17 +1,5 @@
 package com.jeebase.system.common.controller;
 
-import java.util.List;
-
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jeebase.common.annotation.auth.NoAuthentication;
 import com.jeebase.common.annotation.log.AroundLog;
@@ -21,9 +9,14 @@ import com.jeebase.system.common.dto.DictInfo;
 import com.jeebase.system.common.dto.UpdateDict;
 import com.jeebase.system.common.entity.Dict;
 import com.jeebase.system.common.service.IDictService;
-
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>

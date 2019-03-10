@@ -1,11 +1,11 @@
 package com.jeebase.system.security.service;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jeebase.system.security.dto.UpdateRoleResource;
 import com.jeebase.system.security.entity.Resource;
 import com.jeebase.system.security.entity.RoleResource;
+
+import java.util.List;
 
 /**
  * @ClassName: IRoleService

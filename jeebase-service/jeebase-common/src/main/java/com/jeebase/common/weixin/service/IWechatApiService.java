@@ -1,24 +1,14 @@
 package com.jeebase.common.weixin.service;
 
-import java.util.Map;
+import com.jeebase.common.weixin.domain.*;
 
-import com.jeebase.common.weixin.domain.AccessToken;
-import com.jeebase.common.weixin.domain.AttentionUserList;
-import com.jeebase.common.weixin.domain.CumulateUserList;
-import com.jeebase.common.weixin.domain.JsapiTicket;
-import com.jeebase.common.weixin.domain.MsgSendRequest;
-import com.jeebase.common.weixin.domain.MsgSendResponse;
-import com.jeebase.common.weixin.domain.MsgTemplateList;
-import com.jeebase.common.weixin.domain.SummaryUserList;
-import com.jeebase.common.weixin.domain.SummaryUserRequest;
-import com.jeebase.common.weixin.domain.UserListInfoRequest;
-import com.jeebase.common.weixin.domain.UserListInfoResponse;
+import java.util.Map;
 
 /**
  *
  * @author jeebase
  */
-public interface IWeiXinApiService {
+public interface IWechatApiService {
 
     /**
      * 
@@ -164,5 +154,7 @@ public interface IWeiXinApiService {
      * @param code
      * @return
      */
-    String queryAppId(String appId, String appSecret, String code);
+    QueryOpenIdResponse queryAppId(String appId, String appSecret, String code);
+
+    SnsUserInfo querySnsUserInfo(String accessToken, String openId);
 }

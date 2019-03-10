@@ -1,7 +1,10 @@
 package com.jeebase.system.config;
 
-import java.util.List;
-
+import com.jeebase.common.base.BusinessException;
+import com.jeebase.common.base.Constant;
+import com.jeebase.common.base.ResponseConstant;
+import com.jeebase.common.base.Result;
+import com.jeebase.common.exception.ParamJsonException;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
@@ -12,19 +15,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.exceptions.TemplateInputException;
 
-import com.jeebase.common.base.BusinessException;
-import com.jeebase.common.base.Constant;
-import com.jeebase.common.base.ResponseConstant;
-import com.jeebase.common.base.Result;
-import com.jeebase.common.exception.ParamJsonException;
+import java.util.List;
 
 /**
  * @ClassName: AllControllerAdvice

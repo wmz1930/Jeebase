@@ -1,12 +1,10 @@
 package com.jeebase.system.shiro;
 
-import java.io.IOException;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.jeebase.common.base.Constant;
+import com.jeebase.common.base.component.JwtComponent;
+import com.jeebase.system.config.SpringContextBean;
+import com.jeebase.system.security.entity.User;
+import com.jeebase.system.security.service.IUserService;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
@@ -16,11 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.jeebase.common.base.Constant;
-import com.jeebase.common.base.component.JwtComponent;
-import com.jeebase.system.config.SpringContextBean;
-import com.jeebase.system.security.entity.User;
-import com.jeebase.system.security.service.IUserService;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @ClassName: JWTFilter

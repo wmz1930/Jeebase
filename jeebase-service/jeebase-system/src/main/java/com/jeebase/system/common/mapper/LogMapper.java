@@ -1,12 +1,10 @@
 package com.jeebase.system.common.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jeebase.system.common.dto.LogInfo;
 import com.jeebase.system.common.dto.QueryLog;
 import com.jeebase.system.common.entity.Log;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jeebase.system.security.dto.QueryUser;
-import com.jeebase.system.security.dto.UserInfo;
 import org.apache.ibatis.annotations.Param;
 
 /**

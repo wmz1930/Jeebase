@@ -1,15 +1,14 @@
 package com.jeebase.system.shiro;
 
+import com.jeebase.common.annotation.auth.CurrentUser;
+import com.jeebase.common.exception.UnauthorizedException;
+import com.jeebase.system.security.entity.User;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
-import com.jeebase.common.annotation.auth.CurrentUser;
-import com.jeebase.common.exception.UnauthorizedException;
-import com.jeebase.system.security.entity.User;
 
 /**
  * @ClassName: CurrentUserMethodArgumentResolver

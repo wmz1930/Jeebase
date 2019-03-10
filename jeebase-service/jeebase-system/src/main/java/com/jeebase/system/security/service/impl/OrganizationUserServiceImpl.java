@@ -1,11 +1,10 @@
 package com.jeebase.system.security.service.impl;
 
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jeebase.system.security.entity.OrganizationUser;
 import com.jeebase.system.security.mapper.OrganizationUserMapper;
 import com.jeebase.system.security.service.IOrganizationUserService;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>

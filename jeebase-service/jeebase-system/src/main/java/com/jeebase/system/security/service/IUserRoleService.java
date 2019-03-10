@@ -1,10 +1,10 @@
 package com.jeebase.system.security.service;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jeebase.system.security.entity.Role;
 import com.jeebase.system.security.entity.UserRole;
+
+import java.util.List;
 
 /**
  * @ClassName: IUserRoleService

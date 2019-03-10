@@ -1,17 +1,16 @@
 package com.jeebase.system.common.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.jeebase.common.base.Result;
+import com.jeebase.system.config.QiNiuProperties;
+import com.qiniu.util.Auth;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jeebase.common.base.Result;
-import com.jeebase.system.config.QiNiuProperties;
-import com.qiniu.util.Auth;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author jeebase

@@ -1,19 +1,17 @@
 package com.jeebase.system.common.controller;
 
 
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jeebase.common.base.PageResult;
 import com.jeebase.system.common.dto.LogInfo;
 import com.jeebase.system.common.dto.QueryLog;
 import com.jeebase.system.common.service.ILogService;
-
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>

@@ -1,10 +1,10 @@
 package com.jeebase.system.common.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.jeebase.system.common.dto.LogInfo;
 import com.jeebase.system.common.dto.QueryLog;
 import com.jeebase.system.common.entity.Log;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
