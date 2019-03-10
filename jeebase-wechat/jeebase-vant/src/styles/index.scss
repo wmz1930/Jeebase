@@ -1,0 +1,145 @@
+html {
+    -webkit-text-size-adjust: none;
+    overflow-y: scroll;
+}
+
+body {
+    min-width: 320px;
+    line-height: 1.5;
+    font-family: Arial,Helvetica,STHeiTi,sans-serif;
+    background: #f2f2f2;
+}
+
+img {
+    max-width: 100%
+}
+
+img,input {
+    vertical-align: middle
+}
+
+a {
+    text-decoration: none
+}
+
+* {
+    -webkit-tap-highlight-color: transparent
+}
+
+html {
+    font-size: 50px
+}
+
+body {
+    font-size: 24px
+}
+
+@media screen and (min-width: 320px) {
+    html {
+        font-size:21.33px
+    }
+
+    body {
+        font-size: 12px
+    }
+}
+
+@media screen and (min-width: 360px) {
+    html {
+        font-size:24px
+    }
+
+    body {
+        font-size: 12px
+    }
+}
+
+@media screen and (min-width: 375px) {
+    html {
+        font-size:25px
+    }
+
+    body {
+        font-size: 12px
+    }
+}
+
+@media screen and (min-width: 384px) {
+    html {
+        font-size:25.6px
+    }
+
+    body {
+        font-size: 14px
+    }
+}
+
+@media screen and (min-width: 400px) {
+    html {
+        font-size:26.67px
+    }
+
+    body {
+        font-size: 14px
+    }
+}
+
+@media screen and (min-width: 414px) {
+    html {
+        font-size:27.6px
+    }
+
+    body {
+        font-size: 14px
+    }
+}
+
+@media screen and (min-width: 424px) {
+    html {
+        font-size:28.27px
+    }
+
+    body {
+        font-size: 14px
+    }
+}
+
+@media screen and (min-width: 480px) {
+    html {
+        font-size:32px
+    }
+
+    body {
+        font-size: 15.36px
+    }
+}
+
+@media screen and (min-width: 540px) {
+    html {
+        font-size:36px
+    }
+
+    body {
+        font-size: 17.28px
+    }
+}
+
+@media screen and (min-width: 720px) {
+    html {
+        font-size:48px
+    }
+
+    body {
+        font-size: 23.04px
+    }
+}
+
+@media screen and (min-width: 750px) {
+    html {
+        font-size:50px
+    }
+
+    body {
+        font-size: 24px
+    }
+}

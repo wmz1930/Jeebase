@@ -1,0 +1,35 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    line-height: 1.2; /* 设置行间距为1.2 ,默认是1.6的太大*/
+    background-color: #fafafa!important;
+    width: 100%;
+}
+.register{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-size: 100%;
+    .register_form{
+        margin-top: 10%;width:90%;margin-left: auto;margin-right: auto;
+        filter: alpha(opacity=90);opacity:0.9;  -moz-opacity:0.9;-khtml-opacity: 0.9;
+    }
+    .register-btn{
+        margin-top:10%;
+    }
+    .copyright{
+        position: fixed;
+        bottom: 5px;
+        width: 90%;
+        text-align: center;
+    }
+    .copyright-text{
+        color: #C0C0C0;
+        font-size: 14px;
+    }
+    .back-login-btn{
+        float: left; margin-top: 15px;color: #ff976a;font-size: 14px;
+    }
+
+}
