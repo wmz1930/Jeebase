@@ -202,7 +202,6 @@ export default {
               this.createDataCallBack(this.list)
               this.createDataCallBack(this.baseList)
             }
-            debugger
             this.$message({
               message: '创建成功',
               type: 'success'

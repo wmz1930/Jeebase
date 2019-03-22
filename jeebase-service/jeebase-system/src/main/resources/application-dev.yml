@@ -127,7 +127,7 @@ weixin:
     #拉取用户信息的请求地址
     app.userMessage: https://api.weixin.qq.com/sns/userinfo?access_token={accessToken}&openid={openId}&lang=zh_CN
     #支付回调地址
-    app.notifyUrl: https://www.fly2you.cn/admin/url/api/notify
+    app.notifyUrl: https://jeebase.com/wechat/api/notify
     #微信统一下单接口路径
     app.uniformorder: https://api.mch.weixin.qq.com/pay/unifiedorder
     #退款地址
