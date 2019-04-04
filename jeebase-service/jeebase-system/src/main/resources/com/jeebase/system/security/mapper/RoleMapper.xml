@@ -44,7 +44,7 @@
 		<if test="role.roleStatus != null and role.roleStatus != ''">
 			AND role_status = #{role.roleStatus}
 		</if>
-		ORDER BY create_time DESC
+		ORDER BY id DESC
 	</select>
 
 </mapper>

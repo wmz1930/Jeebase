@@ -20,9 +20,9 @@ public interface IOrganizationService extends IService<Organization> {
     List<Organization> queryOrganizationByPanentId(Integer parentId);
 
     /**
-     * 查询机构树
+     * 查询机构列表，不组装父子节点
      * @param parentId
      * @return
      */
-    List<ZTree> queryOrgTree(Integer parentId);
+    List<Organization> queryOrgList(Integer parentId);
 }

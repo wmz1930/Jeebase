@@ -12,6 +12,8 @@ system:
     defaultRoleId: 100
     #注册用户默认组织机构ID
     defaultOrgId: 0
+    #不需要数据权限过滤的角色key
+    noDataFilterRole: DATA_NO_FILTER
     #用户每日收取短信上限
     smsTimes: 25
     #不同终端用户的超时时间（web用户3小时，app，微信，小程序时间自己定半年或永久）Long型，后面记得加l

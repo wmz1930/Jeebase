@@ -18,6 +18,7 @@ import com.jeebase.system.security.service.IDataPermissionService;
 import com.jeebase.system.security.service.IOrganizationUserService;
 import com.jeebase.system.security.service.IUserRoleService;
 import com.jeebase.system.security.service.IUserService;
+import net.oschina.j2cache.CacheChannel;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,6 +61,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Value("${system.defaultOrgId}")
     private int defaultOrgId;
 
+    @Autowired
+    private CacheChannel cacheChannel;
+
     @Override
     public Page<UserInfo> selectUserList(Page<UserInfo> page, QueryUser user) {
         Page<UserInfo> pageUserInfo = userMapper.selectUserList(page, user);
@@ -75,7 +79,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 .eq("user_nick_name", user.getUserEmail()).or().eq("user_nick_name", user.getUserMobile()).or()
                 .eq("user_email", user.getUserAccount()).or().eq("user_email", user.getUserNickName()).or()
                 .eq("user_email", user.getUserEmail()).or().eq("user_email", user.getUserMobile()).or()
-                .eq("user_email", user.getUserAccount()).or().eq("user_mobile", user.getUserNickName()).or()
+                .eq("user_mobile", user.getUserAccount()).or().eq("user_mobile", user.getUserNickName()).or()
                 .eq("user_mobile", user.getUserEmail()).or().eq("user_mobile", user.getUserMobile()));
         List<User> userList = this.list(ew);
         if (!CollectionUtils.isEmpty(userList)) {
@@ -158,7 +162,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                         .or().eq("user_nick_name", user.getUserEmail()).or().eq("user_nick_name", user.getUserMobile())
                         .or().eq("user_email", user.getUserAccount()).or().eq("user_email", user.getUserNickName()).or()
                         .eq("user_email", user.getUserEmail()).or().eq("user_email", user.getUserMobile()).or()
-                        .eq("user_email", user.getUserAccount()).or().eq("user_mobile", user.getUserNickName()).or()
+                        .eq("user_mobile", user.getUserAccount()).or().eq("user_mobile", user.getUserNickName()).or()
                         .eq("user_mobile", user.getUserEmail()).or().eq("user_mobile", user.getUserMobile()));
         List<User> userList = this.list(ew);
         if (!CollectionUtils.isEmpty(userList)) {
@@ -261,6 +265,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                     result = userRoleService.save(userRole);
                 }
             }
+            cacheChannel.evict("roles", "user_id_" + userEntity.getId());
         }
         return result;
     }
@@ -273,6 +278,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             QueryWrapper<UserRole> wpd = new QueryWrapper<>();
             wpd.eq("user_id", userId);
             userRoleService.remove(wpd);
+            cacheChannel.evict("roles", "user_id_" + userId);
         }
         return result;
     }
@@ -285,5 +291,4 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 userAccount));
         return this.getOne(ew);
     }
-
 }

@@ -58,6 +58,9 @@ mybatis-plus:
         #逻辑删除配置
         logic-delete-value: 1
         logic-not-delete-value: 0
+        sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+        #公共字段自动填充
+        metaObjectHandler: com.jeebase.common.extend.mybatis.MyMetaObjectHandler
     configuration:
         map-underscore-to-camel-case: true
         cache-enabled: false

@@ -105,15 +105,15 @@ public class DictController {
     
     /**
      * 查询字典里列表
-     * 
-     * @param parentId
+     *
+     * @param dictCode
      * @return
      */
-    @GetMapping(value = "/list")
+    @PostMapping(value = "/list/{dictCode}")
     @NoAuthentication
     @ApiOperation(value = "查询字典列表", notes = "查询字典列表")
     @ApiImplicitParam(paramType = "query", name = "dictCode", value = "字典值", required = true, dataType = "String")
-    public Result<List<Dict>> queryDictList(String dictCode) {
+    public Result<List<Dict>> queryDictList(@PathVariable("dictCode") String dictCode) {
         List<Dict> dictList = dictService.queryDictListByPanentCode(dictCode);
         return new Result<List<Dict>>().success().put(dictList);
     }

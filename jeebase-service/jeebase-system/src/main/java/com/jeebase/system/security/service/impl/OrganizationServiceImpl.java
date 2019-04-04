@@ -32,41 +32,26 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     OrganizationMapper organizationMapper;
 
     /**
-     * queryOrgTree
+     * queryOrgList
      * 
-     * @Title: queryOrgTree
+     * @Title: queryOrgList
      * @Description: 查询所有的组织结构树
      * @param parentId
      * @return List<ZTree>
      */
     @Override
-    public List<ZTree> queryOrgTree(Integer parentId) {
-        List<ZTree> treeList = new ArrayList<ZTree>();
+    public List<Organization> queryOrgList(Integer parentId) {
+        List<Organization> orgList;
         try {
             if (null == parentId) {
                 parentId = 0;
             }
-            List<Organization> orgList = organizationMapper.queryOrganizationTreeProc(parentId);
-            for (Organization org : orgList) {
-                ZTree tree = new ZTree();
-                tree.setId(String.valueOf(org.getId()));
-                tree.setpId(String.valueOf(org.getParentId()));
-                tree.setExtType(org.getOrganizationType());
-                tree.setName(org.getOrganizationName());
-                tree.setExtKey(org.getOrganizationKey());
-                tree.setExtIcon(org.getOrganizationIcon());
-                tree.setExtLevel(String.valueOf(org.getOrganizationLevel()));
-                tree.setDescription(org.getDescription());
-                tree.setCreateTime(org.getCreateTime());
-                tree.setModifyTime(org.getUpdateTime());
-                tree.setIsParent(org.getIsLeaf() == 0 ? true : false);
-                treeList.add(tree);
-            }
+            orgList = organizationMapper.queryOrganizationTreeProc(parentId);
         } catch (Exception e) {
             logger.error("查询组织树失败:", e);
             throw new BusinessException("查询组织树失败");
         }
-        return treeList;
+        return orgList;
     }
 
     @Override

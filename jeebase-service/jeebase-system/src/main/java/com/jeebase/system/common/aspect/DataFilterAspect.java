@@ -10,7 +10,9 @@ import com.jeebase.common.base.BusinessException;
 import com.jeebase.common.base.DataPermissionCondition;
 import com.jeebase.common.base.DataPermissionPage;
 import com.jeebase.system.security.entity.DataPermission;
+import com.jeebase.system.security.entity.Organization;
 import com.jeebase.system.security.service.IDataPermissionService;
+import com.jeebase.system.security.service.IOrganizationService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
@@ -34,6 +36,9 @@ public class DataFilterAspect {
 
     @Autowired
     IDataPermissionService dataPermissionService;
+
+    @Autowired
+    private IOrganizationService organizationService;
 
     @Pointcut("@annotation(com.jeebase.common.annotation.auth.DataFilter)")
     public void dataFilterCut() {
@@ -80,7 +85,18 @@ public class DataFilterAspect {
                             orgIdList = new ArrayList<>();
                             for (DataPermission dp : dataPermissionList)
                             {
-                                orgIdList.add(String.valueOf(dp.getOrganizationId()));
+                                List<Organization> childrenList = organizationService.queryOrgList(dp.getOrganizationId());
+                                if (!CollectionUtils.isEmpty(childrenList))
+                                {
+                                    for (Organization childOrg : childrenList)
+                                    {
+                                        orgIdList.add(String.valueOf(childOrg.getId()));
+                                    }
+                                }
+                                else
+                                {
+                                    orgIdList.add(String.valueOf(dp.getOrganizationId()));
+                                }
                             }
                         }
 
