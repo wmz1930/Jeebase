@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.methodName" placeholder="接口名称" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.creator" placeholder="操作人" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.methodName" placeholder="接口名称" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.creator" placeholder="操作人" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.logType" placeholder="日志类型" clearable style="width: 150px" class="filter-item">
-        <el-option v-for="item in typeOption" :key="item.key" :label="item.label" :value="item.key"/>
+        <el-option v-for="item in typeOption" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
       <el-date-picker
         v-model="listQuery.dateRange"
@@ -16,19 +16,21 @@
         unlink-panels
         range-separator="至"
         start-placeholder="开始日期"
-        end-placeholder="结束日期"/>
+        end-placeholder="结束日期"
+      />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
     </div>
 
     <el-table
-      v-loading="listLoading"
       :key="tableKey"
+      v-loading="listLoading"
       :data="list"
       border
       fit
       highlight-current-row
-      style="width: 100%;">
+      style="width: 100%;"
+    >
       <el-table-column :label="$t('userTable.id')" align="center" width="65">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -79,7 +81,7 @@
 
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]">
       <div class="editor-container">
-        <json-editor ref="jsonEditor" v-model="jsonValue"/>
+        <json-editor ref="jsonEditor" v-model="jsonValue" />
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>

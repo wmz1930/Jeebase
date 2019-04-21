@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input :placeholder="$t('roleTable.id')" v-model="listQuery.id" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
-      <el-input :placeholder="$t('roleTable.roleName')" v-model="listQuery.roleName" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
-      <el-input :placeholder="$t('roleTable.roleKey')" v-model="listQuery.roleKey" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.id" :placeholder="$t('roleTable.id')" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.roleName" :placeholder="$t('roleTable.roleName')" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.roleKey" :placeholder="$t('roleTable.roleKey')" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.roleStatus" :placeholder="$t('roleTable.roleStatus')" clearable style="width: 150px" class="filter-item">
-        <el-option v-for="item in statusOption" :key="item.key" :label="item.label" :value="item.key"/>
+        <el-option v-for="item in statusOption" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
@@ -13,13 +13,14 @@
     </div>
 
     <el-table
-      v-loading="listLoading"
       :key="tableKey"
+      v-loading="listLoading"
       :data="list"
       border
       fit
       highlight-current-row
-      style="width: 100%;">
+      style="width: 100%;"
+    >
       <el-table-column :label="$t('roleTable.id')" align="center" width="65">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -74,13 +75,13 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="roleForm" :model="roleForm" :rules="rules" label-width="100px" class="roleForm" style="width: 400px; margin-left:50px;">
         <el-form-item :label="$t('roleTable.roleName')" prop="roleName">
-          <el-input v-model="roleForm.roleName" placeholder="输入角色名称" maxlength="32"/>
+          <el-input v-model="roleForm.roleName" placeholder="输入角色名称" maxlength="32" />
         </el-form-item>
         <el-form-item :label="$t('roleTable.roleKey')" prop="roleKey">
-          <el-input v-model="roleForm.roleKey" placeholder="输入角色标识" maxlength="32"/>
+          <el-input v-model="roleForm.roleKey" placeholder="输入角色标识" maxlength="32" />
         </el-form-item>
         <el-form-item :label="$t('roleTable.roleLevel')" prop="roleLevel">
-          <el-input v-model="roleForm.roleLevel" placeholder="输入角色级别" maxlength="5"/>
+          <el-input v-model="roleForm.roleLevel" placeholder="输入角色级别" maxlength="5" />
         </el-form-item>
         <el-form-item :label="$t('roleTable.roleStatus')" prop="roleStatus">
           <el-radio-group v-model="roleForm.roleStatus">
@@ -89,7 +90,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item :label="$t('roleTable.description')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="roleForm.description" type="textarea" placeholder="请输入备注信息"/>
+          <el-input v-model="roleForm.description" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请输入备注信息" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -102,7 +103,8 @@
     <el-dialog :visible.sync="dialogResourceVisible" title="配置资源">
       <el-input
         v-model="filterText"
-        placeholder="输入关键字进行过滤"/>
+        placeholder="输入关键字进行过滤"
+      />
       <el-tree
         ref="tree"
         :data="resourceTree"
@@ -114,7 +116,8 @@
         node-key="id"
         default-expand-all
         check-strictly
-        style="margin-top: 20px;"/>
+        style="margin-top: 20px;"
+      />
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogResourceVisible = false">{{ $t('table.cancel') }}</el-button>
         <el-button type="primary" @click="updateRoleResource">{{ $t('table.confirm') }}</el-button>

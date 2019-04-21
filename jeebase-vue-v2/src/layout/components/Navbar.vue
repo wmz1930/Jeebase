@@ -68,8 +68,6 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
-import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
 import { updatePwd, queryUserInfo } from '@/api/system/user'
 
@@ -79,8 +77,6 @@ export default {
     Hamburger,
     ErrorLog,
     Screenfull,
-    SizeSelect,
-    LangSelect,
     Search
   },
   data() {

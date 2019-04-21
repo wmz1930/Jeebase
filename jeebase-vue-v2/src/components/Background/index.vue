@@ -1,6 +1,6 @@
 <template>
   <div class="starry-sky">
-    <canvas ref="canvas"/>
+    <canvas ref="canvas" />
   </div>
 </template>
 

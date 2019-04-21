@@ -3,14 +3,14 @@
     <div class="filter-container-card">
       <div class="text item">
         <el-form label-width="80px">
-          <el-row >
+          <el-row>
             <el-col :span="6">
               <el-form-item :label="$t('userTable.organization')" prop="selectedOrgOptionsQuery">
                 <el-cascader
+                  v-model="selectedOrgOptionsQuery"
                   :options="orgList"
                   :props="propsOrg"
                   :show-all-levels="false"
-                  v-model="selectedOrgOptionsQuery"
                   :placeholder="$t('userTable.organization')"
                   filterable
                   clearable
@@ -21,40 +21,40 @@
             </el-col>
             <el-col :span="6" class="line">
               <el-form-item :label="$t('userTable.userName')" prop="userName">
-                <el-input v-model="listQuery.userName" :placeholder="$t('userTable.userName')" style="width: 180px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter"/>
+                <el-input v-model="listQuery.userName" :placeholder="$t('userTable.userName')" style="width: 180px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter" />
               </el-form-item>
             </el-col>
             <el-col :span="6" class="line">
               <el-form-item :label="$t('userTable.userMobile')" prop="userMobile">
-                <el-input v-model="listQuery.userMobile" :placeholder="$t('userTable.userMobile')" style="width: 180px;" class="filter-item" maxlength="11" @keyup.enter.native="handleFilter"/>
+                <el-input v-model="listQuery.userMobile" :placeholder="$t('userTable.userMobile')" style="width: 180px;" class="filter-item" maxlength="11" @keyup.enter.native="handleFilter" />
               </el-form-item>
             </el-col>
             <el-col :span="6" class="line">
               <el-form-item :label="$t('userTable.userEmail')" prop="userEmail">
-                <el-input v-model="listQuery.userEmail" :placeholder="$t('userTable.userEmail')" style="width: 180px;" class="filter-item" maxlength="100" @keyup.enter.native="handleFilter"/>
+                <el-input v-model="listQuery.userEmail" :placeholder="$t('userTable.userEmail')" style="width: 180px;" class="filter-item" maxlength="100" @keyup.enter.native="handleFilter" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item :label="$t('table.startDate')" prop="startDate">
-                <el-date-picker v-model.trim="listQuery.startDate" :placeholder="$t('table.startDate')" type="date" style="width: 180px;"/>
+                <el-date-picker v-model.trim="listQuery.startDate" :placeholder="$t('table.startDate')" type="date" style="width: 180px;" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item :label="$t('table.endDate')" prop="endDate">
-                <el-date-picker v-model.trim="listQuery.endDate" :placeholder="$t('table.endDate')" type="date" style="width: 180px;"/>
+                <el-date-picker v-model.trim="listQuery.endDate" :placeholder="$t('table.endDate')" type="date" style="width: 180px;" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item :label="$t('userTable.roleName')" prop="roleId">
                 <el-select v-model="listQuery.roleId" :placeholder="$t('userTable.roleName')" clearable style="width: 180px" class="filter-item">
-                  <el-option v-for="item in roleList" :key="item.key" :label="item.roleName" :value="item.id"/>
+                  <el-option v-for="item in roleList" :key="item.key" :label="item.roleName" :value="item.id" />
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item :label="$t('userTable.userStatus')" prop="userStatus">
                 <el-select v-model="listQuery.userStatus" :placeholder="$t('userTable.userStatus')" clearable style="width: 180px" class="filter-item">
-                  <el-option v-for="item in statusOption" :key="item.key" :label="item.label" :value="item.key"/>
+                  <el-option v-for="item in statusOption" :key="item.key" :label="item.label" :value="item.key" />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -73,13 +73,14 @@
     </div>
 
     <el-table
-      v-loading="listLoading"
       :key="tableKey"
+      v-loading="listLoading"
       :data="list"
       border
       fit
       highlight-current-row
-      style="width: 100%;">
+      style="width: 100%;"
+    >
       <el-table-column :label="$t('userTable.id')" align="center" width="65">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -157,10 +158,10 @@
       <el-form ref="userForm" :model="userForm" :rules="rules" label-width="100px" class="userForm" style="width: 400px; margin-left:50px;">
         <el-form-item :label="$t('userTable.organization')" prop="userAccount">
           <el-cascader
+            v-model="selectedOrgOptions"
             :options="orgList"
             :props="propsOrg"
             :show-all-levels="false"
-            v-model="selectedOrgOptions"
             :placeholder="$t('userTable.organization')"
             filterable
             clearable
@@ -169,30 +170,30 @@
           />
         </el-form-item>
         <el-form-item :label="$t('userTable.userAccount')" prop="userAccount">
-          <el-input v-model="userForm.userAccount" placeholder="输入用户账号" maxlength="32"/>
+          <el-input v-model="userForm.userAccount" placeholder="输入用户账号" maxlength="32" />
         </el-form-item>
         <el-form-item :label="$t('userTable.userNickName')" prop="userNickName">
-          <el-input v-model="userForm.userNickName" placeholder="输入用户昵称" maxlength="32"/>
+          <el-input v-model="userForm.userNickName" placeholder="输入用户昵称" maxlength="32" />
         </el-form-item>
         <el-form-item :label="$t('userTable.userName')" prop="userName">
-          <el-input v-model="userForm.userName" placeholder="输入用户姓名" maxlength="32"/>
+          <el-input v-model="userForm.userName" placeholder="输入用户姓名" maxlength="32" />
         </el-form-item>
         <el-form-item :label="$t('userTable.userMobile')" prop="userMobile">
-          <el-input v-model="userForm.userMobile" placeholder="输入用户手机号码" maxlength="11"/>
+          <el-input v-model="userForm.userMobile" placeholder="输入用户手机号码" maxlength="11" />
         </el-form-item>
         <el-form-item :label="$t('userTable.userEmail')" prop="userEmail">
-          <el-input v-model="userForm.userEmail" placeholder="输入用户电子邮箱" maxlength="32"/>
+          <el-input v-model="userForm.userEmail" placeholder="输入用户电子邮箱" maxlength="32" />
         </el-form-item>
         <el-form-item :label="$t('userTable.roleName')" prop="roleId">
           <el-select v-model="userForm.roleIds" class="filter-item" multiple placeholder="选择用户角色" style="width: 100%;">
-            <el-option v-for="item in roleList" :key="item.key" :label="item.roleName" :value="item.id"/>
+            <el-option v-for="item in roleList" :key="item.key" :label="item.roleName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('userTable.area')" prop="areas">
-          <el-cascader v-model="userForm.areas" :options="provinceOptions" :props="props" clearable filterable change-on-select style="width:100%;"/>
+          <el-cascader v-model="userForm.areas" :options="provinceOptions" :props="props" clearable filterable change-on-select style="width:100%;" />
         </el-form-item>
         <el-form-item :label="$t('userTable.street')" prop="street">
-          <el-input v-model="userForm.street" placeholder="详细地址" maxlength="120"/>
+          <el-input v-model="userForm.street" placeholder="详细地址" maxlength="120" />
         </el-form-item>
         <el-form-item :label="$t('userTable.userSex')" prop="userSex">
           <el-radio-group v-model="userForm.userSex">
@@ -209,7 +210,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item :label="$t('userTable.description')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="userForm.description" type="textarea" placeholder="请输入备注信息"/>
+          <el-input v-model="userForm.description" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请输入备注信息" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -236,7 +237,8 @@
             node-key="id"
             class="filter-container-card"
             highlight-current
-            @check-change="computeOrgPermission"/>
+            @check-change="computeOrgPermission"
+          />
         </div>
       </el-card>
       <div slot="footer" class="dialog-footer">
