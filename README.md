@@ -23,6 +23,15 @@
 5. 定时任务考虑到分布式部署，所以使用xxl-job
 6. 系统日志使用分布式实时日志分析解决方案ELK部署架构
 
+#### 目录说明
+
+1. jeebase-service Java后台服务代码
+2. jeebase-vue  vue-element-admin 3.x版本的后台管理前端页面代码
+3. jeebase-vue-v2  vue-element-admin 4.x版本的后台管理前端页面代码
+4. jeebase-wechat  微信小程序及微信服务号前端页面代码
+5. jeebase-wechat/jeebase-vant  以有赞vant为前端框架的微信服务号前端页面代码
+6. jeebase-wechat/jeebase-color  以color为前端框架的微信小程序前端页面代码（因有赞vant的小程序前端框架侵入性太强，故选择ColorUI为前端框架）
+
 #### 项目界面
 
 登录
