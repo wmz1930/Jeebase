@@ -30,3 +30,11 @@ export function deleteResource(id) {
     method: 'post'
   })
 }
+
+export function checkResourceKey(data) {
+  return request({
+    url: '/resource/key/check',
+    method: 'post',
+    params: data
+  })
+}

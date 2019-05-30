@@ -2,7 +2,6 @@ package com.jeebase.system.security.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jeebase.common.base.domain.ZTree;
 import com.jeebase.system.security.entity.Resource;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -29,14 +28,6 @@ public interface IResourceService extends IService<Resource> {
      * @return
      */
     List<Resource> queryResourceByParentId(Integer parentId);
-
-    /**
-     * 查询资源权限列表
-     * @param parentId
-     * @param assembleChildren
-     * @return
-     */
-    List<ZTree> queryResourceTree(Integer parentId, boolean assembleChildren);
 
     /**
      * 查询资源权限列表

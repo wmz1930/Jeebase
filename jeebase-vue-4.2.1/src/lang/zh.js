@@ -183,6 +183,7 @@ export default {
     resourcePath: '资源path',
     resourceUrl: '资源链接',
     resourceLevel: '资源排序',
+    resourcePageName: '页面名称',
     resourceCache: '是否缓存',
     resourceShow: '是否显示',
     description: '备注'

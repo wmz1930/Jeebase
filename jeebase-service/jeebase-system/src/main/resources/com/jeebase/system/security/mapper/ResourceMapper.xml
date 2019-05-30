@@ -15,6 +15,7 @@
         <result column="resource_level" property="resourceLevel" />
         <result column="resource_show" property="resourceShow" />
         <result column="resource_cache" property="resourceCache" />
+        <result column="resource_page_name" property="resourcePageName" />
         <result column="description" property="description" />
         <result column="create_time" property="createTime" />
         <result column="creator" property="creator" />
@@ -25,7 +26,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, resource_name, parent_id, resource_key, resource_type, resource_icon, resource_path, resource_url, resource_level, resource_show, resource_cache, description, create_time, creator, update_time, operator, del_flag
+        id, resource_name, parent_id, resource_key, resource_type, resource_icon, resource_path, resource_url, resource_level, resource_show, resource_cache, resource_page_name, description, create_time, creator, update_time, operator, del_flag
     </sql>
     
     <!-- 根据用户名查询用户权限 -->
@@ -41,7 +42,8 @@
 		D.resource_url,
 		D.resource_cache,
 		D.resource_show,
-		D.resource_level
+		D.resource_level,
+		D.resource_page_name
 		FROM t_sys_user A
 		INNER JOIN t_sys_user_role B ON A.id = B.user_id AND B.del_flag = 0
 		INNER JOIN t_sys_role_resource C ON B.role_id = C.role_id AND C.del_flag = 0

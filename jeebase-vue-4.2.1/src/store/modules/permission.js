@@ -48,7 +48,7 @@ function assembleAsyncRoutes(resources) {
         path: '/' + resource.resourcePath,
         component: Layout,
         redirect: resource.resourceUrl,
-        name: resource.resourceKey,
+        name: resource.resourcePageName,
         meta: {
           title: resource.resourceName,
           icon: resource.resourceIcon
@@ -59,7 +59,7 @@ function assembleAsyncRoutes(resources) {
         path: resource.resourcePath,
         component: () => import(`@/views/${resource.resourceUrl}`),
         redirect: resource.children[0].resourceUrl,
-        name: resource.resourceKey,
+        name: resource.resourcePageName,
         meta: {
           title: resource.resourceName,
           noCache: !resource.resourceCache,
@@ -71,7 +71,7 @@ function assembleAsyncRoutes(resources) {
       route = {
         path: resource.resourcePath,
         component: () => import(`@/views/${resource.resourceUrl}`),
-        name: resource.resourceKey,
+        name: resource.resourcePageName,
         meta: {
           title: resource.resourceName,
           noCache: !resource.resourceCache,

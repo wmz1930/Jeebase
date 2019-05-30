@@ -37,6 +37,8 @@ public class CreateResource implements Serializable {
 
     private Integer resourceLevel;
 
+    private String resourcePageName;
+
     private String description;
 
     private Date createTime;
@@ -109,6 +111,14 @@ public class CreateResource implements Serializable {
 
     public void setResourceLevel(Integer resourceLevel) {
         this.resourceLevel = resourceLevel;
+    }
+
+    public String getResourcePageName() {
+        return resourcePageName;
+    }
+
+    public void setResourcePageName(String resourcePageName) {
+        this.resourcePageName = resourcePageName;
     }
 
     public String getDescription() {

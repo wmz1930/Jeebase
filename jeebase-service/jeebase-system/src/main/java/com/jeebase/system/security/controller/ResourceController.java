@@ -1,5 +1,6 @@
 package com.jeebase.system.security.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jeebase.common.annotation.auth.CurrentUser;
 import com.jeebase.common.annotation.log.AroundLog;
 import com.jeebase.common.base.Result;
@@ -18,7 +19,6 @@ import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -53,7 +53,7 @@ public class ResourceController {
     @RequiresRoles("SYSADMIN")
     @ApiOperation(value = "添加权限资源")
     @AroundLog(name = "添加权限资源")
-    public Result<Resource> create(@RequestBody CreateResource resource) {
+    public Result<Resource> createResource(@RequestBody CreateResource resource) {
         Resource resEntity = new Resource();
         BeanCopier.create(CreateResource.class, Resource.class, false).copy(resource, resEntity, null);
         boolean result = resourceService.createResource(resEntity);
@@ -71,7 +71,7 @@ public class ResourceController {
     @RequiresRoles("SYSADMIN")
     @ApiOperation(value = "更新权限资源")
     @AroundLog(name = "更新权限资源")
-    public Result<Resource> update(@RequestBody UpdateResource resource) {
+    public Result<Resource> updateResource(@RequestBody UpdateResource resource) {
         Resource resEntity = new Resource();
         BeanCopier.create(UpdateResource.class, Resource.class, false).copy(resource, resEntity, null);
         boolean result = resourceService.updateResource(resEntity);
@@ -90,12 +90,35 @@ public class ResourceController {
     @ApiOperation(value = "删除权限资源")
     @AroundLog(name = "删除权限资源")
     @ApiImplicitParam(paramType = "path", name = "resId", value = "权限资源ID", required = true, dataType = "Integer")
-    public Result<?> delete(@PathVariable("resId") Integer resId) {
+    public Result<?> deleteResource(@PathVariable("resId") Integer resId) {
         boolean result = resourceService.deleteResource(resId);
         if (result) {
             return new Result<>().success("删除成功");
         } else {
             return new Result<>().error("删除失败");
+        }
+    }
+
+    @PostMapping(value = "/key/check")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "校验ResourceKey是否存在", notes = "校验ResourceKey是否存在")
+    public Result<Boolean> checkResourceKey(CreateResource resource) {
+        String resourceKey = resource.getResourceKey();
+        QueryWrapper<Resource> resourceQueryWrapper = new QueryWrapper<>();
+        resourceQueryWrapper.eq("resource_key", resourceKey);
+        if(null != resource.getId())
+        {
+            resourceQueryWrapper.ne("id", resource.getId());
+        }
+        int count = resourceService.count(resourceQueryWrapper);
+
+        if (count == 0)
+        {
+            return new Result<Boolean>().success().put(true);
+        }
+        else
+        {
+            return new Result<Boolean>().success().put(false);
         }
     }
 
@@ -105,7 +128,7 @@ public class ResourceController {
     @GetMapping("/menu")
     @RequiresAuthentication
     @ApiOperation(value = "登陆后获取个人权限资源")
-    public Result<List<Resource>> navMenu(HttpServletRequest request, @ApiIgnore @CurrentUser User currentUser) {
+    public Result<List<Resource>> navMenu(@ApiIgnore @CurrentUser User currentUser) {
         Integer userId = currentUser.getId();
         List<Resource> resourceList = resourceService.queryResourceByUserId(userId);
         return new Result<List<Resource>>().success().put(resourceList);

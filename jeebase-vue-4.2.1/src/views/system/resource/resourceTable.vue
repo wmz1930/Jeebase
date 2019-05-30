@@ -67,17 +67,22 @@
           <el-input v-model.trim="resourceForm.resourceIcon" placeholder="菜单的图标，不是菜单可以不填" maxlength="32" />
         </el-form-item>
         <el-form-item :label="$t('resourceTable.resourcePath')" prop="resourcePath">
-          <el-tooltip class="item" effect="dark" content="1、单页面路由地址 2、外链地址以http://或https://开头" placement="top">
+          <el-tooltip class="item" effect="dark" content="1、单页面路由地址 2、外链地址以http://或https://开头" placement="right">
             <el-input v-model.trim="resourceForm.resourcePath" placeholder="浏览器地址栏显示的url" />
           </el-tooltip>
         </el-form-item>
         <el-form-item :label="$t('resourceTable.resourceUrl')" prop="resourceUrl">
-          <el-tooltip class="item" effect="dark" content="1、一级菜单填Layout 2、包含子菜单的二级菜单填Nested 3、最后子菜单填写页面对应路径 4、接口填写请求路径" placement="top">
+          <el-tooltip class="item" effect="dark" content="1、一级菜单填Layout 2、包含子菜单的二级菜单填nested 3、最后子菜单填写页面对应路径 4、接口填写请求路径" placement="right">
             <el-input v-model.trim="resourceForm.resourceUrl" placeholder="菜单对应前台页面的路径" />
           </el-tooltip>
         </el-form-item>
         <el-form-item :label="$t('resourceTable.resourceLevel')" prop="resourceLevel">
           <el-input v-model.number="resourceForm.resourceLevel" placeholder="菜单排序" maxlength="32" />
+        </el-form-item>
+        <el-form-item v-show="resourceForm.resourceType === 2" :label="$t('resourceTable.resourcePageName')" prop="resourcePageName">
+          <el-tooltip class="item" effect="dark" content="如果前端页面开启了tagView，一定要跟页面中定义的name值保持名称一致，否则不能keep-alive" placement="right">
+            <el-input v-model.trim="resourceForm.resourcePageName" placeholder="前端页面定义的名称" maxlength="32" />
+          </el-tooltip>
         </el-form-item>
         <el-form-item :label="$t('resourceTable.resourceCache')" prop="resourceCache">
           <el-radio-group v-model="resourceForm.resourceCache">
@@ -109,7 +114,7 @@
   Auth: Jeebase
   Created: 2018/1/19-14:54
 */
-import { fetchResourceList, createResource, deleteResource, updateResource } from '@/api/system/resource'
+import { fetchResourceList, createResource, deleteResource, updateResource, checkResourceKey } from '@/api/system/resource'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
@@ -130,6 +135,22 @@ export default {
     }
   },
   data() {
+    var validResourceKey = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('资源标识'))
+      }
+      var keyData = {
+        id: this.resourceForm.id,
+        resourceKey: value
+      }
+      checkResourceKey(keyData).then(response => {
+        if (!response.data) {
+          callback(new Error('资源标识已存在'))
+        } else {
+          callback()
+        }
+      })
+    }
     return {
       expandAll: false,
       list: [],
@@ -161,6 +182,7 @@ export default {
         resourceLevel: '',
         resourceCache: true,
         resourceShow: true,
+        resourcePageName: '',
         children: [], // 必须加，否则新增的节点不显示
         description: ''
       },
@@ -171,7 +193,8 @@ export default {
         ],
         resourceKey: [
           { required: true, message: '请输入资源标识', trigger: 'blur' },
-          { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' }
+          { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
+          { validator: validResourceKey, trigger: 'blur' }
         ],
         resourceType: [
           { required: true, message: '请选择资源类型', trigger: 'blur' }
@@ -223,6 +246,7 @@ export default {
         resourceLevel: '',
         resourceCache: true,
         resourceShow: true,
+        resourcePageName: '',
         children: [], // 必须加，否则新增的节点不显示
         description: ''
       }

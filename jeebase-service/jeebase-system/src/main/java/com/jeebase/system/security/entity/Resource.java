@@ -32,11 +32,10 @@ public class Resource implements Serializable {
     @TableField("parent_id")
     private Integer parentId;
 
-
     @TableField("resource_key")
     private String resourceKey;
 
-    @ApiModelProperty(value = "1、模块 2、菜单 3、按钮 4、链接")
+    @ApiModelProperty(value = "资源类型：1、模块 2、菜单 3、按钮 4、链接")
     @TableField("resource_type")
     private String resourceType;
 
@@ -60,6 +59,10 @@ public class Resource implements Serializable {
     @TableField("resource_cache")
     private Boolean resourceCache;
 
+    @ApiModelProperty(value = "页面name")
+    @TableField("resource_page_name")
+    private String resourcePageName;
+
     @TableField("description")
     private String description;
 
@@ -79,12 +82,6 @@ public class Resource implements Serializable {
     @TableField("del_flag")
     @TableLogic
     private String delFlag;
-
-    /**
-     * 是否是叶子节点
-     */
-    @TableField(exist = false)
-    private Integer isLeaf;
 
     /**
      * 子菜单，必须初始化否则vue新增不展示树子菜单
@@ -180,6 +177,15 @@ public class Resource implements Serializable {
         this.resourceCache = resourceCache;
     }
 
+
+    public String getResourcePageName() {
+        return resourcePageName;
+    }
+
+    public void setResourcePageName(String resourcePageName) {
+        this.resourcePageName = resourcePageName;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -228,14 +234,6 @@ public class Resource implements Serializable {
         this.delFlag = delFlag;
     }
 
-    public Integer getIsLeaf() {
-        return isLeaf;
-    }
-
-    public void setIsLeaf(Integer isLeaf) {
-        this.isLeaf = isLeaf;
-    }
-
     public List<Resource> getChildren() {
         return children;
     }
@@ -249,7 +247,7 @@ public class Resource implements Serializable {
         return "Resource{" + "id=" + id + ", resourceName=" + resourceName + ", parentId=" + parentId + ", resourceKey="
                 + resourceKey + ", resourceType=" + resourceType + ", resourceIcon=" + resourceIcon + ", resourcePath="
                 + resourcePath + ", resourceUrl=" + resourceUrl + ", resourceLevel=" + resourceLevel + ", resourceShow="
-                + resourceShow + ", resourceCache=" + resourceCache + ", description=" + description + ", createTime="
+                + resourceShow + ", resourceCache=" + resourceCache + ", resourcePageName=" + resourcePageName + ", description=" + description + ", createTime="
                 + createTime + ", creator=" + creator + ", updateTime=" + updateTime + ", operator=" + operator
                 + ", delFlag=" + delFlag + "}";
     }
