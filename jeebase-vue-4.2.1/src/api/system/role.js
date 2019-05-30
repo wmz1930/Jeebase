@@ -52,3 +52,19 @@ export function updateRoleResources(data) {
     data
   })
 }
+
+export function checkRoleName(data) {
+  return request({
+    url: '/role/name/check',
+    method: 'post',
+    params: data
+  })
+}
+
+export function checkRoleKey(data) {
+  return request({
+    url: '/role/key/check',
+    method: 'post',
+    params: data
+  })
+}

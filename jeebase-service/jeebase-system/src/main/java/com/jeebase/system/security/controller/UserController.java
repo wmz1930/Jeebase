@@ -1,5 +1,6 @@
 package com.jeebase.system.security.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jeebase.common.annotation.auth.CurrentUser;
 import com.jeebase.common.annotation.log.AroundLog;
@@ -225,6 +226,79 @@ public class UserController {
             return new Result<>().success("修改成功");
         } else {
             return new Result<>().error("修改失败");
+        }
+    }
+
+    @PostMapping(value = "/account/check")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "校验用户账号是否存在", notes = "校验用户账号是否存在")
+    public Result<Boolean> checkUserAccount(CreateUser user) {
+        String userAccount = user.getUserAccount();
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("user_account", userAccount);
+        if(null != user.getId()) {
+            userQueryWrapper.ne("id", user.getId());
+        }
+        int count = userService.count(userQueryWrapper);
+
+        if (count == 0) {
+            return new Result<Boolean>().success().put(true);
+        } else {
+            return new Result<Boolean>().success().put(false);
+        }
+    }
+
+    @PostMapping(value = "/nickname/check")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "校验用户昵称是否存在", notes = "校验用户昵称是否存在")
+    public Result<Boolean> checkUserNickname(CreateUser user) {
+        String userNickName = user.getUserNickName();
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("user_nick_name", userNickName);
+        if(null != user.getId()) {
+            userQueryWrapper.ne("id", user.getId());
+        }
+        int count = userService.count(userQueryWrapper);
+        if (count == 0) {
+            return new Result<Boolean>().success().put(true);
+        } else {
+            return new Result<Boolean>().success().put(false);
+        }
+    }
+
+    @PostMapping(value = "/mobile/check")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "校验用户手机号是否存在", notes = "校验用户手机号是否存在")
+    public Result<Boolean> checkUserMobile(CreateUser user) {
+        String userMobile = user.getUserMobile();
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("user_mobile", userMobile);
+        if(null != user.getId()) {
+            userQueryWrapper.ne("id", user.getId());
+        }
+        int count = userService.count(userQueryWrapper);
+        if (count == 0) {
+            return new Result<Boolean>().success().put(true);
+        } else {
+            return new Result<Boolean>().success().put(false);
+        }
+    }
+
+    @PostMapping(value = "/email/check")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "校验用户电子邮箱是否存在", notes = "校验用户电子邮箱是否存在")
+    public Result<Boolean> checkUserEmail(CreateUser user) {
+        String userEmail = user.getUserEmail();
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("user_email", userEmail);
+        if(null != user.getId()) {
+            userQueryWrapper.ne("id", user.getId());
+        }
+        int count = userService.count(userQueryWrapper);
+        if (count == 0) {
+            return new Result<Boolean>().success().put(true);
+        } else {
+            return new Result<Boolean>().success().put(false);
         }
     }
 }

@@ -90,7 +90,7 @@
   Auth: Lei.j1ang
   Created: 2018/1/19-14:54
 */
-import { fetchOrgList, createOrganization, deleteOrganization, updateOrganization } from '@/api/system/organization'
+import { fetchOrgList, createOrganization, deleteOrganization, updateOrganization, checkOrganizationName, checkOrganizationKey } from '@/api/system/organization'
 import waves from '@/directive/waves' // 水波纹指令
 import Data from '@/api/pcaa'
 
@@ -112,6 +112,32 @@ export default {
     }
   },
   data() {
+    var validOrganizationName = (rule, value, callback) => {
+      var keyData = {
+        id: this.organizationForm.id,
+        organizationName: value
+      }
+      checkOrganizationName(keyData).then(response => {
+        if (!response.data) {
+          callback(new Error('组织名称已存在'))
+        } else {
+          callback()
+        }
+      })
+    }
+    var validOrganizationKey = (rule, value, callback) => {
+      var keyData = {
+        id: this.organizationForm.id,
+        organizationKey: value
+      }
+      checkOrganizationKey(keyData).then(response => {
+        if (!response.data) {
+          callback(new Error('组织标识已存在'))
+        } else {
+          callback()
+        }
+      })
+    }
     return {
       expandAll: false,
       provinceOptions: null,
@@ -157,11 +183,13 @@ export default {
       rules: {
         organizationName: [
           { required: true, message: '请输入组织名称', trigger: 'blur' },
-          { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' }
+          { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
+          { validator: validOrganizationName, trigger: 'blur' }
         ],
         organizationKey: [
           { required: true, message: '请输入组织标识', trigger: 'blur' },
-          { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' }
+          { min: 2, max: 32, message: '长度在 2 到 32 个字符', trigger: 'blur' },
+          { validator: validOrganizationKey, trigger: 'blur' }
         ],
         organizationType: [
           { required: true, message: '请选择组织类型', trigger: 'blur' }

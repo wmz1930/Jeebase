@@ -30,3 +30,19 @@ export function deleteOrganization(id) {
     method: 'post'
   })
 }
+
+export function checkOrganizationName(data) {
+  return request({
+    url: '/organization/name/check',
+    method: 'post',
+    params: data
+  })
+}
+
+export function checkOrganizationKey(data) {
+  return request({
+    url: '/organization/key/check',
+    method: 'post',
+    params: data
+  })
+}

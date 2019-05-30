@@ -39,9 +39,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         QueryWrapper<Resource> resourceQueryWrapper = new QueryWrapper<>();
         resourceQueryWrapper.eq("resource_key", resourceKey);
         int count = this.count(resourceQueryWrapper);
-
-        if (count > 0)
-        {
+        if (count > 0) {
             throw new BusinessException("资源标识已存在");
         }
 
@@ -56,8 +54,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         QueryWrapper<Resource> resourceQueryWrapper = new QueryWrapper<>();
         resourceQueryWrapper.eq("resource_key", resourceKey).ne("id", resource.getId());
         int count = this.count(resourceQueryWrapper);
-        if (count > 0)
-        {
+        if (count > 0) {
             throw new BusinessException("资源标识已存在");
         }
         boolean result = this.updateById(resource);

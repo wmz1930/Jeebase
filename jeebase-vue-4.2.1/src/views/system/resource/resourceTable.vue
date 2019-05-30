@@ -136,9 +136,6 @@ export default {
   },
   data() {
     var validResourceKey = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('资源标识'))
-      }
       var keyData = {
         id: this.resourceForm.id,
         resourceKey: value

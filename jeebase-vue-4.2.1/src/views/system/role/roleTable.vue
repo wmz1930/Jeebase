@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { fetchList, createRole, deleteRole, updateRole, updateRoleStatus, queryRoleResource, updateRoleResources } from '@/api/system/role'
+import { fetchList, createRole, deleteRole, updateRole, updateRoleStatus, queryRoleResource, updateRoleResources, checkRoleName, checkRoleKey } from '@/api/system/role'
 import { fetchResourceList } from '@/api/system/resource'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
@@ -157,6 +157,32 @@ export default {
     }
   },
   data() {
+    var validRoleName = (rule, value, callback) => {
+      var keyData = {
+        id: this.roleForm.id,
+        roleName: value
+      }
+      checkRoleName(keyData).then(response => {
+        if (!response.data) {
+          callback(new Error('角色名称已存在'))
+        } else {
+          callback()
+        }
+      })
+    }
+    var validRoleKey = (rule, value, callback) => {
+      var keyData = {
+        id: this.roleForm.id,
+        roleKey: value
+      }
+      checkRoleKey(keyData).then(response => {
+        if (!response.data) {
+          callback(new Error('角色标识已存在'))
+        } else {
+          callback()
+        }
+      })
+    }
     return {
       currentRole: '',
       filterText: '',
@@ -200,10 +226,13 @@ export default {
       rules: {
         roleName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
-          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }
+          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' },
+          { validator: validRoleName, trigger: 'blur' }
         ],
         roleKey: [
-          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }
+          { required: true, message: '请输入角色标识', trigger: 'blur' },
+          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' },
+          { validator: validRoleKey, trigger: 'blur' }
         ],
         roleStatus: [
           { required: true, message: '请选择用户状态', trigger: 'change' }
@@ -418,7 +447,7 @@ export default {
         this.dialogResourceVisible = false
         this.listLoading = false
         this.$message({
-          message: '资源修改成功',
+          message: '角色修改成功',
           type: 'success'
         })
       })

@@ -106,18 +106,13 @@ public class ResourceController {
         String resourceKey = resource.getResourceKey();
         QueryWrapper<Resource> resourceQueryWrapper = new QueryWrapper<>();
         resourceQueryWrapper.eq("resource_key", resourceKey);
-        if(null != resource.getId())
-        {
+        if(null != resource.getId()) {
             resourceQueryWrapper.ne("id", resource.getId());
         }
         int count = resourceService.count(resourceQueryWrapper);
-
-        if (count == 0)
-        {
+        if (count == 0){
             return new Result<Boolean>().success().put(true);
-        }
-        else
-        {
+        } else{
             return new Result<Boolean>().success().put(false);
         }
     }

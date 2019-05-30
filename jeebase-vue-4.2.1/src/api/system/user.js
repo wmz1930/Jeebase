@@ -77,3 +77,35 @@ export function updateUserDataPermission(data) {
     data
   })
 }
+
+export function checkUserAccount(data) {
+  return request({
+    url: '/user/account/check',
+    method: 'post',
+    params: data
+  })
+}
+
+export function checkUserNickName(data) {
+  return request({
+    url: '/user/nickname/check',
+    method: 'post',
+    params: data
+  })
+}
+
+export function checkUserMobile(data) {
+  return request({
+    url: '/user/mobile/check',
+    method: 'post',
+    params: data
+  })
+}
+
+export function checkUserEmail(data) {
+  return request({
+    url: '/user/email/check',
+    method: 'post',
+    params: data
+  })
+}

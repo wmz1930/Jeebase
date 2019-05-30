@@ -250,7 +250,7 @@
 </template>
 
 <script>
-import { fetchList, createUser, deleteUser, updateUser, updateUserStatus, fetchRoleList, updateUserDataPermission } from '@/api/system/user'
+import { fetchList, createUser, deleteUser, updateUser, updateUserStatus, fetchRoleList, updateUserDataPermission, checkUserAccount, checkUserMobile, checkUserEmail, checkUserNickName } from '@/api/system/user'
 import { fetchOrgList } from '@/api/system/organization'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
@@ -290,6 +290,60 @@ export default {
     }
   },
   data() {
+    var validUserAccount = (rule, value, callback) => {
+      var keyData = {
+        id: this.userForm.id,
+        userAccount: value
+      }
+      checkUserAccount(keyData).then(response => {
+        if (!response.data) {
+          callback(new Error('用户账号已存在'))
+        } else {
+          callback()
+        }
+      })
+    }
+    var validUserNickName = (rule, value, callback) => {
+      if (value) {
+        var keyData = {
+          id: this.userForm.id,
+          userNickName: value
+        }
+        checkUserNickName(keyData).then(response => {
+          if (!response.data) {
+            callback(new Error('用户昵称已存在'))
+          } else {
+            callback()
+          }
+        })
+      }
+    }
+    var validUserMobile = (rule, value, callback) => {
+      var keyData = {
+        id: this.userForm.id,
+        userMobile: value
+      }
+      checkUserMobile(keyData).then(response => {
+        if (!response.data) {
+          callback(new Error('手机号已存在'))
+        } else {
+          callback()
+        }
+      })
+    }
+    var validUserEmail = (rule, value, callback) => {
+      var keyData = {
+        id: this.userForm.id,
+        userEmail: value
+      }
+      checkUserEmail(keyData).then(response => {
+        if (!response.data) {
+          callback(new Error('电子邮箱已存在'))
+        } else {
+          callback()
+        }
+      })
+    }
     return {
       tableKey: 0,
       roleList: null,
@@ -345,10 +399,12 @@ export default {
       rules: {
         userAccount: [
           { required: true, message: '请输入用户账号', trigger: 'blur' },
-          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
+          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' },
+          { validator: validUserAccount, trigger: 'blur' }
         ],
         userNickName: [
-          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }
+          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' },
+          { validator: validUserNickName, trigger: 'blur' }
         ],
         userName: [
           { required: true, message: '请输入用户姓名', trigger: 'blur' },
@@ -366,7 +422,8 @@ export default {
             max: 11,
             message: '长度在 11 到 11 个字符',
             trigger: 'blur'
-          }
+          },
+          { validator: validUserMobile, trigger: 'blur' }
         ],
         userEmail: [
           {
@@ -375,7 +432,8 @@ export default {
             message: '请输入正确的邮箱',
             trigger: 'blur'
           },
-          { min: 5, max: 32, message: '长度在 5 到 32 个字符', trigger: 'blur' }
+          { min: 5, max: 32, message: '长度在 5 到 32 个字符', trigger: 'blur' },
+          { validator: validUserEmail, trigger: 'blur' }
         ],
         roleIds: [
           { required: true, message: '请选择用户角色', trigger: 'change' }

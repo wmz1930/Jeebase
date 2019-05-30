@@ -2,6 +2,8 @@ package com.jeebase.system.security.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jeebase.common.base.domain.ZTree;
+import com.jeebase.system.security.dto.CreateOrganization;
+import com.jeebase.system.security.dto.UpdateOrganization;
 import com.jeebase.system.security.entity.Organization;
 
 import java.util.List;
@@ -25,4 +27,25 @@ public interface IOrganizationService extends IService<Organization> {
      * @return
      */
     List<Organization> queryOrgList(Integer parentId);
+
+    /**
+     * 创建组织
+     * @param organization
+     * @return
+     */
+    boolean createOrganization(Organization organization);
+
+    /**
+     * 更新组织
+     * @param organization
+     * @return
+     */
+    boolean updateOrganization(Organization organization);
+
+    /**
+     * 删除组织
+     * @param organizationId
+     * @return
+     */
+    boolean deleteOrganization(Integer organizationId);
 }

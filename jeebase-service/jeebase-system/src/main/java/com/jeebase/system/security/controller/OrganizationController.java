@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.CollectionUtils;
@@ -66,7 +67,7 @@ public class OrganizationController {
             orgEntity.setCity(areas.get(Constant.Address.CITY));
             orgEntity.setArea(areas.get(Constant.Address.AREA));
         }
-        boolean result = organizationService.save(orgEntity);
+        boolean result = organizationService.createOrganization(orgEntity);
         if (result) {
             return new Result<Organization>().success("添加成功").put(orgEntity);
         } else {
@@ -90,7 +91,7 @@ public class OrganizationController {
             orgEntity.setCity(areas.get(Constant.Address.CITY));
             orgEntity.setArea(areas.get(Constant.Address.AREA));
         }
-        boolean result = organizationService.updateById(orgEntity);
+        boolean result = organizationService.updateOrganization(orgEntity);
         if (result) {
             return new Result<Organization>().success("修改成功").put(orgEntity);
         } else {
@@ -107,13 +108,47 @@ public class OrganizationController {
     @AroundLog(name = "删除组织机构")
     @ApiImplicitParam(paramType = "path", name = "orgId", value = "组织机构ID", required = true, dataType = "Integer")
     public Result<?> delete(@PathVariable("orgId") Integer orgId) {
-        QueryWrapper<Organization> wpd = new QueryWrapper<Organization>();
-        wpd.and(e -> e.eq("id", orgId).or().eq("parent_id", orgId));
-        boolean result = organizationService.remove(wpd);
+        boolean result = organizationService.deleteOrganization(orgId);
         if (result) {
             return new Result<>().success("删除成功");
         } else {
             return new Result<>().error("删除失败");
+        }
+    }
+
+    @PostMapping(value = "/name/check")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "校验组织名称是否存在", notes = "校验组织名称是否存在")
+    public Result<Boolean> checkRoleName(CreateOrganization organization) {
+        String organizationName = organization.getOrganizationName();
+        QueryWrapper<Organization> organizationQueryWrapper = new QueryWrapper<>();
+        organizationQueryWrapper.eq("organization_name", organizationName);
+        if(null != organization.getId()) {
+            organizationQueryWrapper.ne("id", organization.getId());
+        }
+        int count = organizationService.count(organizationQueryWrapper);
+        if (count == 0){
+            return new Result<Boolean>().success().put(true);
+        } else{
+            return new Result<Boolean>().success().put(false);
+        }
+    }
+
+    @PostMapping(value = "/key/check")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "校验组织标识是否存在", notes = "校验组织标识是否存在")
+    public Result<Boolean> checkRoleKey(CreateOrganization organization) {
+        String organizationKey = organization.getOrganizationKey();
+        QueryWrapper<Organization> organizationQueryWrapper = new QueryWrapper<>();
+        organizationQueryWrapper.eq("organization_key", organizationKey);
+        if(null != organization.getId()) {
+            organizationQueryWrapper.ne("id", organization.getId());
+        }
+        int count = organizationService.count(organizationQueryWrapper);
+        if (count == 0){
+            return new Result<Boolean>().success().put(true);
+        } else{
+            return new Result<Boolean>().success().put(false);
         }
     }
 }

@@ -1,11 +1,15 @@
 package com.jeebase.system.security.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jeebase.common.base.BusinessException;
 import com.jeebase.common.base.domain.ZTree;
+import com.jeebase.system.security.dto.CreateOrganization;
+import com.jeebase.system.security.dto.UpdateOrganization;
 import com.jeebase.system.security.entity.Organization;
 import com.jeebase.system.security.mapper.OrganizationMapper;
 import com.jeebase.system.security.service.IOrganizationService;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +90,37 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             throw new BusinessException("查询组织树失败");
         }
         return orgs;
+    }
+
+    @Override
+    public boolean createOrganization(Organization organization) {
+        QueryWrapper<Organization> ew = new QueryWrapper<>();
+        ew.eq("organization_name", organization.getOrganizationName()).or().eq("organization_key", organization.getOrganizationKey());
+        List<Organization> organizationList = this.list(ew);
+        if (!CollectionUtils.isEmpty(organizationList)) {
+            throw new BusinessException("组织名称或组织标识已经存在");
+        }
+        boolean result = this.save(organization);
+        return result;
+    }
+
+    @Override
+    public boolean updateOrganization(Organization organization) {
+        QueryWrapper<Organization> ew = new QueryWrapper<>();
+        ew.ne("id", organization.getId()).and(e -> e.eq("organization_name", organization.getOrganizationName()).or().eq("organization_key", organization.getOrganizationKey()));
+        List<Organization> organizationList = this.list(ew);
+        if (!CollectionUtils.isEmpty(organizationList)) {
+            throw new BusinessException("组织名称或组织标识已经存在");
+        }
+        boolean result = this.updateById(organization);
+        return result;
+    }
+
+    @Override
+    public boolean deleteOrganization(Integer organizationId) {
+        QueryWrapper<Organization> wpd = new QueryWrapper<Organization>();
+        wpd.and(e -> e.eq("id", organizationId).or().eq("parent_id", organizationId));
+        boolean result = this.remove(wpd);
+        return result;
     }
 }

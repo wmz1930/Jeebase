@@ -180,4 +180,40 @@ public class RoleController {
         List<Role> result = roleService.list(ew);
         return new Result<List<Role>>().success().put(result);
     }
+
+    @PostMapping(value = "/name/check")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "校验角色名称是否存在", notes = "校验角色名称是否存在")
+    public Result<Boolean> checkRoleName(CreateRole role) {
+        String roleName = role.getRoleName();
+        QueryWrapper<Role> roleQueryWrapper = new QueryWrapper<>();
+        roleQueryWrapper.eq("role_name", roleName);
+        if(null != role.getId()) {
+            roleQueryWrapper.ne("id", role.getId());
+        }
+        int count = roleService.count(roleQueryWrapper);
+        if (count == 0){
+            return new Result<Boolean>().success().put(true);
+        } else{
+            return new Result<Boolean>().success().put(false);
+        }
+    }
+
+    @PostMapping(value = "/key/check")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "校验角色标识是否存在", notes = "校验角色标识是否存在")
+    public Result<Boolean> checkRoleKey(CreateRole role) {
+        String roleKey = role.getRoleKey();
+        QueryWrapper<Role> roleQueryWrapper = new QueryWrapper<>();
+        roleQueryWrapper.eq("role_key", roleKey);
+        if(null != role.getId()) {
+            roleQueryWrapper.ne("id", role.getId());
+        }
+        int count = roleService.count(roleQueryWrapper);
+        if (count == 0){
+            return new Result<Boolean>().success().put(true);
+        } else{
+            return new Result<Boolean>().success().put(false);
+        }
+    }
 }
