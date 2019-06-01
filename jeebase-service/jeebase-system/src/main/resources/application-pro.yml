@@ -1,14 +1,27 @@
 server:
-    session-timeout: 1800
-    #tomcat:
-    #    max-threads: 1000
-    #    min-spare-threads: 30
-    port: 8080
-    uri-encoding: utf-8
+  session-timeout: 1800
+  #tomcat:
+  #    max-threads: 1000
+  #    min-spare-threads: 30
+  port: 8080
+  uri-encoding: utf-8
+system:
+  #注册用户默认密码
+  defaultPwd: 123456
+  #注册用户默认角色ID
+  defaultRoleId: 100
+  #注册用户默认组织机构ID
+  defaultOrgId: 0
+  #不需要数据权限过滤的角色key
+  noDataFilterRole: DATA_NO_FILTER
+  #用户每日收取短信上限
+  smsTimes: 25
+  #不同终端用户的超时时间（web用户3小时，app，微信，小程序时间自己定半年或永久）Long型，后面记得加l
+  expireTime: "{web: 10800000l, app: 15768000000l}"
 controller:
-    #扫描controller中不需要鉴权的method
-    scanPackage:
-        classpath*:com/jeebase/*/*/controller/*.class
+  #扫描controller中不需要鉴权的method
+  scanPackage:
+    classpath*:com/jeebase/*/*/controller/*.class
 logging:
   path: /opt/server/logs
   config: classpath:config/logback-spring.xml
@@ -18,7 +31,7 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1/jeebase?useUnicode=true&characterEncoding=utf8
     username: root
-    password: 此处填写druid加密后的密码
+    password: Ivsq2GcFWRfjqPUP4hhlPWpqJo9C51z3PSCOpI7dSA3OVIkKJ1gjD1uFT7Nj5nUJGrIZH96LkdcaYTLfIjsglw==
     initialSize: 1
     minIdle: 3
     maxActive: 20
@@ -38,104 +51,101 @@ spring:
     # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
     filters: config,stat,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKNspmE6u9YVEt0icqbQhjP+cMzRXUaYz0uLHodyygQkoMzWyl7DlHdE6AhyKN5zmPE9bmAT3zyNM0OObCXP50UCAwEAAQ==
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJWk6iOtnXNdOrO8V/AzG894T1Jmu5izG8gFgeojrdnbYobZPvKwo436H2SZnCbCy1ua7yj63JoBEUhW1OiCbbsCAwEAAQ==
     # 合并多个DruidDataSource的监控数据
     useGlobalDataSourceStat: true
 mybatis-plus:
-    mapper-locations: classpath*:/com/jeebase/*/*/mapper/*Mapper.xml
-    typeAliasesPackage: com.jeebase.*.*.entity
-    global-config:
-        #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
-        id-type: 2
-        #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
-        field-strategy: 2
-        #驼峰下划线转换
-        db-column-underline: true
-        #刷新mapper 调试神器
-        refresh-mapper: true
-        #数据库大写下划线转换
-        #capital-mode: true
-        #逻辑删除配置
-        logic-delete-value: 1
-        logic-not-delete-value: 0
-        sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
-        #公共字段自动填充
-        metaObjectHandler: com.jeebase.common.extend.mybatis.MyMetaObjectHandler
-    configuration:
-        map-underscore-to-camel-case: true
-        cache-enabled: false
+  mapper-locations: classpath*:/com/jeebase/*/*/mapper/*Mapper.xml
+  typeAliasesPackage: com.jeebase.*.*.entity
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 2
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    #数据库大写下划线转换
+    #capital-mode: true
+    #逻辑删除配置
+    logic-delete-value: 1
+    logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
 j2cache:
-    config-location: classpath:config/j2cache.properties
-    open-spring-cache: true
-    j2CacheConfig:
-        serialization: json
+  config-location: classpath:config/j2cache.properties
+  open-spring-cache: true
+  j2CacheConfig:
+    serialization: json
 qiniu:
-    access-key:
-    secret-key:
-    zone: zone0
-    bucket:
-    base-url: http://img.jeebase.com/
+  access-key:
+  secret-key:
+  zone: zone0
+  bucket: mall
+  base-url: http://img.jeebase.com/
 aliyun:
-    AccessKey-ID:
-    Access-Key-Secret:
-    sign-name:
-    reg-code:
+  AccessKey-ID:
+  Access-Key-Secret:
+  sign-name:
+  reg-code:
 restTemplate:
-    #连接池的最大连接数默认为0
-    maxTotalConnect: 0
-    #单个主机的最大连接数
-    maxConnectPerRoute: 200
-    #连接超时默认2s
-    connectTimeout: 2000
-    #读取超时默认30s
-    readTimeout: 30000
+  #连接池的最大连接数默认为0
+  maxTotalConnect: 0
+  #单个主机的最大连接数
+  maxConnectPerRoute: 200
+  #连接超时默认2s
+  connectTimeout: 2000
+  #读取超时默认30s
+  readTimeout: 30000
 weixin:
-    backUrl: http://127.0.0.1:9527/oauth2
-    api.appId:
-    api.secret:
-    #获取access_token的URL,有效期目前为2个小时
-    api.accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appId}&secret={appSecret}
-    #获取openId
-    api.accessWebTokenUrl: https://api.weixin.qq.com/sns/oauth2/access_token?appid={appId}&secret={appSecret}&code={code}&grant_type=authorization_code
-    #获取帐号下所有模板信息
-    api.queryTemplateListUrl: https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token={accessToken}
-    #发送微信模板信息
-    api.sendTemplateMsgUrl: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={accessToken}
-    #获取用户增减数据(最大时间跨度7天)
-    api.queryUserSummaryUrl: https://api.weixin.qq.com/datacube/getusersummary?access_token={accessToken}
-    #获取用户总关注数(最大时间跨度7天)
-    api.queryUserCumulateUrl: https://api.weixin.qq.com/datacube/getusercumulate?access_token={accessToken}
-    #获取jsapi_ticket
-    api.queryJsApiTicketUrl: https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={accessToken}&type=jsapi
-    #获取用户关注列表
-    api.queryAttentionUserList: https://api.weixin.qq.com/cgi-bin/user/get?access_token={accessToken}&next_openid={nextOpenId}
-    #批量获取用户信息
-    api.queryUserInfoList: https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token={accessToken}
-    #小程序ID
-    app.appId:
-    #小程序密钥
-    app.secret:
-    #商户号
-    app.mchId:
-    #支付签名
-    app.paySignKey:
-    #交易类型
-    app.tradeType: JSAPI
-    #证书名称，对应不同的商户号
-    app.certName: /cert/apiclient_cert.p12
-    #获取code的请求地址
-    app.getCode: https://open.weixin.qq.com/connect/oauth2/authorize?appid={appId}&redirect_uri={rediretUri}&response_type=code&scope={scope}&state=STAT#wechat_redirect
-    #小程序登录
-    app.queryUserInfoUrl: https://api.weixin.qq.com/sns/jscode2session?appid={appId}&secret={appSecret}&js_code={code}&grant_type=authorization_code
-    #拉取用户信息的请求地址
-    app.userMessage: https://api.weixin.qq.com/sns/userinfo?access_token={accessToken}&openid={openId}&lang=zh_CN
-    #支付回调地址
-    app.notifyUrl: https://jeebase.com/wechat/api/notify
-    #微信统一下单接口路径
-    app.uniformorder: https://api.mch.weixin.qq.com/pay/unifiedorder
-    #退款地址
-    app.refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
-    #退款查询地址
-    app.refundqueryUrl: https://api.mch.weixin.qq.com/pay/refundquery
-    #微信查询订单状态
-    app.orderquery: https://api.mch.weixin.qq.com/pay/orderquery
+  backUrl: http://127.0.0.1:9527/oauth2
+  api.appId:
+  api.secret:
+  #获取access_token的URL,有效期目前为2个小时
+  api.accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appId}&secret={appSecret}
+  #获取openId
+  api.accessWebTokenUrl: https://api.weixin.qq.com/sns/oauth2/access_token?appid={appId}&secret={appSecret}&code={code}&grant_type=authorization_code
+  #获取帐号下所有模板信息
+  api.queryTemplateListUrl: https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token={accessToken}
+  #发送微信模板信息
+  api.sendTemplateMsgUrl: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={accessToken}
+  #获取用户增减数据(最大时间跨度7天)
+  api.queryUserSummaryUrl: https://api.weixin.qq.com/datacube/getusersummary?access_token={accessToken}
+  #获取用户总关注数(最大时间跨度7天)
+  api.queryUserCumulateUrl: https://api.weixin.qq.com/datacube/getusercumulate?access_token={accessToken}
+  #获取jsapi_ticket
+  api.queryJsApiTicketUrl: https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={accessToken}&type=jsapi
+  #获取用户关注列表
+  api.queryAttentionUserList: https://api.weixin.qq.com/cgi-bin/user/get?access_token={accessToken}&next_openid={nextOpenId}
+  #批量获取用户信息
+  api.queryUserInfoList: https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token={accessToken}
+  #小程序ID
+  app.appId:
+  #小程序密钥
+  app.secret:
+  #商户号
+  app.mchId:
+  #支付签名
+  app.paySignKey:
+  #交易类型
+  app.tradeType: JSAPI
+  #证书名称，对应不同的商户号
+  app.certName: /cert/apiclient_cert.p12
+  #获取code的请求地址
+  app.getCode: https://open.weixin.qq.com/connect/oauth2/authorize?appid={appId}&redirect_uri={rediretUri}&response_type=code&scope={scope}&state=STAT#wechat_redirect
+  #小程序登录
+  app.queryUserInfoUrl: https://api.weixin.qq.com/sns/jscode2session?appid={appId}&secret={appSecret}&js_code={code}&grant_type=authorization_code
+  #拉取用户信息的请求地址
+  app.userMessage: https://api.weixin.qq.com/sns/userinfo?access_token={accessToken}&openid={openId}&lang=zh_CN
+  #支付回调地址
+  app.notifyUrl: https://jeebase.com/wechat/api/notify
+  #微信统一下单接口路径
+  app.uniformorder: https://api.mch.weixin.qq.com/pay/unifiedorder
+  #退款地址
+  app.refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
+  #退款查询地址
+  app.refundqueryUrl: https://api.mch.weixin.qq.com/pay/refundquery
+  #微信查询订单状态
+  app.orderquery: https://api.mch.weixin.qq.com/pay/orderquery

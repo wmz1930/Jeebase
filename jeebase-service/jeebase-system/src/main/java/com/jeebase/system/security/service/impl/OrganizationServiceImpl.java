@@ -41,7 +41,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @Title: queryOrgList
      * @Description: 查询所有的组织结构树
      * @param parentId
-     * @return List<ZTree>
+     * @return List<Organization>
      */
     @Override
     public List<Organization> queryOrgList(Integer parentId) {
@@ -118,9 +118,21 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
     @Override
     public boolean deleteOrganization(Integer organizationId) {
-        QueryWrapper<Organization> wpd = new QueryWrapper<Organization>();
-        wpd.and(e -> e.eq("id", organizationId).or().eq("parent_id", organizationId));
-        boolean result = this.remove(wpd);
+        boolean result = false;
+        if (null == organizationId)
+        {
+            throw new BusinessException("请选择要删除的组织");
+        }
+        List<Organization> orgList = organizationMapper.queryOrganizationTreeProc(organizationId);
+        List<Integer> orgIds = new ArrayList<>();
+        for (Organization org: orgList)
+        {
+            orgIds.add(org.getId());
+        }
+        if (!CollectionUtils.isEmpty(orgIds))
+        {
+            result = this.removeByIds(orgIds);
+        }
         return result;
     }
 }
