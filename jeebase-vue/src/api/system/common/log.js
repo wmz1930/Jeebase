@@ -1,9 +1,0 @@
-import request from '@/utils/request'
-
-export function fetchList(query) {
-  return request({
-    url: '/common/log/list',
-    method: 'get',
-    params: query
-  })
-}
