@@ -33,7 +33,12 @@
 6. jeebase-wechat/jeebase-color  以color为前端框架的微信小程序前端页面代码（因有赞vant的小程序前端框架侵入性太强，故选择ColorUI为前端框架）
 
 #### 项目界面
-
+一、微信小程序界面
+![首页](https://images.gitee.com/uploads/images/2019/0610/220748_d1bd0a59_378796.png "app1.png")
+![分类页](https://images.gitee.com/uploads/images/2019/0610/220814_03879f43_378796.png "app2.png")
+![购物车](https://images.gitee.com/uploads/images/2019/0610/220852_278d4e07_378796.png "app3.png")
+二、微信服务号界面
+三、后台管理界面
 登录
 ![登录](https://images.gitee.com/uploads/images/2019/0202/165652_6b0a5bf7_378796.png "登录.png")
 首页
