@@ -1,0 +1,145 @@
+.page {
+  background: #f1f1f1;
+}
+
+.switch-sex::after {
+  content: "\e716";
+}
+
+.switch-sex::before {
+  content: "\e7a9";
+}
+
+.switch-music::after {
+  content: "\e66a";
+}
+
+.switch-music::before {
+  content: "\e6db";
+}
+
+.swiper_container {
+  background-color: #fff;
+  height: 48rpx;
+  line-height:48rpx;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10rpx;
+}
+.swiper_item {
+  font-size: 24rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cu-bar .action:first-child>text[class*="icon"] {
+  margin-left:0em;
+  margin-right:0em;
+}
+
+.search-bar-top{
+  background: transparent;
+  box-shadow:0 0 0 0 rgba(0, 0, 0, 0.1)!important;
+}
+
+.search-bar-not-top{
+  background: #d4237a;
+  box-shadow:0 0rpx 0rpx rgba(0, 0, 0, 0.1);
+}
+
+.icon-item-img{
+  height:80rpx;
+  width:80rpx!important;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.tag-btn{
+  background:-webkit-linear-gradient(left,#ff8123,#ff4950);
+  background:-o-linear-gradient(right,#ff8123,#ff4950);
+  background:-moz-linear-gradient(right,#ff8123,#ff4950);
+  background:linear-gradient(to right,#ff8123,#ff4950);
+  height:80%;
+  font-size:23rpx;
+  color: #fff;
+  float:left;
+  margin-left:20rpx;
+}
+
+.tag-time-btn{
+  background:-webkit-linear-gradient(left,#333,#333);
+  background:-o-linear-gradient(right,#333,#333);
+  background:-moz-linear-gradient(right,#333,#333);
+  background:linear-gradient(to right,#333,#333);
+  height:90%;
+  font-size:24rpx;
+  color: #fff;
+  float:left;
+  padding:0rpx 6rpx;
+  border-radius: 10rpx;
+}
+
+.icon-item-qiang-img{
+  height:100rpx;
+  width:100rpx!important;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:0rpx!important;
+}
+
+.icon-item-huo-img{
+  height:150rpx;
+  width:150rpx!important;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:0rpx!important;
+}
+
+image[class*="gif-"]{
+  border-radius: 6rpx;
+  display: block;
+}
+
+.gif-black{  
+  mix-blend-mode: screen;  
+}
+.gif-white{  
+  mix-blend-mode: multiply; 
+}
+
+.icon-item-like-img{
+  height:320rpx;
+  width:320rpx!important;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:0rpx!important;
+}
+
+.like-name-text{
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  width:85%;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.like-price-text{
+  width:85%;
+  margin-left:auto;
+  margin-right:auto;
+  display:block;
+  font-size:36rpx;
+  padding:20rpx 0;
+  color: #f40;
+}

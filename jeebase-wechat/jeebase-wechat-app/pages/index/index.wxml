@@ -1,0 +1,277 @@
+<view id="searchBar" class="{{searchBarClass}}" style='height:{{CustomBar}}px;padding-top:{{StatusBar}}px;'>
+  <view class='action' style='color:#fff;font-size:26rpx;'>
+      <text>江苏</text>
+      <text class="icon-triangledownfill"></text>
+    </view>
+  <view class='search-form round' style='background:rgba(255, 255, 255, 0.6);margin:0 20rpx 0 0;width:{{SearchBar}}px;'>
+    <text class="icon-search"></text>
+    <input type="text" placeholder="搜索" confirm-type="search" bindinput='searchIcon' style='height:{{CustomBarHeight}}px;line-height:{{CustomBarHeight}}px;'></input>
+  </view>
+  <view class='margin-xs padding-sm radius' style='width:20%;'></view>
+</view>
+<swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+  <swiper-item>
+    <image src="http://img.jeebase.com/mall_banner_1.jpg" mode='aspectFill'></image>
+  </swiper-item>
+  <swiper-item>
+    <image src="http://img.jeebase.com/mall_banner_2.jpg" mode='aspectFill'></image>
+  </swiper-item>
+  <swiper-item>
+    <image src="http://img.jeebase.com/mall_banner_3.jpg" mode='aspectFill'></image>
+  </swiper-item>
+  <swiper-item>
+    <image src="http://img.jeebase.com/mall_banner_4.jpg" mode='aspectFill'></image>
+  </swiper-item>
+  <swiper-item>
+    <image src="http://img.jeebase.com/mall_banner_5.jpg" mode='aspectFill'></image>
+  </swiper-item>
+</swiper>
+<view class="text-center" style='background:#fff;'>
+  <view class="padding-xl shadow-blur bg-img" style="background-image:url(http://img.jeebase.com/155313026766670285.gif);height:200rpx;"></view>
+</view>
+
+<view class="cu-list grid col-{{gridCol}} {{gridBorder?'':'no-border'}}">
+  <view class="cu-item" wx:for="{{iconList}}" wx:key wx:if="{{index<gridCol*2}}">
+  <image src='{{item.icon}}' class='icon-item-img'></image>
+    <text>{{item.name}}</text>
+  </view>
+</view>
+
+<view class="flex p-xs mb-sm">
+  <view class='padding-xs basis-xs' style='background:#fff;height:48rpx;margin-top:10rpx;margin-bottom:10rpx;padding-left:30rpx;flex-basis:10%;'>
+    <image style="display: inline-block;height:32rpx;width:60rpx;" src="http://img.jeebase.com/kuaibao.jpg" ></image>
+  </view>
+  <view class='basis-xl' style='flex-basis:90%;'>
+    <swiper class="swiper_container" vertical="true" autoplay="true" circular="true" interval="3000">
+      <block wx:for="{{msgList}}">
+        <navigator url="/pages/index/index?title={{item.url}}" open-type="navigate">
+          <swiper-item>
+            <view class='text-sm' style='padding-top:2rpx;'>
+              <view class='cu-tag line-red sm' style='margin-left:10rpx;margin-top:-6rpx;'>新闻</view>
+              <text class='' style='margin-left:10rpx;'>{{item.title}}</text>
+            </view>
+          </swiper-item>
+        </navigator>
+      </block>
+    </swiper>
+  </view>
+</view>
+
+<view class="bg-white">
+    <view class="grid col-2 text-center" style='width:95%;margin-left:auto;margin-right:auto;'>
+      <view class="" style='border-right:1rpx solid #f2f2f2;border-bottom:1rpx solid #f2f2f2;'>
+        <view class="bg-white">
+          <view class="flex flex-wrap">
+            <view class='' style='width:100%;display: flex;align-items:center;margin-top:20rpx;'>
+              <view class="title" style="display:inline-block;float:left;margin-left:20rpx;font-size:32rpx;color:#333;">限时抢购</view>
+              <view class="cu-tag tag-btn round">天天秒杀</view>
+            </view>
+            <view class='' style='width:100%;display: flex;align-items:center;padding-top:5rpx;'>
+              <view class="title" style="display:inline-block;float:left;margin-left:20rpx;color:#999;font-size:24rpx;">20点场 距离下场 </view>
+              <view class="cu-tag tag-time-btn round" style='margin-left:8rpx;'>00</view><span style="margin:0 2rpx;">:</span>
+              <view class="cu-tag tag-time-btn round">35</view><span style="margin:0 2rpx;">:</span>
+              <view class="cu-tag tag-time-btn round">31</view>
+            </view>
+            <view class='bg-grey' style='width:100%;'>
+              <view class="cu-list grid col-3 no-border'" style='padding-top:5rpx!important;'>
+                <view class="cu-item" style='padding:0rpx;' wx:for="{{qiangList}}" wx:key >
+                <image src='{{item.icon}}' class='icon-item-qiang-img'></image>
+                  <text class='{{item.color}}' style='color:#e54d42;'>{{item.name}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="" style='border-bottom:1rpx solid #f2f2f2;'>
+        <view class="bg-white">
+          <view class="flex flex-wrap">
+            <view class='' style='width:100%;display: flex;align-items:center;margin-top:20rpx;'>
+              <view class="title" style="display:inline-block;float:left;margin-left:20rpx;font-size:32rpx;color:#FA4B49;">发现好货</view>
+              <view class="cu-tag tag-btn round">大牌特卖</view>
+            </view>
+            <view class='' style='width:100%;display: flex;align-items:center;padding-top:5rpx;'>
+              <view class="title" style="display:inline-block;float:left;margin-left:20rpx;color:#999;font-size:24rpx;">9:30品牌上新 限时力度加码</view>
+            </view>
+            <view class='bg-grey' style='width:100%;'>
+              <view class="cu-list grid col-2 no-border'" style='padding-top:5rpx!important;'>
+                <view class="cu-item" style='padding:0rpx;' wx:for="{{goodList}}" wx:key >
+                <image src='{{item.icon}}' class='icon-item-qiang-img'></image>
+                  <text class='{{item.color}}'>{{item.name}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="grid col-2 text-center">
+          <view class="" style='border-right:1rpx solid #f2f2f2;'>
+            <view class="bg-white">
+              <view class="flex flex-wrap">
+                <view class='' style='width:100%;display: flex;align-items:center;margin-top:20rpx;'>
+                  <view class="title" style="display:inline-block;float:left;margin-left:20rpx;font-size:32rpx;color:#333;">好货</view>
+                </view>
+                <view class='' style='width:100%;display: flex;align-items:center;padding-top:5rpx;'>
+                  <view class="title" style="display:inline-block;float:left;margin-left:20rpx;color:#999;font-size:24rpx;">有品质好物</view>
+                </view>
+                <view class='bg-grey' style='width:100%;'>
+                  <view class="cu-list grid col-1 no-border'" style='padding-top:5rpx!important;'>
+                    <view class="cu-item" style='padding:0rpx;' >
+                    <image src='http://img.jeebase.com/haohuo.jpg' class='' style='height:160rpx;width:160rpx;'></image>
+                      <text style='position:absolute;bottom:0;text-align:center;width:100%;background: rgba(255,255,255,0.8);'>买点好的</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="" style='border-right:1rpx solid #f2f2f2;'>
+          <view class="bg-white">
+              <view class="flex flex-wrap">
+                <view class='' style='width:100%;display: flex;align-items:center;margin-top:20rpx;'>
+                  <view class="title" style="display:inline-block;float:left;margin-left:20rpx;font-size:32rpx;color:#333;">领券中心</view>
+                </view>
+                <view class='' style='width:100%;display: flex;align-items:center;padding-top:5rpx;'>
+                  <view class="title" style="display:inline-block;float:left;margin-left:20rpx;color:#999;font-size:24rpx;">先领券再购物</view>
+                </view>
+                <view class='bg-grey' style='width:100%;'>
+                  <view class="cu-list grid col-1 no-border'" style='padding-top:5rpx!important;'>
+                    <view class="cu-item" style='padding:0rpx;' >
+                    <image src='http://img.jeebase.com/haowu2.jpg' class='icon-item-huo-img'></image>
+                      <text style='position:absolute;bottom:0;text-align:center;width:100%;background: rgba(255,255,255,0.8);'>2000-100</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+      </view>
+      <view class="">
+        <view class="bg-white">
+          <view class="flex flex-wrap">
+            <view class='' style='width:100%;display: flex;align-items:center;margin-top:20rpx;'>
+              <view class="title" style="display:inline-block;float:left;margin-left:20rpx;font-size:32rpx;color:#FA4B49;">拼购</view>
+              <view class="cu-tag tag-btn round">9.9元拼</view>
+            </view>
+            <view class='' style='width:100%;display: flex;align-items:center;padding-top:5rpx;'>
+              <view class="title" style="display:inline-block;float:left;margin-left:20rpx;color:#999;font-size:24rpx;">2人拼更实惠 全场包邮</view>
+            </view>
+            <view class='bg-grey' style='width:100%;'>
+              <view class="cu-list grid col-2 no-border'" style='padding-top:5rpx!important;'>
+                <view class="cu-item" style='padding:0rpx;' wx:for="{{tuanList}}" wx:key >
+                <image src='{{item.icon}}' class='icon-item-huo-img' style='height:160rpx;width:160rpx;'></image>
+                  <text class='{{item.color}}' style='position:absolute;bottom:0;text-align:center;width:100%;background: rgba(255,255,255,0.8);'>{{item.name}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+</view>
+
+<swiper autoplay="true" interval="5000" duration="500" style='height:210rpx;margin-top:10rpx;'>
+    <swiper-item>
+      <view style='background-color:#F8F8FF;height:190rpx;width:95%;margin-left:auto;margin-right:auto;border-radius:8rpx;'>
+        <image style='width:100%;height:200rpx;border-radius:8rpx;' src='http://img.baowanyi.com/155410475405616163.jpg'></image>
+      </view>
+    </swiper-item>
+    <swiper-item>
+      <view style='background-color:#F8F8FF;height:190rpx;width:95%;margin-left:auto;margin-right:auto;border-radius:8rpx;'>
+        <image style='width:100%;height:200rpx;border-radius:8rpx;' src='http://img.baowanyi.com/155411169836495214.jpg'></image>
+      </view>
+    </swiper-item>
+    <swiper-item>
+      <view style='background-color:#F8F8FF;height:190rpx;width:95%;margin-left:auto;margin-right:auto;border-radius:8rpx;'>
+        <image style='width:100%;height:200rpx;border-radius:8rpx;' src='http://img.baowanyi.com/155410622096563514%20.jpg'></image>
+      </view>
+    </swiper-item>
+</swiper>
+
+<view class="margin radius shadow-blur" style='height:60rpx'>
+  <image src='http://img.jeebase.com/cainixihuan.png' mode='scaleToFill' class='gif-black response' style='height:60rpx;'></image>
+</view>
+<view class="margin flex">
+  <view class='bg-white flex-sub radius' style='margin-right:10rpx;'>
+     <view class="cu-item" style='padding:0rpx;box-shadow:1rpx 10rpx 10rpx 0rpx rgba(0, 0, 0, 0.07);' >
+        <image src='https://imgservice.suning.cn/uimg1/b2c/image/27eu0c83hw8y5E38W0R6hw.jpg' class='icon-item-like-img'></image>
+        <text class='like-name-text'><text class="cu-tag tag-btn round" style='margin-left:0rpx;padding:4rpx 16rpx;'>自营</text> <text style='margin-left:10rpx;'>伊赛(yisai) 牛肉亲亲肠*1袋装 240g 国产生鲜牛肉 火锅烧烤食材</text> </text>
+        <text class='text-price text-red like-price-text'> 5.9 </text>
+     </view>
+  </view>
+  <view class='bg-white flex-sub radius'>
+   <view class="cu-item" style='padding:0rpx;box-shadow:1rpx 10rpx 10rpx 0rpx rgba(0, 0, 0, 0.07);' >
+        <image src='https://imgservice.suning.cn/uimg1/b2c/image/YHlOo2RkMW82ffEonAdbdg.jpg' class='icon-item-like-img'></image>
+        <text class='like-name-text'><text class="cu-tag tag-btn round" style='margin-left:0rpx;padding:4rpx 16rpx;'>自营</text> <text style='margin-left:10rpx;'>伊赛(yisai) 牛肉亲亲肠*1袋装 240g 国产生鲜牛肉 火锅烧烤食材</text> </text>
+        <text class='text-price text-red like-price-text'> 5.9 </text>
+     </view>
+  </view>
+</view>
+<view class="margin flex">
+  <view class='bg-white flex-sub radius' style='margin-right:10rpx;'>
+     <view class="cu-item" style='padding:0rpx;box-shadow:1rpx 10rpx 10rpx 0rpx rgba(0, 0, 0, 0.07);' >
+        <image src='https://imgservice.suning.cn/uimg1/b2c/image/27eu0c83hw8y5E38W0R6hw.jpg' class='icon-item-like-img'></image>
+        <text class='like-name-text'><text class="cu-tag tag-btn round" style='margin-left:0rpx;padding:4rpx 16rpx;'>自营</text> <text style='margin-left:10rpx;'>伊赛(yisai) 牛肉亲亲肠*1袋装 240g 国产生鲜牛肉 火锅烧烤食材</text> </text>
+        <text class='text-price text-red like-price-text'> 5.9 </text>
+     </view>
+  </view>
+  <view class='bg-white flex-sub radius'>
+   <view class="cu-item" style='padding:0rpx;box-shadow:1rpx 10rpx 10rpx 0rpx rgba(0, 0, 0, 0.07);' >
+        <image src='https://imgservice.suning.cn/uimg1/b2c/image/27eu0c83hw8y5E38W0R6hw.jpg' class='icon-item-like-img'></image>
+        <text class='like-name-text'><text class="cu-tag tag-btn round" style='margin-left:0rpx;padding:4rpx 16rpx;'>自营</text> <text style='margin-left:10rpx;'>伊赛(yisai) 牛肉亲亲肠*1袋装 240g 国产生鲜牛肉 火锅烧烤食材</text> </text>
+        <text class='text-price text-red like-price-text'> 5.9 </text>
+     </view>
+  </view>
+</view>
+<view class="margin flex">
+  <view class='bg-white flex-sub radius' style='margin-right:10rpx;'>
+     <view class="cu-item" style='padding:0rpx;box-shadow:1rpx 10rpx 10rpx 0rpx rgba(0, 0, 0, 0.07);' >
+        <image src='https://imgservice.suning.cn/uimg1/b2c/image/27eu0c83hw8y5E38W0R6hw.jpg' class='icon-item-like-img'></image>
+        <text class='like-name-text'><text class="cu-tag tag-btn round" style='margin-left:0rpx;padding:4rpx 16rpx;'>自营</text> <text style='margin-left:10rpx;'>伊赛(yisai) 牛肉亲亲肠*1袋装 240g 国产生鲜牛肉 火锅烧烤食材</text> </text>
+        <text class='text-price text-red like-price-text'> 5.9 </text>
+     </view>
+  </view>
+  <view class='bg-white flex-sub radius'>
+   <view class="cu-item" style='padding:0rpx;box-shadow:1rpx 10rpx 10rpx 0rpx rgba(0, 0, 0, 0.07);' >
+        <image src='https://imgservice.suning.cn/uimg1/b2c/image/27eu0c83hw8y5E38W0R6hw.jpg' class='icon-item-like-img'></image>
+        <text class='like-name-text'><text class="cu-tag tag-btn round" style='margin-left:0rpx;padding:4rpx 16rpx;'>自营</text> <text style='margin-left:10rpx;'>伊赛(yisai) 牛肉亲亲肠*1袋装 240g 国产生鲜牛肉 火锅烧烤食材</text> </text>
+        <text class='text-price text-red like-price-text'> 5.9 </text>
+     </view>
+  </view>
+</view>
+<view class="margin flex">
+  <view class='bg-white flex-sub radius' style='margin-right:10rpx;'>
+     <view class="cu-item" style='padding:0rpx;box-shadow:1rpx 10rpx 10rpx 0rpx rgba(0, 0, 0, 0.07);' >
+        <image src='https://imgservice.suning.cn/uimg1/b2c/image/27eu0c83hw8y5E38W0R6hw.jpg' class='icon-item-like-img'></image>
+        <text class='like-name-text'><text class="cu-tag tag-btn round" style='margin-left:0rpx;padding:4rpx 16rpx;'>自营</text> <text style='margin-left:10rpx;'>伊赛(yisai) 牛肉亲亲肠*1袋装 240g 国产生鲜牛肉 火锅烧烤食材</text> </text>
+        <text class='text-price text-red like-price-text'> 5.9 </text>
+     </view>
+  </view>
+  <view class='bg-white flex-sub radius'>
+   <view class="cu-item" style='padding:0rpx;box-shadow:1rpx 10rpx 10rpx 0rpx rgba(0, 0, 0, 0.07);' >
+        <image src='https://imgservice.suning.cn/uimg1/b2c/image/27eu0c83hw8y5E38W0R6hw.jpg' class='icon-item-like-img'></image>
+        <text class='like-name-text'><text class="cu-tag tag-btn round" style='margin-left:0rpx;padding:4rpx 16rpx;'>自营</text> <text style='margin-left:10rpx;'>伊赛(yisai) 牛肉亲亲肠*1袋装 240g 国产生鲜牛肉 火锅烧烤食材</text> </text>
+        <text class='text-price text-red like-price-text'> 5.9 </text>
+     </view>
+  </view>
+</view>
+<view class="margin flex">
+  <view class='bg-white flex-sub radius' style='margin-right:10rpx;'>
+     <view class="cu-item" style='padding:0rpx;box-shadow:1rpx 10rpx 10rpx 0rpx rgba(0, 0, 0, 0.07);' >
+        <image src='https://imgservice.suning.cn/uimg1/b2c/image/27eu0c83hw8y5E38W0R6hw.jpg' class='icon-item-like-img'></image>
+        <text class='like-name-text'><text class="cu-tag tag-btn round" style='margin-left:0rpx;padding:4rpx 16rpx;'>自营</text> <text style='margin-left:10rpx;'>伊赛(yisai) 牛肉亲亲肠*1袋装 240g 国产生鲜牛肉 火锅烧烤食材</text> </text>
+        <text class='text-price text-red like-price-text'> 5.9 </text>
+     </view>
+  </view>
+  <view class='bg-white flex-sub radius'>
+   <view class="cu-item" style='padding:0rpx;box-shadow:1rpx 10rpx 10rpx 0rpx rgba(0, 0, 0, 0.07);' >
+        <image src='https://imgservice.suning.cn/uimg1/b2c/image/27eu0c83hw8y5E38W0R6hw.jpg' class='icon-item-like-img'></image>
+        <text class='like-name-text'><text class="cu-tag tag-btn round" style='margin-left:0rpx;padding:4rpx 16rpx;'>自营</text> <text style='margin-left:10rpx;'>伊赛(yisai) 牛肉亲亲肠*1袋装 240g 国产生鲜牛肉 火锅烧烤食材</text> </text>
+        <text class='text-price text-red like-price-text'> 5.9 </text>
+     </view>
+  </view>
+</view>
+
+
+
+

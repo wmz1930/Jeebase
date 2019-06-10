@@ -1,0 +1,54 @@
+<view class='cu-custom'>
+  <view class="cu-bar fixed bg-shadeTop" style="height:{{CustomBar}}px;padding-top:{{StatusBar}}px;background: #d4237a;box-shadow:0 0rpx 0rpx rgba(0, 0, 0, 0.1);">
+      <!--
+      <navigator class='action' open-type="navigateBack" delta="1" hover-class="none">
+      <text class='icon-back'></text> 返回
+      </navigator>-->
+    <view class='content' style='top:{{StatusBar}}px;'>购物车</view>
+  </view>
+</view>
+<view style='background:#fff;padding-top:63px;padding-bottom:100rpx;position:relative;'>
+<view class="cu-list menu menu-avatar shadow" style='width:96%;margin-left:auto;margin-right:auto;margin-top:20rpx;border-radius:8rpx;'>
+  <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}} bg-white" wx:for="{{8}}" wx:key bindtouchstart='ListTouchStart' bindtouchmove='ListTouchMove' bindtouchend='ListTouchEnd' data-target="move-box-{{index}}" style='height:90px;margin:0rpx 0;'>
+    <view class='action' style='position:absolute;left:20rpx;'>
+      <checkbox class='round red' style='zoom:70%;display:inline-block;'></checkbox>
+    </view>
+    <view class="cu-avatar lg" style="background-image:url(https://image.weilanwl.com/img/square-{{index+1}}.jpg);position:relative;width:120rpx;height:120rpx;"></view>
+    <view class='content' style='padding-right:20rpx;'>
+      <view class='text-grey' class='product-title' style='position:relative;left:50rpx;line-height:1.2em;font-size:30rpx;margin-top:15rpx;'>官方正品】捞派(LAOPAI)海底捞海底捞上汤三鲜火锅底料200g/袋装 调味品 调味料 火锅底料(配料 </view>
+      <view class='text-gray text-sm product-desc' style='position:relative;left:50rpx;font-size:26rpx;'>
+         重量：0.226kg 系列:上汤三鲜火锅
+      </view>
+       <view class='text-gray text-sm product-desc' style='position:relative;left:50rpx;'>
+        <text class='text-red' style='font-size:30rpx;'> ￥25.00</text>
+        <view class='stepper'>
+          <button class='cu-btn stepper_minus' style=''><text class='icon-move lg'></text></button>
+          <input placeholder="" class='cu-btn stepper_input' name='input' value='1'></input>
+          <button class='cu-btn stepper_plus'><text class='icon-add lg'></text></button>
+        </view>
+      </view>
+    </view>
+    <!--
+    <view class='action'>
+      <view class='text-grey text-xs'>22:20</view>
+      <view class="cu-tag round bg-grey sm">5</view>
+    </view>-->
+    <view class='move'>
+      <view class="bg-red">删除</view>
+    </view>
+  </view>
+</view>
+</view>
+<view class="cu-bar tabbar bg-white margin-top" style='position:fixed;bottom:0;width:100%;font-size:25rpx;padding-left:2%;'>
+  <view class='action' style='flex:0.5;text-align:left;'>
+    <checkbox class='round red' style='zoom:70%;display:inline-block;left:20rpx;'></checkbox>
+  </view>
+  <view class='action' style='flex:0.5;text-align:left;'>
+    <span style='display:inline-block;'>全选</span>
+  </view>
+  <view class='action' style='flex:3;'>
+    <span style='margin-left:5px;display:block;text-align:right;margin-right:10px;'>合计:<span style='color:red;font-size:15px;font-weight:600;'>￥3065.00</span></span>
+    <span style='margin-left:5px;text-align:right;margin-right:10px;display:block;margin-top:5px;'>运费:￥5.00 已优惠:￥25.00</span>
+  </view>
+  <view class='bg-red submit'style='flex:1.6;font-size:35rpx;'>去结算(1)</view>
+</view>

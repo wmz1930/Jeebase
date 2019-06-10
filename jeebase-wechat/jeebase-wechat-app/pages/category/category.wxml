@@ -1,0 +1,54 @@
+<view class='cu-custom'>
+  <view class="cu-bar fixed bg-shadeTop" style="height:{{CustomBar}}px;padding-top:{{StatusBar}}px;background: #d4237a;box-shadow:0 0rpx 0rpx rgba(0, 0, 0, 0.1);">
+      <!--
+      <navigator class='action' open-type="navigateBack" delta="1" hover-class="none">
+      <text class='icon-back'></text> 返回
+      </navigator>-->
+    <view class='content' style='top:{{StatusBar}}px;'>分类</view>
+  </view>
+</view>
+<!--
+<swiper class="screen-swiper round-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+  <swiper-item wx:for="{{4}}" wx:key>
+    <image src="https://image.weilanwl.com/img/4x3-{{index+1}}.jpg" mode='aspectFill'></image>
+  </swiper-item>
+</swiper>-->
+<view class="VerticalBox" style='margin-top:{{CustomBar}}px;'>
+  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 130rpx)">
+    <view class="cu-item {{index==TabCur?'tab-category-selected cur':''}}" wx:for="{{categoryList}}" wx:key bindtap='tabSelect' data-id="{{index}}">
+      {{item}}
+    </view>
+  </scroll-view>
+  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 130rpx);margin-top:30rpx;" scroll-into-view="main-id-{{TabCur}}" bindscroll="VerticalMain">
+    <view class="" wx:for="{{20}}" wx:key id="main-id-{{index}}" style='padding-left:4rpx;min-height:calc(100vh - 130rpx);'>
+        <swiper autoplay="true" interval="5000" duration="500" style='height:210rpx;'>
+            <swiper-item>
+              <view style='background-color:#F8F8FF;height:190rpx;width:95%;margin-left:auto;margin-right:auto;border-radius:8rpx;'>
+                <image style='width:100%;height:200rpx;border-radius:8rpx;' src='http://img.baowanyi.com/155410475405616163.jpg'></image>
+              </view>
+            </swiper-item>
+            <swiper-item>
+              <view style='background-color:#F8F8FF;height:190rpx;width:95%;margin-left:auto;margin-right:auto;border-radius:8rpx;'>
+                <image style='width:100%;height:200rpx;border-radius:8rpx;' src='http://img.baowanyi.com/155411169836495214.jpg'></image>
+              </view>
+            </swiper-item>
+            <swiper-item>
+              <view style='background-color:#F8F8FF;height:190rpx;width:95%;margin-left:auto;margin-right:auto;border-radius:8rpx;'>
+                <image style='width:100%;height:200rpx;border-radius:8rpx;' src='http://img.baowanyi.com/155410622096563514%20.jpg'></image>
+              </view>
+            </swiper-item>
+        </swiper>
+     
+      <view class="cu-list grid col-{{gridCol}} {{gridBorder?'':'no-border'}}">
+        <view class="cu-item" wx:for="{{iconList}}" wx:key>
+        <image src='{{item.icon}}' class='icon-item-img'></image>
+          <text>{{item.name}}</text>
+        </view>
+        <view class="cu-item" wx:for="{{iconList}}" wx:key>
+        <image src='{{item.icon}}' class='icon-item-img'></image>
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
