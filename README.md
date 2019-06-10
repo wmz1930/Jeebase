@@ -34,10 +34,15 @@
 
 #### 项目界面
 一、微信小程序界面
-![首页](https://images.gitee.com/uploads/images/2019/0610/220748_d1bd0a59_378796.png "app1.png")
-![分类页](https://images.gitee.com/uploads/images/2019/0610/220814_03879f43_378796.png "app2.png")
-![购物车](https://images.gitee.com/uploads/images/2019/0610/220852_278d4e07_378796.png "app3.png")
+<br/>
+![首页](https://images.gitee.com/uploads/images/2019/0610/221146_aca3f012_378796.png "app1.png")
+<br>
+![分类页](https://images.gitee.com/uploads/images/2019/0610/221213_c83ab426_378796.png "app2.png")
+<br/>
+![购物车](https://images.gitee.com/uploads/images/2019/0610/221239_8d46930a_378796.png "app3.png")
+<br/>
 二、微信服务号界面
+<br>
 三、后台管理界面
 登录
 ![登录](https://images.gitee.com/uploads/images/2019/0202/165652_6b0a5bf7_378796.png "登录.png")
