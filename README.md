@@ -36,12 +36,15 @@
 一、微信小程序界面
 <br/>
 首页
+<br>
 ![首页](https://images.gitee.com/uploads/images/2019/0611/210043_96850bbe_378796.png "1.png")
 <br>
 商品分类页
+<br>
 ![分类页](https://images.gitee.com/uploads/images/2019/0611/210120_52a5640c_378796.png "2.png")
 <br/>
 购物车
+<br>
 ![购物车](https://images.gitee.com/uploads/images/2019/0611/210145_69a32841_378796.png "3.png")
 <br/>
 二、微信服务号界面
