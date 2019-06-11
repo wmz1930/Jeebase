@@ -49,6 +49,10 @@
 <br/>
 二、微信服务号界面
 <br>
+首页
+<br>
+![首页](https://images.gitee.com/uploads/images/2019/0611/215848_ef0773ba_378796.png "1.png")
+<br>
 三、后台管理界面
 登录
 ![登录](https://images.gitee.com/uploads/images/2019/0202/165652_6b0a5bf7_378796.png "登录.png")
