@@ -1,19 +1,36 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 测试环境
-Source Server Version : 50711
-Source Host           : 127.0.0.1:3306
+Source Server         : 本地数据库
+Source Server Version : 50722
+Source Host           : localhost:3306
 Source Database       : jeebase
 
 Target Server Type    : MYSQL
-Target Server Version : 50711
+Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2019-02-02 18:17:59
+Date: 2019-07-02 20:30:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for t_sys_data_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sys_data_permission`;
+CREATE TABLE `t_sys_data_permission` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `USER_ID` int(11) NOT NULL,
+  `ORGANIZATION_ID` int(11) NOT NULL,
+  `CREATE_TIME` datetime DEFAULT NULL,
+  `CREATOR` int(11) DEFAULT NULL,
+  `UPDATE_TIME` datetime DEFAULT NULL,
+  `OPERATOR` int(11) DEFAULT NULL,
+  `DEL_FLAG` char(1) DEFAULT '0' COMMENT '1:删除 0:不删除',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------
 -- Table structure for t_sys_dict
@@ -3655,11 +3672,7 @@ CREATE TABLE `t_sys_log` (
   `operator` int(11) DEFAULT NULL COMMENT '更新者',
   `del_flag` char(1) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '1:删除 0:不删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of t_sys_log
--- ----------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for t_sys_organization
@@ -3691,7 +3704,8 @@ CREATE TABLE `t_sys_organization` (
 -- ----------------------------
 -- Records of t_sys_organization
 -- ----------------------------
-INSERT INTO `t_sys_organization` VALUES ('1', '0', '1', '有限公司', '0001', '1', '1', '1', null, null, null, null, '有限公司', '2018-08-26 10:40:49', '1', '2017-05-31 14:09:40', '1', '1');
+INSERT INTO `t_sys_organization` VALUES ('1', '0', '1', '有限公司', '0001', '11', '1', '1', '140000', '140400', '140421', '111111', '有限公司', '2018-08-26 10:40:49', '1', '2019-02-25 21:32:41', '1', '0');
+
 
 -- ----------------------------
 -- Table structure for t_sys_organization_role
@@ -3735,6 +3749,7 @@ CREATE TABLE `t_sys_organization_user` (
 -- ----------------------------
 INSERT INTO `t_sys_organization_user` VALUES ('1', '1', '1', '2016-05-27 10:45:17', '1', null, null, '0');
 
+
 -- ----------------------------
 -- Table structure for t_sys_resource
 -- ----------------------------
@@ -3751,6 +3766,7 @@ CREATE TABLE `t_sys_resource` (
   `resource_level` int(11) DEFAULT NULL,
   `resource_show` tinyint(1) DEFAULT NULL COMMENT '是否显示',
   `resource_cache` tinyint(1) DEFAULT NULL COMMENT '是否缓存',
+  `resource_page_name` varchar(32) DEFAULT NULL COMMENT '1、模块 2、菜单 3、按钮 4、链接',
   `description` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `creator` int(11) DEFAULT NULL,
@@ -3765,19 +3781,19 @@ CREATE TABLE `t_sys_resource` (
 -- ----------------------------
 -- Records of t_sys_resource
 -- ----------------------------
-INSERT INTO `t_sys_resource` VALUES ('1', '基础系统管理', '0', 'system:mgr', '1', 'xitongguanli', 'system', 'system', '1000', '1', '1', '基础系统管理', '2016-04-22 10:43:19', '1', '2018-11-10 11:18:54', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('2', '系统管理', '1', 'system:cfg', '2', 'xitongguanli', 'system', 'Layout', '1000', '1', '1', '配置管理', '2016-04-22 10:43:19', '1', '2018-11-10 11:19:02', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('3', '权限管理', '2', 'system:permission', '2', 'quanxianguanli', 'permission', 'nested', '1', '1', '1', '权限管理', '2016-04-22 10:43:19', '1', '2018-11-02 14:48:15', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('4', '用户管理', '3', 'userTable', '2', 'yonghuguanli', 'userTable', 'system/user/userTable', '1', '1', '1', '用户管理菜单', '2016-04-22 10:43:19', '1', '2018-11-02 14:48:42', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('5', '角色管理', '3', 'roleTable', '2', 'jiaoseguanli', 'roleTable', 'system/role/roleTable', '2', '1', '1', '角色管理', '2016-04-22 10:43:19', '1', '2018-11-02 14:50:45', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('6', '资源管理', '3', 'resourceTable', '2', 'quanxianguanli', 'resourceTable', 'system/resource/resourceTable', '3', '1', '1', '资源管理', '2016-04-22 10:43:19', '1', '2018-11-02 14:50:54', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('7', '组织管理', '3', 'organizationTable', '2', 'zuzhiguanli', 'organizationTable', 'system/organization/organizationTable', '4', '1', '1', '组织管理', '2016-04-22 10:43:19', '1', '2018-11-02 14:50:06', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('8', '基础配置', '2', 'system:base:cfg', '2', 'jichupeizhi', 'systemBase', 'nested', '2', '1', '1', '系统配置', '2016-04-22 11:03:14', '1', '2018-11-10 10:17:11', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('9', '数据字典', '8', 'system:config:dict', '2', 'shujuzidian', 'dictTable', 'system/common/dict/dictTable', '1', '1', '1', '数据字典', '2018-10-27 17:53:49', '1', '2018-11-02 14:52:20', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('10', '定时任务', '8', 'system:task', '2', 'timingtask', 'https://github.com/xuxueli/xxl-job', 'system/task', '1', '1', '1', '', '2018-10-27 19:09:06', '1', '2018-11-02 14:52:38', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('11', '日志管理', '2', 'system:log:mgr', '2', 'rizhiguanli', 'system/log', 'nested', '3', '1', '1', '', '2018-10-27 17:37:17', '1', '2018-11-10 10:17:18', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('12', '操作日志', '11', 'system:log:operation', '2', 'caozuorizhi', 'logTable', 'system/common/log/logTable', '1', '1', '1', '管理员操作日志，只记录重要关键日志，请勿频繁记录，系统运行日志记录到log文件。', '2018-10-27 17:39:33', '1', '2018-11-02 14:53:30', '1', '0');
-INSERT INTO `t_sys_resource` VALUES ('13', '系统日志', '11', 'system:log:run', '2', 'xitongrizhi', 'https://my.oschina.net/feinik/blog/1580625', 'system', '2', '1', '1', '运行日志使用ELK', '2018-10-27 17:40:14', '1', '2018-11-02 14:53:38', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('1', '基础系统管理', '0', 'system:mgr', '1', 'xitongguanli', 'system', 'system', '1000', '1', '1', null, '基础系统管理', '2016-04-22 10:43:19', '1', '2018-11-10 11:18:54', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('2', '系统管理', '1', 'system:cfg', '2', 'xitongguanli', 'system', 'Layout', '1000', '1', '1', null, '配置管理', '2016-04-22 10:43:19', '1', '2018-11-10 11:19:02', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('3', '权限管理', '2', 'system:permission', '2', 'quanxianguanli', 'permission', 'nested', '1', '1', '1', null, '权限管理', '2016-04-22 10:43:19', '1', '2018-11-02 14:48:15', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('4', '用户管理', '3', 'userTable', '2', 'yonghuguanli', 'userTable', 'system/user/userTable', '1', '1', '1', 'userTable', '用户管理菜单', '2016-04-22 10:43:19', '1', '2018-11-02 14:48:42', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('5', '角色管理', '3', 'roleTable', '2', 'jiaoseguanli', 'roleTable', 'system/role/roleTable', '2', '1', '1', 'roleTable', '角色管理', '2016-04-22 10:43:19', '1', '2018-11-02 14:50:45', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('6', '资源管理', '3', 'resourceTable', '2', 'quanxianguanli', 'resourceTable', 'system/resource/resourceTable', '3', '1', '1', 'resourceTable', '资源管理', '2016-04-22 10:43:19', '1', '2018-11-02 14:50:54', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('7', '组织管理', '3', 'organizationTable', '2', 'zuzhiguanli', 'organizationTable', 'system/organization/organizationTable', '4', '1', '1', 'organizationTable', '组织管理', '2016-04-22 10:43:19', '1', '2018-11-02 14:50:06', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('8', '基础配置', '2', 'system:base:cfg', '2', 'jichupeizhi', 'systemBase', 'nested', '2', '1', '1', 'systemBase', '系统配置', '2016-04-22 11:03:14', '1', '2018-11-10 10:17:11', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('9', '数据字典', '8', 'system:config:dict', '2', 'shujuzidian', 'dictTable', 'system/common/dict/dictTable', '1', '1', '1', 'dictTable', '数据字典', '2018-10-27 17:53:49', '1', '2018-11-02 14:52:20', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('10', '定时任务', '8', 'system:task', '2', 'timingtask', 'https://github.com/xuxueli/xxl-job', 'system/task', '1', '1', '1', null, '', '2018-10-27 19:09:06', '1', '2018-11-02 14:52:38', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('11', '日志管理', '2', 'system:log:mgr', '2', 'rizhiguanli', 'system/log', 'nested', '3', '1', '1', null, '', '2018-10-27 17:37:17', '1', '2018-11-10 10:17:18', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('12', '操作日志', '11', 'system:log:operation', '2', 'caozuorizhi', 'logTable', 'system/common/log/logTable', '1', '1', '1', 'logTable', '管理员操作日志，只记录重要关键日志，请勿频繁记录，系统运行日志记录到log文件。', '2018-10-27 17:39:33', '1', '2018-11-02 14:53:30', '1', '0');
+INSERT INTO `t_sys_resource` VALUES ('13', '系统日志', '11', 'system:log:run', '2', 'xitongrizhi', 'https://my.oschina.net/feinik/blog/1580625', 'system', '2', '1', '1', null, '运行日志使用ELK', '2018-10-27 17:40:14', '1', '2018-11-02 14:53:38', '1', '0');
 
 -- ----------------------------
 -- Table structure for t_sys_role
@@ -3798,7 +3814,7 @@ CREATE TABLE `t_sys_role` (
   `DEL_FLAG` char(1) DEFAULT '0' COMMENT '1:删除 0:不删除',
   PRIMARY KEY (`ID`),
   KEY `INDEX_ROLE_NAME` (`ROLE_NAME`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 -- ----------------------------
 -- Records of t_sys_role
@@ -3806,6 +3822,7 @@ CREATE TABLE `t_sys_role` (
 INSERT INTO `t_sys_role` VALUES ('1', '0', '超级管理员', 'SPADMIN', '1', '0', '保留，不启用', '2016-07-01 11:30:31', '1', '2018-07-30 09:36:44', '1', '0');
 INSERT INTO `t_sys_role` VALUES ('2', '0', '系统管理员', 'SYSADMIN', '2', '1', '管理系统权限资源等后台用户', '2016-07-01 11:30:28', '1', '2018-06-11 17:46:09', '1', '0');
 INSERT INTO `t_sys_role` VALUES ('3', '0', '业务管理员', 'BUSINESS_ADMIN', '3', '1', '管理业务相关系统操作', '2016-07-01 11:27:48', '1', '2018-05-27 16:10:08', '1', '0');
+INSERT INTO `t_sys_role` VALUES ('4', '0', '注册用户', 'WECHAT_MEMBER', '4', '1', '管理业务相关系统操作', '2016-07-01 11:27:48', '1', '2018-05-27 16:10:08', '1', '0');
 
 -- ----------------------------
 -- Table structure for t_sys_role_resource
@@ -3883,7 +3900,7 @@ CREATE TABLE `t_sys_user` (
 -- ----------------------------
 -- Records of t_sys_user
 -- ----------------------------
-INSERT INTO `t_sys_user` VALUES ('1', 'admin', '管理员', '管理员', '1', 'jeebase@jeebase.com', '15888888888', '$2a$10$p958Z5A5Mx8t3IqW20ZJM..xRi.IAnWHWH71CRv6HWvy4MxKL9E3q', '1', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', '320000', '320100', '320104', null, '系统管理员', '2018-05-19 17:55:36', '1', '2019-02-02 17:31:17', '1', '0');
+INSERT INTO `t_sys_user` VALUES ('1', 'admin', '管理员', '管理员', '1', 'jeebase@jeebase.com', '15888888888', '$2a$10$p958Z5A5Mx8t3IqW20ZJM..xRi.IAnWHWH71CRv6HWvy4MxKL9E3q', '1', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', '320000', '320100', '320104', null, '系统管理员', '2018-05-19 17:55:36', '1', '2019-04-21 19:50:47', '1', '0');
 
 -- ----------------------------
 -- Table structure for t_sys_user_info
@@ -3936,6 +3953,69 @@ CREATE TABLE `t_sys_user_role` (
 -- Records of t_sys_user_role
 -- ----------------------------
 INSERT INTO `t_sys_user_role` VALUES ('1', '1', '2', '2018-09-17 16:49:16', '1', '2018-09-17 16:49:19', '1', '0');
+
+
+-- ----------------------------
+-- Table structure for t_sys_wechat
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sys_wechat`;
+CREATE TABLE `t_sys_wechat` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `openid` varchar(64) NOT NULL,
+  `nickname` varchar(255) DEFAULT NULL,
+  `sex` int(1) DEFAULT NULL,
+  `province` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `headimgurl` varchar(255) DEFAULT NULL,
+  `privilege` varchar(255) DEFAULT NULL,
+  `unionid` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` int(11) DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime DEFAULT NULL COMMENT '最后修改时间',
+  `operator` int(11) DEFAULT NULL COMMENT '最后修改人',
+  `del_flag` char(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for t_sys_wechat_member
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sys_wechat_member`;
+CREATE TABLE `t_sys_wechat_member` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(11) DEFAULT NULL COMMENT '系统用户表用户ID',
+  `parent_id` int(11) DEFAULT '0' COMMENT '上级ID',
+  `wechat_open_id` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '小程序用户openid',
+  `wechat_platform_open_id` varchar(64) CHARACTER SET utf8 DEFAULT '' COMMENT '公众号用户openid',
+  `wechat_union_id` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '微信用户union id',
+  `nickname` varchar(255) DEFAULT '' COMMENT '昵称',
+  `realname` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '真实姓名',
+  `telephone` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '固定电话',
+  `user_type` smallint(1) DEFAULT '1' COMMENT '用户类型1、普通用户',
+  `avatar_url` longtext CHARACTER SET utf8 COMMENT '头像url',
+  `member_points` int(11) DEFAULT '60' COMMENT '会员积分',
+  `contry` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '国家',
+  `province` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '省',
+  `city` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '市',
+  `area` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '区',
+  `contact_address` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '联系地址',
+  `gender` int(1) DEFAULT NULL COMMENT '性别',
+  `birthday` datetime DEFAULT NULL COMMENT '出生日期',
+  `remember` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否记住密码',
+  `register_time` datetime DEFAULT NULL COMMENT '注册日期',
+  `register_ip` varchar(45) CHARACTER SET utf8 DEFAULT NULL COMMENT '注册ip',
+  `last_login_time` datetime DEFAULT NULL COMMENT '最后登录日期',
+  `last_login_ip` varchar(45) CHARACTER SET utf8 DEFAULT NULL COMMENT '最后登录ip',
+  `comments` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '备注',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` int(11) DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime DEFAULT NULL COMMENT '最后修改时间',
+  `operator` int(11) DEFAULT NULL COMMENT '最后修改人',
+  `del_flag` char(1) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='微信注册会员表';
+
 
 -- ----------------------------
 -- Procedure structure for curDictList
@@ -4102,7 +4182,7 @@ DELETE FROM tmp_Organization_list;
 
 CALL curOrganizationList (rootId, 0, 0);
 
-SELECT A.SNO,A.RID,A.DEPTH,A.IS_LEAF,B.ID,B.ORGANIZATION_NAME,B.ORGANIZATION_TYPE,B.ORGANIZATION_KEY,B.ORGANIZATION_ICON,
+SELECT A.SNO,A.RID,A.DEPTH,A.IS_LEAF,B.ID,B.ORGANIZATION_NAME,B.ORGANIZATION_TYPE,B.ORGANIZATION_KEY,B.PROVINCE,B.CITY,B.AREA,B.STREET,B.ORGANIZATION_ICON,
 B.ORGANIZATION_LEVEL,B.PARENT_ID,B.CREATE_TIME,B.UPDATE_TIME,B.OPERATOR,B.DESCRIPTION 
 FROM tmp_Organization_list A, t_sys_organization B
 WHERE A.RID = B.ID AND B.DEL_FLAG = 0
@@ -4134,7 +4214,7 @@ DELETE FROM tmp_Resource_list;
 
 CALL curResourceList (rootId, 0, 0);
 
-SELECT A.SNO,A.RID,A.DEPTH,A.IS_LEAF,B.ID,B.RESOURCE_NAME,B.RESOURCE_KEY,B.RESOURCE_PATH,B.PARENT_ID,B.RESOURCE_TYPE,B.RESOURCE_LEVEL,B.RESOURCE_SHOW,B.RESOURCE_CACHE,B.RESOURCE_ICON,B.RESOURCE_URL,B.CREATE_TIME,B.UPDATE_TIME,B.OPERATOR,B.DESCRIPTION 
+SELECT A.SNO,A.RID,A.DEPTH,A.IS_LEAF,B.ID,B.RESOURCE_NAME,B.RESOURCE_KEY,B.RESOURCE_PATH,B.PARENT_ID,B.RESOURCE_TYPE,B.RESOURCE_LEVEL,B.RESOURCE_SHOW,B.RESOURCE_CACHE,B.RESOURCE_ICON,B.RESOURCE_URL,B.RESOURCE_PAGE_NAME, B.CREATE_TIME,B.UPDATE_TIME,B.OPERATOR,B.DESCRIPTION 
 FROM tmp_Resource_list A, t_sys_resource B
 WHERE A.RID = B.ID AND B.DEL_FLAG = 0
 ORDER BY
