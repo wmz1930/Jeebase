@@ -92,6 +92,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+		<dependency>
+			<groupId>net.oschina.j2cache</groupId>
+			<artifactId>j2cache-core</artifactId>
+			<!--排除这个slf4j-log4j12-->
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
         <!-- swagger2 -->
 			<dependency>
 				<groupId>io.springfox</groupId>
