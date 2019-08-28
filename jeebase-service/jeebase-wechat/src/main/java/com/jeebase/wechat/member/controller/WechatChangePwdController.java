@@ -9,7 +9,7 @@ import com.jeebase.common.base.BusinessException;
 import com.jeebase.common.base.Constant;
 import com.jeebase.common.base.Result;
 import com.jeebase.common.base.component.JwtComponent;
-import com.jeebase.common.sms.service.ISmsService;
+import com.jeebase.system.common.service.ISmsService;
 import com.jeebase.system.security.entity.User;
 import com.jeebase.system.security.service.IResourceService;
 import com.jeebase.system.security.service.IUserRoleService;

@@ -10,7 +10,7 @@ import com.jeebase.common.base.Result;
 import com.jeebase.common.base.component.JwtComponent;
 import com.jeebase.common.captcha.GifCaptcha;
 import com.jeebase.common.captcha.util.CaptchaUtil;
-import com.jeebase.common.sms.service.ISmsService;
+import com.jeebase.system.common.service.ISmsService;
 import com.jeebase.system.security.dto.*;
 import com.jeebase.system.security.entity.Resource;
 import com.jeebase.system.security.entity.Role;

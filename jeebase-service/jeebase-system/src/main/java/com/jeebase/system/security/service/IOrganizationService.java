@@ -1,9 +1,6 @@
 package com.jeebase.system.security.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.jeebase.common.base.domain.ZTree;
-import com.jeebase.system.security.dto.CreateOrganization;
-import com.jeebase.system.security.dto.UpdateOrganization;
 import com.jeebase.system.security.entity.Organization;
 
 import java.util.List;
