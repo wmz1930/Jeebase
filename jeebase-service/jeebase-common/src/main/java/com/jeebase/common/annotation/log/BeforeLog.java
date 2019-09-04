@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * 
  * @ClassName: BeforeLog
- * @Description: 记录后置日志
+ * @Description: 记录前置日志
  * @author jeebase
  * @date 2016年4月27日 下午3:36:29
  *

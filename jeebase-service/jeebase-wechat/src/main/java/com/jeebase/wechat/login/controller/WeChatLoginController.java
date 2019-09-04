@@ -184,7 +184,7 @@ public class WeChatLoginController {
             return new Result<TokenUser>().error("您已注册，请耐心等待管理员审核！");
         }
 
-        if (null == user || !BCrypt.checkpw(userPassword, user.getUserPassword())) {
+        if (null == user || !BCrypt.checkpw(user.getUserAccount() + userPassword, user.getUserPassword())) {
             return new Result<TokenUser>().error(ResponseConstant.INVALID_USERNAME_PASSWORD);
         }
 
@@ -217,13 +217,18 @@ public class WeChatLoginController {
 
                 //删除原绑定关系
                 UpdateWrapper<WechatMember> updateMember = new UpdateWrapper();
-                updateMember.set("user_id",null).eq("id",huserq.getId());
+				updateMember.set("wechat_open_id",null)
+                        .set("wechat_platform_open_id",null).set("wechat_union_id",null).eq("id",huserq.getId());
                 wechatMemberService.update(updateMember);
 
                 //绑定新的关系
                 WechatMember hUserNew = new WechatMember();
                 hUserNew.setId(wechatMember.getId());
-                hUserNew.setUserId(user.getId());
+                hUserNew.setWechatOpenId(huserq.getWechatOpenId());
+                hUserNew.setWechatPlatformOpenId(huserq.getWechatPlatformOpenId());
+                hUserNew.setWechatUnionId(huserq.getWechatUnionId());
+                hUserNew.setNickname(huserq.getNickname());
+                hUserNew.setAvatarUrl(huserq.getAvatarUrl());
                 hUserNew.setRemember(loginUser.isRemember());
                 wechatMemberService.updateById(hUserNew);
 
@@ -237,19 +242,18 @@ public class WeChatLoginController {
                 queryhbg.eq("user_id",user.getId());
                 WechatMember huserq = wechatMemberService.getOne(queryhbg);
                 if (null != huserq)
-                {
-                    UpdateWrapper<WechatMember> updateMember = new UpdateWrapper();
-                    updateMember.set("user_id",null).eq("id",wechatMember.getId());
-                    wechatMemberService.update(updateMember);
+                {   
+	                //绑定
+	                WechatMember hUserNew = new WechatMember();
+	                hUserNew.setId(wechatMember.getId());
+	                hUserNew.setWechatOpenId(huserq.getWechatOpenId());
+	                hUserNew.setWechatPlatformOpenId(huserq.getWechatPlatformOpenId());
+	                hUserNew.setWechatUnionId(huserq.getWechatUnionId());
+	                hUserNew.setNickname(huserq.getNickname());
+	                hUserNew.setAvatarUrl(huserq.getAvatarUrl());
+	                hUserNew.setRemember(loginUser.isRemember());
+	                wechatMemberService.updateById(hUserNew);
                 }
-
-                //绑定
-                WechatMember hbgUser = new WechatMember();
-                hbgUser.setId(wechatMember.getId());
-                hbgUser.setUserId(user.getId());
-                hbgUser.setRemember(loginUser.isRemember());
-                wechatMemberService.updateById(hbgUser);
-
                 tokenUser.setReg(true);
                 tokenUser.setUserType(huserq.getUserType());
             }
@@ -268,8 +272,36 @@ public class WeChatLoginController {
     @ApiOperation(value = "退出登录")
     public Result<?> logOut( @ApiIgnore @CurrentUser User currentUser) throws Exception {
         Integer userId = currentUser.getId();
+		QueryWrapper<WechatMember> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        WechatMember wechatMember = wechatMemberService.getOne(queryWrapper, false);
+
+        WechatMember wechatMemberQuery = new WechatMember();
+        wechatMemberQuery.setWechatPlatformOpenId(wechatMember.getWechatPlatformOpenId());
+        WechatMember oldWechatMember = wechatMemberService.getSoftDeleteWechatMember(wechatMemberQuery);
+        if (null != oldWechatMember)
+        {
+            wechatMemberService.recoverSoftDeleteWechatMember(oldWechatMember);
+        }
+        else
+        {
+            QueryWrapper<Wechat> queryWrapperWeiXin = new QueryWrapper<>();
+            queryWrapperWeiXin.eq("openid", wechatMember.getWechatPlatformOpenId());
+            Wechat wechat = wechatService.getOne(queryWrapperWeiXin, false);
+            WechatMember addUser = new WechatMember();
+            addUser.setAvatarUrl(wechat.getHeadimgurl());
+            addUser.setNickname(wechat.getNickname());
+            addUser.setContry(wechat.getCountry());
+            addUser.setProvince(wechat.getProvince());
+            addUser.setCity(wechat.getCity());
+            addUser.setWechatPlatformOpenId(wechat.getOpenid());
+            addUser.setWechatUnionId(wechat.getUnionid());
+            addUser.setCreateTime(wechat.getCreateTime());
+            wechatMemberService.save(addUser);
+        }
         UpdateWrapper<WechatMember> updateMember = new UpdateWrapper();
-        updateMember.set("user_id",null).eq("user_id",userId);
+        updateMember.set("wechat_open_id",null)
+                .set("wechat_platform_open_id",null).set("wechat_union_id",null).eq("user_id",userId);
         wechatMemberService.update(updateMember);
         return new Result<>().success();
     }

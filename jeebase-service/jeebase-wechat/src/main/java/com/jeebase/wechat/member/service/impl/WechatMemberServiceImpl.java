@@ -103,4 +103,14 @@ public class WechatMemberServiceImpl extends ServiceImpl<WechatMemberMapper, Wec
         }
         return result;
     }
+
+    @Override
+    public WechatMember getSoftDeleteWechatMember(WechatMember wechatMember) {
+        return wechatMemberMapper.getSoftDeleteWechatMember(wechatMember);
+    }
+
+    @Override
+    public void recoverSoftDeleteWechatMember(WechatMember wechatMember) {
+        wechatMemberMapper.recoverSoftDeleteWechatMember(wechatMember);
+    }
 }

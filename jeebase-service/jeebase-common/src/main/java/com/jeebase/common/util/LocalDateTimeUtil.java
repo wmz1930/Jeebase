@@ -31,9 +31,19 @@ public final class LocalDateTimeUtil {
     public static String FORMAT_SHORT = "yyyy-MM-dd";
     
     /**
+     * 英文简写（默认）如：2010/12/01
+     */
+    public static String FORMAT_SLASH_SHORT = "yyyy/MM/dd";
+    
+    /**
      * 英文全称 如：2010-12-01 23:15:06
      */
     public static String FORMAT_LONG = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 英文全称无分隔符 如：20101201231506
+     */
+    public static String FORMAT_LONG_NO = "yyyyMMddHHmmss";
     
     /**
      * 精确到毫秒的完整时间 如：yyyy-MM-dd HH:mm:ss.S
@@ -228,5 +238,29 @@ public final class LocalDateTimeUtil {
         LocalDateTime lastOfDay = localDateTime.with(TemporalAdjusters.lastDayOfMonth()).with(LocalTime.MAX);
         return lastOfDay;
     }
+    /**
+     * @Title: getFirstDayOFYear
+     * @Description:  获取年的第一天
+     * @param localDateTime
+     * @return LicalDateTime    返回类型
+     */
+    public static LocalDateTime getFirstDayOfYear(LocalDateTime localDateTime) {
+    	 LocalDateTime firstOfYear = localDateTime.with(TemporalAdjusters.firstDayOfYear()).with(LocalTime.MIN);
+         return firstOfYear;
+    }
 
+    /**
+     * @Title: getLocalDateTimeByLocalDate
+     * @Description: 把localDate转化为localDateTime,时分秒都设置成00
+     * @param localDate
+     * @return LocalDateTime    返回类型
+     */
+    public static LocalDateTime getLocalDateTimeByLocalDate(LocalDate localDate) {
+    	if (localDate == null) {
+    		return LocalDateTime.now();
+    	}
+    	LocalTime zeroTime = LocalTime.parse("00:00:00");
+    	LocalDateTime localDateTime = LocalDateTime.of(localDate,zeroTime);
+    	return localDateTime;
+    }
 }

@@ -7,17 +7,19 @@ server:
     uri-encoding: utf-8
 system:
     #注册用户默认密码
-    defaultPwd: 123456
+    defaultPwd: 12345678
     #注册用户默认角色ID
-    defaultRoleId: 100
+    defaultRoleId: 4
     #注册用户默认组织机构ID
-    defaultOrgId: 0
+    defaultOrgId: 79
     #不需要数据权限过滤的角色key
     noDataFilterRole: DATA_NO_FILTER
     #用户每日收取短信上限
     smsTimes: 25
     #不同终端用户的超时时间（web用户3小时，app，微信，小程序时间自己定半年或永久）Long型，后面记得加l
     expireTime: "{web: 10800000l, app: 15768000000l}"
+    tmpPath: /opt/tmp/
+    crawlerPath: /opt/crawler/
 controller:
     #扫描controller中不需要鉴权的method
     scanPackage:
@@ -54,6 +56,16 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJWk6iOtnXNdOrO8V/AzG894T1Jmu5izG8gFgeojrdnbYobZPvKwo436H2SZnCbCy1ua7yj63JoBEUhW1OiCbbsCAwEAAQ==
     # 合并多个DruidDataSource的监控数据
     useGlobalDataSourceStat: true
+  mail:
+    host: smtp.exmail.qq.com
+    username: 
+    password: 
+    port: 465
+    protocol: smtp
+    #是否用启用加密传送的协议验证项
+    properties.mail.smtp.auth: true
+    #注意：在spring.mail.password处的值是需要在邮箱设置里面生成的授权码，这个不是真实的密码。
+    properties.mail.smtp.ssl.enable: true
 mybatis-plus:
     mapper-locations: classpath*:/com/jeebase/*/*/mapper/*Mapper.xml
     typeAliasesPackage: com.jeebase.*.*.entity
@@ -78,18 +90,24 @@ j2cache:
     config-location: classpath:config/j2cache.properties
     open-spring-cache: true
     j2CacheConfig:
-        serialization: json
+        serialization: fastjson
 qiniu:
     access-key:
     secret-key:
     zone: zone0
+    zone: zone0
     bucket: mall
     base-url: http://img.jeebase.com/
+    bucket-private: hisc_private
+    base-url-private: http://img2.jeebase.com/
 aliyun:
     AccessKey-ID:
     Access-Key-Secret:
     sign-name:
     reg-code:
+baidu:
+    ai.clientId: 
+    ai.clientSecret: 
 restTemplate:
     #连接池的最大连接数默认为0
     maxTotalConnect: 0
@@ -149,3 +167,18 @@ weixin:
     app.refundqueryUrl: https://api.mch.weixin.qq.com/pay/refundquery
     #微信查询订单状态
     app.orderquery: https://api.mch.weixin.qq.com/pay/orderquery
+xxlJob:
+    ###xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+    admin.addresses: http://jeebase.com/hisc-job
+    ###xxl-job 执行器AppName[选填]，为空则关闭自动注册
+    executor.appname: hisc-v3
+    ###xxl-job 执行器IP[选填]，为空则自动获取
+    executor.ip:
+    ###xxl-job 执行器端口号[必须]
+    executor.port: 9999
+    ### xxl-job 访问令牌，非空则进行匹配校验[选填]
+    accessToken: HiscJobTokenPro
+    ### xxl-job 执行器日志路径
+    executor.logpath: /opt/server/logs/xxl-job/jobhandler
+    ### xxl-job log retention days
+    executor.logretentiondays: -1

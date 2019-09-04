@@ -11,6 +11,7 @@ import com.jeebase.system.security.service.IOrganizationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class OrganizationController {
      * @return
      */
     @GetMapping(value = "/tree")
-    @RequiresRoles("SYSADMIN")
+    @RequiresAuthentication
     @ApiOperation(value = "查询组织机构树", notes = "树状展示组织机构信息")
     @ApiImplicitParam(paramType = "query", name = "parentId", value = "父级ID", required = false, dataType = "Integer")
     public Result<List<Organization>> queryOrganizationTree(Integer parentId) {
@@ -117,7 +118,7 @@ public class OrganizationController {
     }
 
     @PostMapping(value = "/name/check")
-    @RequiresRoles("SYSADMIN")
+    @RequiresAuthentication
     @ApiOperation(value = "校验组织名称是否存在", notes = "校验组织名称是否存在")
     public Result<Boolean> checkRoleName(CreateOrganization organization) {
         String organizationName = organization.getOrganizationName();
@@ -135,7 +136,7 @@ public class OrganizationController {
     }
 
     @PostMapping(value = "/key/check")
-    @RequiresRoles("SYSADMIN")
+    @RequiresAuthentication
     @ApiOperation(value = "校验组织标识是否存在", notes = "校验组织标识是否存在")
     public Result<Boolean> checkRoleKey(CreateOrganization organization) {
         String organizationKey = organization.getOrganizationKey();

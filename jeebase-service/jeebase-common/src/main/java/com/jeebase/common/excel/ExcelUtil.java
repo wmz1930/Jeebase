@@ -8,10 +8,7 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -116,7 +113,7 @@ public class ExcelUtil {
     /**
      * 导出文件时为Writer生成OutputStream
      */
-    private static OutputStream getOutputStream(String fileName, HttpServletResponse response) {
+    public static OutputStream getOutputStream(String fileName, HttpServletResponse response) {
         //创建本地文件
         String filePath = fileName + ".xlsx";
         File dbfFile = new File(filePath);
@@ -147,7 +144,48 @@ public class ExcelUtil {
         InputStream inputStream;
         try {
             inputStream = excel.getInputStream();
-            return new ExcelReader(inputStream, null, excelListener, false);
+            return new ExcelReader(inputStream, null, excelListener, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 基本法导入excel，可以作为公共模板，传人参数headLineMun
+     */
+    public static List<Object> readExcelFile(File excelFile, BaseRowModel rowModel,int headLineMun) {
+        ExcelListener excelListener = new ExcelListener();
+        ExcelReader reader = getReader(excelFile, excelListener);
+        if (reader == null) {
+            return null;
+        }
+        for (Sheet sheet : reader.getSheets()) {
+            if (rowModel != null) {
+                sheet.setHeadLineMun(headLineMun);
+                sheet.setClazz(rowModel.getClass());
+            }
+            reader.read(sheet);
+        }
+        return excelListener.getDatas();
+    }
+
+    /**
+     * 返回 ExcelReader
+     *
+     * @param excelFile         需要解析的 Excel 文件
+     * @param excelListener new ExcelListener()
+     */
+    private static ExcelReader getReader(File excelFile,
+                                         ExcelListener excelListener) {
+        String filename = excelFile.getName();
+        if (filename == null || (!filename.toLowerCase().endsWith(".xls") && !filename.toLowerCase().endsWith(".xlsx"))) {
+            throw new ExcelException("文件格式错误！");
+        }
+
+        try {
+            FileInputStream  inputStream = new FileInputStream(excelFile);
+            return new ExcelReader(inputStream, null, excelListener, true);
         } catch (IOException e) {
             e.printStackTrace();
         }

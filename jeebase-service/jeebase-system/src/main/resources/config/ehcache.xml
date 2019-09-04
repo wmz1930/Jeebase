@@ -34,4 +34,8 @@
 	<cache name="dict" eternal="true" maxElementsInMemory="100000000"
 		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
 		timeToLiveSeconds="0" memoryStoreEvictionPolicy="LFU" />
+	<!-- 百度token，Access Token的有效期(秒为单位，一般为1个月，这里取28天) -->
+	<cache name="baidu" eternal="false" maxElementsInMemory="100000000"
+		   overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		   timeToLiveSeconds="2419200" memoryStoreEvictionPolicy="LFU" />
 </ehcache>

@@ -41,4 +41,39 @@
         id, user_id, parent_id, wechat_open_id, wechat_platform_open_id, wechat_union_id, nickname, realname, telephone, user_type, avatar_url, member_points, contry, province, city, area, contact_address, gender, birthday, remember, register_time, register_ip, last_login_time, last_login_ip, comments, create_time, creator, update_time, operator, del_flag
     </sql>
 
+    <!--根据微信id查询WechatMember已删除数据-->
+    <select id="getSoftDeleteWechatMember" resultType="com.jeebase.wechat.member.entity.WechatMember" parameterType="com.jeebase.wechat.member.entity.WechatMember">
+        SELECT
+        <include refid="Base_Column_List" />
+        from t_sys_wechat_member
+        where del_flag = '1'
+        <if test="requiring.wechatOpenId!=null and requiring.wechatOpenId!= ''">
+            and wechat_open_id = #{requiring.wechatOpenId}
+        </if>
+        <if test ="requiring.wechatPlatformOpenId!=null and requiring.wechatPlatformOpenId!= ''">
+            and wechat_platform_open_id = #{requiring.wechatPlatformOpenId}
+        </if>
+        <if test ="requiring.wechatUnionId!=null and requiring.wechatUnionId!= ''">
+            and wechat_union_id = #{requiring.wechatUnionId}
+        </if>
+        order by create_time desc limit 1
+    </select>
+
+    <!--恢复已删除数据-->
+    <update id="recoverSoftDeleteWechatMember" parameterType="com.jeebase.wechat.member.entity.WechatMember">
+        UPDATE t_sys_wechat_member
+        SET del_flag = 0
+        WHERE del_flag = 1
+        and id = #{requiring.id}
+        <if test="requiring.wechatOpenId!=null and requiring.wechatOpenId!= ''">
+            and wechat_open_id = #{requiring.wechatOpenId}
+        </if>
+        <if test ="requiring.wechatPlatformOpenId!=null and requiring.wechatPlatformOpenId!= ''">
+            and wechat_platform_open_id = #{requiring.wechatPlatformOpenId}
+        </if>
+        <if test ="requiring.wechatUnionId!=null and requiring.wechatUnionId!= ''">
+            and wechat_union_id = #{requiring.wechatUnionId}
+        </if>
+    </update>
+
 </mapper>

@@ -39,7 +39,7 @@ public class JwtComponent {
         try {
             long expTime = expireTime.get(expTimeType);
             Date date = new Date(System.currentTimeMillis() + expTime);
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            Algorithm algorithm = Algorithm.HMAC256(userAccount + secret);
             // 附带username信息
             return JWT.create().withClaim("useraccount", userAccount).withExpiresAt(date).sign(algorithm);
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public class JwtComponent {
      */
     public boolean verify(String token, String userAccount, String secret) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            Algorithm algorithm = Algorithm.HMAC256(userAccount + secret);
             JWTVerifier verifier = JWT.require(algorithm).withClaim("useraccount", userAccount).build();
             verifier.verify(token);
             return true;

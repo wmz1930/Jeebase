@@ -110,12 +110,12 @@ public class UserController {
         if (StringUtils.isEmpty(newPwd) || StringUtils.isEmpty(oldPwd)) {
             return new Result<>().error("密码不能为空");
         }
-        if (tempUser == null || !BCrypt.checkpw(oldPwd, tempUser.getUserPassword())) {
+        if (tempUser == null || !BCrypt.checkpw(tempUser.getUserAccount() + oldPwd, tempUser.getUserPassword())) {
             return new Result<>().error("原密码错误");
         }
         UpdateUser user = new UpdateUser();
         user.setId(tempUser.getId());
-        user.setUserPassword(newPwd);
+        user.setUserPassword(tempUser.getUserAccount() + newPwd);
         boolean result = userService.updateUser(user);
         if (result) {
             return new Result<>().success("修改成功");

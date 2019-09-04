@@ -50,10 +50,16 @@
         <aliyun-sms-core.version>3.3.1</aliyun-sms-core.version>
         <aliyun-sms-dysmsapi.version>1.0.0</aliyun-sms-dysmsapi.version>
         <easyexcel.version>1.1.2-beta5</easyexcel.version>
+        <baidu-ai.version>4.10.0</baidu-ai.version>
+        <xxl-job.version>2.1.0</xxl-job.version>
   </properties>
     
   <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-mail</artifactId>
+            </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -203,6 +209,13 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+
+            <!--百度AI识别-->
+            <dependency>
+                <groupId>com.baidu.aip</groupId>
+                <artifactId>java-sdk</artifactId>
+                <version>${baidu-ai.version}</version>
+            </dependency>
             
             <dependency>
               <groupId>com.qiniu</groupId>
@@ -236,6 +249,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>easyexcel</artifactId>
                 <version>${easyexcel.version}</version>
+            </dependency>
+            <!--定时任务-->
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>${xxl-job.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

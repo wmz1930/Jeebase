@@ -18,22 +18,22 @@ system:
     smsTimes: 25
     #不同终端用户的超时时间（web用户3小时，app，微信，小程序时间自己定半年或永久）Long型，后面记得加l
     expireTime: "{web: 10800000l, app: 15768000000l}"
-    tmpPath: D:\\\\jeebase\\\\
-    crawlerPath: D:\\\\crawler\\\\
+    tmpPath: /opt/tmp/
+    crawlerPath: /opt/crawler/
 controller:
     #扫描controller中不需要鉴权的method
     scanPackage:
         classpath*:com/jeebase/*/*/controller/*.class
 logging:
-  path: D:\\jeebase
+  path: /opt/server/logs
   config: classpath:config/logback-spring.xml
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/jeebase?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: Ivsq2GcFWRfjqPUP4hhlPWpqJo9C51z3PSCOpI7dSA3OVIkKJ1gjD1uFT7Nj5nUJGrIZH96LkdcaYTLfIjsglw==
+    url: jdbc:mysql://172.16.20.188/hisc2_test?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    username: myHisc
+    password: root4Hisc
     initialSize: 1
     minIdle: 3
     maxActive: 20
@@ -53,7 +53,7 @@ spring:
     # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
     filters: config,stat,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJWk6iOtnXNdOrO8V/AzG894T1Jmu5izG8gFgeojrdnbYobZPvKwo436H2SZnCbCy1ua7yj63JoBEUhW1OiCbbsCAwEAAQ==
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;
     # 合并多个DruidDataSource的监控数据
     useGlobalDataSourceStat: true
   mail:
@@ -90,13 +90,13 @@ j2cache:
     config-location: classpath:config/j2cache.properties
     open-spring-cache: true
     j2CacheConfig:
-        serialization: fastjson
+        serialization: json
 qiniu:
-    access-key:
-    secret-key:
+    access-key: 
+    secret-key: 
     zone: zone0
-    bucket: mall
-    base-url: http://img.jeebase.com/
+    bucket: hisc
+    base-url: http://img.jeebase.com.cn/
     bucket-private: hisc_private
     base-url-private: http://img2.jeebase.com/
 aliyun:
@@ -117,7 +117,7 @@ restTemplate:
     #读取超时默认30s
     readTimeout: 30000
 weixin:
-    backUrl: http://127.0.0.1:9527/oauth2
+    backUrl: http://172.16.20.188:9527/oauth2
     api.appId: wx8c9bbf09cc8ea66a
     api.secret: 1a3e9d71f2261bbe8672cd909fe786e5
     #获取access_token的URL,有效期目前为2个小时
@@ -157,7 +157,7 @@ weixin:
     #拉取用户信息的请求地址
     app.userMessage: https://api.weixin.qq.com/sns/userinfo?access_token={accessToken}&openid={openId}&lang=zh_CN
     #支付回调地址
-    app.notifyUrl: https://jeebase.com/wechat/api/notify
+    app.notifyUrl:
     #微信统一下单接口路径
     app.uniformorder: https://api.mch.weixin.qq.com/pay/unifiedorder
     #退款地址
@@ -167,17 +167,17 @@ weixin:
     #微信查询订单状态
     app.orderquery: https://api.mch.weixin.qq.com/pay/orderquery
 xxlJob:
-    #xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
-    admin.addresses: http://127.0.0.1:8083/hisc-job
-    #xxl-job 执行器AppName[选填]，为空则关闭自动注册
+    ###xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+    admin.addresses: http://jeebase.com/hisc-job
+    ###xxl-job 执行器AppName[选填]，为空则关闭自动注册
     executor.appname: hisc-v3
-    #xxl-job 执行器IP[选填]，为空则自动获取
+    ###xxl-job 执行器IP[选填]，为空则自动获取
     executor.ip:
-    #xxl-job 执行器端口号[必须]
+    ###xxl-job 执行器端口号[必须]
     executor.port: 9999
-    # xxl-job 访问令牌，非空则进行匹配校验[选填]
+    ### xxl-job 访问令牌，非空则进行匹配校验[选填]
     accessToken: HiscJobTokenTest
-    # xxl-job 执行器日志路径
-    executor.logpath: D:\\jeebase\\xxl-job\\jobhandler
-    # xxl-job log retention days
+    ### xxl-job 执行器日志路径
+    executor.logpath: /opt/server/logs/xxl-job/jobhandler
+    ### xxl-job log retention days
     executor.logretentiondays: -1

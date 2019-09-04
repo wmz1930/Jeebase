@@ -29,6 +29,8 @@ import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.session.RowBounds;
+import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.Connection;
 import java.util.List;
@@ -60,6 +62,9 @@ public class DataPermissionInterceptor extends AbstractSqlParserHandler implemen
      * 方言实现类
      */
     private String dialectClazz;
+
+    @Value("${system.noDataFilterRole}")
+    private String noDataFilterRole;
 
     /**
      * Physical Page Interceptor for all the queries with parameter {@link RowBounds}
@@ -93,7 +98,7 @@ public class DataPermissionInterceptor extends AbstractSqlParserHandler implemen
         /*
          * 不需要数据权限直接进行下一步
          */
-        if (null == dataPermissionCondition) {
+        if (null == dataPermissionCondition || SecurityUtils.getSubject().hasRole(noDataFilterRole)) {
             return invocation.proceed();
         }
 

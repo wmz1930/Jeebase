@@ -90,6 +90,9 @@ aliyun:
   Access-Key-Secret:
   sign-name:
   reg-code:
+baidu:
+  ai.clientId:
+  ai.clientSecret:
 restTemplate:
   #连接池的最大连接数默认为0
   maxTotalConnect: 0

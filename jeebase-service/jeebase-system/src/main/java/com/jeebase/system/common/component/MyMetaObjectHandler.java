@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -21,9 +22,9 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         Object creator = getFieldValByName("creator", metaObject);
-        if (null == creator) {
+        if (null == creator && null != SecurityUtils.getSubject()) {
             String principal = (String) SecurityUtils.getSubject().getPrincipal();
-            if (null != principal) {
+            if (!StringUtils.isEmpty(principal)) {
                 JSONObject userObj = JSON.parseObject(principal);
                 setFieldValByName("creator", userObj.getInteger("id"), metaObject);
             }
@@ -37,9 +38,9 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         Object operator = getFieldValByName("operator", metaObject);
-        if (null == operator) {
+        if (null == operator && null != SecurityUtils.getSubject()) {
             String principal = (String) SecurityUtils.getSubject().getPrincipal();
-            if (null != principal) {
+            if (!StringUtils.isEmpty(principal)) {
                 JSONObject userObj = JSON.parseObject(principal);
                 setFieldValByName("operator", userObj.getInteger("id"), metaObject);
             }

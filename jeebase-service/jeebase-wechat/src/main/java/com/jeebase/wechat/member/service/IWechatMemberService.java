@@ -16,4 +16,9 @@ import com.jeebase.wechat.register.dto.CreateNormalUser;
 public interface IWechatMemberService extends IService<WechatMember> {
 
     boolean saveNormalUser(CreateWechatMember createWechatMember);
+
+
+    WechatMember getSoftDeleteWechatMember(WechatMember wechatMember);
+
+    void recoverSoftDeleteWechatMember(WechatMember wechatMember);
 }

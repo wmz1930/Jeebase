@@ -39,6 +39,8 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.RowBounds;
+import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -72,6 +74,9 @@ public class DataPermissionPaginationInterceptor extends AbstractSqlParserHandle
      * 方言实现类
      */
     private String dialectClazz;
+
+    @Value("${system.noDataFilterRole}")
+    private String noDataFilterRole;
 
     /**
      * 查询SQL拼接Order By
@@ -148,7 +153,7 @@ public class DataPermissionPaginationInterceptor extends AbstractSqlParserHandle
                 }
             }
         }
-        if (null != dataPermissionPage) {
+        if (null != dataPermissionPage && !SecurityUtils.getSubject().hasRole(noDataFilterRole)) {
             // 如果没有配置orgId的别名，则默认给一个
             if (StringUtils.isEmpty(dataPermissionPage.getOrgIdAlias())) {
                 dataPermissionPage.setOrgIdAlias("organiaztion_id");

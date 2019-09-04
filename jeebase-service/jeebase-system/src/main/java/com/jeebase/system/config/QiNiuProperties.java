@@ -23,6 +23,10 @@ public class QiNiuProperties {
 
     private String baseUrl;
 
+    private String bucketPrivate;
+
+    private String baseUrlPrivate;
+
     private String uploadDirPrefix;
 
     public String getAccessKey() {
@@ -63,6 +67,22 @@ public class QiNiuProperties {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+    }
+
+    public String getBucketPrivate() {
+        return bucketPrivate;
+    }
+
+    public void setBucketPrivate(String bucketPrivate) {
+        this.bucketPrivate = bucketPrivate;
+    }
+
+    public String getBaseUrlPrivate() {
+        return baseUrlPrivate;
+    }
+
+    public void setBaseUrlPrivate(String baseUrlPrivate) {
+        this.baseUrlPrivate = baseUrlPrivate;
     }
 
     public String getUploadDirPrefix() {
