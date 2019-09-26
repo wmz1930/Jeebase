@@ -104,6 +104,7 @@ public class DataFilterAspect {
                         {
                             DataPermissionCondition dataPermissionCondition = (DataPermissionCondition) param;
                             dataPermissionCondition.setOrgIdAlias(orgIdAlias);
+                            dataPermissionCondition.setUserIdAlias(userIdAlias);
                             dataPermissionCondition.setUserId(userIdAlias);
                             dataPermissionCondition.setOwnQuery(ownQuery);
                             dataPermissionCondition.setOrgIdList(orgIdList);
@@ -112,7 +113,8 @@ public class DataFilterAspect {
                         {
                             DataPermissionPage dataPermissionPage = (DataPermissionPage) param;
                             dataPermissionPage.setOrgIdAlias(orgIdAlias);
-                            dataPermissionPage.setUserId(userIdAlias);
+                            dataPermissionPage.setUserIdAlias(userIdAlias);
+                            dataPermissionPage.setUserId(userId);
                             dataPermissionPage.setOwnQuery(ownQuery);
                             dataPermissionPage.setOrgIdList(orgIdList);
                         }
