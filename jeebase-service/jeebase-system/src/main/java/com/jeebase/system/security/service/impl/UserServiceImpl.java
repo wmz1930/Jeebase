@@ -266,6 +266,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 }
             }
             cacheChannel.evict("roles", "user_id_" + userEntity.getId());
+            cacheChannel.evict("resources", "user_id_" + userEntity.getId());
         }
         return result;
     }
