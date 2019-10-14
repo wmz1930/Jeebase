@@ -87,10 +87,12 @@ mybatis-plus:
         map-underscore-to-camel-case: true
         cache-enabled: false
 j2cache:
-    config-location: classpath:config/j2cache.properties
-    open-spring-cache: true
-    j2CacheConfig:
-        serialization: json
+  config-location: classpath:config/j2cache.properties
+  open-spring-cache: true
+  j2CacheConfig:
+    serialization: fastjson
+  cache-clean-mode: active
+  redis-client: jedis
 qiniu:
     access-key: 
     secret-key: 
@@ -116,10 +118,25 @@ restTemplate:
     connectTimeout: 2000
     #读取超时默认30s
     readTimeout: 30000
+xxlJob:
+  ###xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+  admin.addresses: http://jeebase.com/hisc-job
+  ###xxl-job 执行器AppName[选填]，为空则关闭自动注册
+  executor.appname: hisc-v3
+  ###xxl-job 执行器IP[选填]，为空则自动获取
+  executor.ip:
+  ###xxl-job 执行器端口号[必须]
+  executor.port: 9999
+  ### xxl-job 访问令牌，非空则进行匹配校验[选填]
+  accessToken: HiscJobTokenTest
+  ### xxl-job 执行器日志路径
+  executor.logpath: /opt/server/logs/xxl-job/jobhandler
+  ### xxl-job log retention days
+  executor.logretentiondays: -1
 weixin:
-    backUrl: http://172.16.20.188:9527/oauth2
-    api.appId: wx8c9bbf09cc8ea66a
-    api.secret: 1a3e9d71f2261bbe8672cd909fe786e5
+    backUrl: http://127.0.0.1:9527/oauth2
+    api.appId:
+    api.secret:
     #获取access_token的URL,有效期目前为2个小时
     api.accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appId}&secret={appSecret}
     #获取openId
@@ -166,18 +183,3 @@ weixin:
     app.refundqueryUrl: https://api.mch.weixin.qq.com/pay/refundquery
     #微信查询订单状态
     app.orderquery: https://api.mch.weixin.qq.com/pay/orderquery
-xxlJob:
-    ###xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
-    admin.addresses: http://jeebase.com/hisc-job
-    ###xxl-job 执行器AppName[选填]，为空则关闭自动注册
-    executor.appname: hisc-v3
-    ###xxl-job 执行器IP[选填]，为空则自动获取
-    executor.ip:
-    ###xxl-job 执行器端口号[必须]
-    executor.port: 9999
-    ### xxl-job 访问令牌，非空则进行匹配校验[选填]
-    accessToken: HiscJobTokenTest
-    ### xxl-job 执行器日志路径
-    executor.logpath: /opt/server/logs/xxl-job/jobhandler
-    ### xxl-job log retention days
-    executor.logretentiondays: -1

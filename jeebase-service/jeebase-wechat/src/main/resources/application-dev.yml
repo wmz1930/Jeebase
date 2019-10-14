@@ -7,33 +7,31 @@ server:
     uri-encoding: utf-8
 system:
     #注册用户默认密码
-    defaultPwd: 12345678
+    defaultPwd: 123456
     #注册用户默认角色ID
-    defaultRoleId: 4
+    defaultRoleId: 100
     #注册用户默认组织机构ID
-    defaultOrgId: 79
+    defaultOrgId: 0
     #不需要数据权限过滤的角色key
     noDataFilterRole: DATA_NO_FILTER
     #用户每日收取短信上限
     smsTimes: 25
     #不同终端用户的超时时间（web用户3小时，app，微信，小程序时间自己定半年或永久）Long型，后面记得加l
     expireTime: "{web: 10800000l, app: 15768000000l}"
-    tmpPath: D:\\\\jeebase\\\\
-    crawlerPath: D:\\\\crawler\\\\
 controller:
     #扫描controller中不需要鉴权的method
     scanPackage:
         classpath*:com/jeebase/*/*/controller/*.class
 logging:
-  path: D:\\jeebase
+  path: /opt/server/logs
   config: classpath:config/logback-spring.xml
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/jeebase?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: Ivsq2GcFWRfjqPUP4hhlPWpqJo9C51z3PSCOpI7dSA3OVIkKJ1gjD1uFT7Nj5nUJGrIZH96LkdcaYTLfIjsglw==
+    url: jdbc:mysql://172.16.20.188/jeebase?useUnicode=true&characterEncoding=utf8
+    username: myHisc
+    password: nDoYD5ntWC8A97R3Pc4NIQVdZh0KHpdYYiaWXLcxDPpkGwi83eklxhWaoQij6v1YYMX+R7ICTGY+Q7a2rv42jw==
     initialSize: 1
     minIdle: 3
     maxActive: 20
@@ -53,19 +51,19 @@ spring:
     # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
     filters: config,stat,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJWk6iOtnXNdOrO8V/AzG894T1Jmu5izG8gFgeojrdnbYobZPvKwo436H2SZnCbCy1ua7yj63JoBEUhW1OiCbbsCAwEAAQ==
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKH9ypmhFtV7R+XkiQH0RJIdLnlT1GpOYlrtSV2WAZz30YMqu+stG/0IoAQx2vQo0FSYhm2+rgRBr1T6dSVgQzsCAwEAAQ==
     # 合并多个DruidDataSource的监控数据
     useGlobalDataSourceStat: true
-  mail:
-    host: smtp.exmail.qq.com
-    username: 
-    password: 
-    port: 465
-    protocol: smtp
-    #是否用启用加密传送的协议验证项
-    properties.mail.smtp.auth: true
-    #注意：在spring.mail.password处的值是需要在邮箱设置里面生成的授权码，这个不是真实的密码。
-    properties.mail.smtp.ssl.enable: true
+mail:
+  host: smtp.exmail.qq.com
+  username:
+  password:
+  port: 465
+  protocol: smtp
+  #是否用启用加密传送的协议验证项
+  properties.mail.smtp.auth: true
+  #注意：在spring.mail.password处的值是需要在邮箱设置里面生成的授权码，这个不是真实的密码。
+  properties.mail.smtp.ssl.enable: true
 mybatis-plus:
     mapper-locations: classpath*:/com/jeebase/*/*/mapper/*Mapper.xml
     typeAliasesPackage: com.jeebase.*.*.entity
@@ -87,26 +85,26 @@ mybatis-plus:
         map-underscore-to-camel-case: true
         cache-enabled: false
 j2cache:
-    config-location: classpath:config/j2cache.properties
-    open-spring-cache: true
-    j2CacheConfig:
-        serialization: fastjson
+  config-location: classpath:config/j2cache.properties
+  open-spring-cache: true
+  j2CacheConfig:
+    serialization: fastjson
+  cache-clean-mode: active
+  redis-client: jedis
 qiniu:
     access-key:
     secret-key:
     zone: zone0
     bucket: mall
     base-url: http://img.jeebase.com/
-    bucket-private: hisc_private
-    base-url-private: http://img2.jeebase.com/
 aliyun:
     AccessKey-ID:
     Access-Key-Secret:
     sign-name:
     reg-code:
 baidu:
-    ai.clientId: 
-    ai.clientSecret: 
+  ai.clientId:
+  ai.clientSecret:
 restTemplate:
     #连接池的最大连接数默认为0
     maxTotalConnect: 0
@@ -116,10 +114,25 @@ restTemplate:
     connectTimeout: 2000
     #读取超时默认30s
     readTimeout: 30000
+xxlJob:
+  #xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+  admin.addresses: http://172.16.20.188:8083/hisc-job
+  #xxl-job 执行器AppName[选填]，为空则关闭自动注册
+  executor.appname: hisc-v3
+  #xxl-job 执行器IP[选填]，为空则自动获取
+  executor.ip:
+  #xxl-job 执行器端口号[必须]
+  executor.port: 9999
+  # xxl-job 访问令牌，非空则进行匹配校验[选填]
+  accessToken: HiscJobTokenTest
+  # xxl-job 执行器日志路径
+  executor.logpath: D:\\jeebase\\xxl-job\\jobhandler
+  # xxl-job log retention days
+  executor.logretentiondays: -1
 weixin:
     backUrl: http://127.0.0.1:9527/oauth2
-    api.appId: wx8c9bbf09cc8ea66a
-    api.secret: 1a3e9d71f2261bbe8672cd909fe786e5
+    api.appId:
+    api.secret:
     #获取access_token的URL,有效期目前为2个小时
     api.accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appId}&secret={appSecret}
     #获取openId
@@ -166,18 +179,3 @@ weixin:
     app.refundqueryUrl: https://api.mch.weixin.qq.com/pay/refundquery
     #微信查询订单状态
     app.orderquery: https://api.mch.weixin.qq.com/pay/orderquery
-xxlJob:
-    #xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
-    admin.addresses: http://127.0.0.1:8083/hisc-job
-    #xxl-job 执行器AppName[选填]，为空则关闭自动注册
-    executor.appname: hisc-v3
-    #xxl-job 执行器IP[选填]，为空则自动获取
-    executor.ip:
-    #xxl-job 执行器端口号[必须]
-    executor.port: 9999
-    # xxl-job 访问令牌，非空则进行匹配校验[选填]
-    accessToken: HiscJobTokenTest
-    # xxl-job 执行器日志路径
-    executor.logpath: D:\\jeebase\\xxl-job\\jobhandler
-    # xxl-job log retention days
-    executor.logretentiondays: -1

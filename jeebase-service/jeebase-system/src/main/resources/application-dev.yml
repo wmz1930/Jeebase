@@ -78,7 +78,9 @@ j2cache:
   config-location: classpath:config/j2cache.properties
   open-spring-cache: true
   j2CacheConfig:
-    serialization: json
+    serialization: fastjson
+  cache-clean-mode: active
+  redis-client: jedis
 qiniu:
   access-key:
   secret-key:
@@ -102,6 +104,21 @@ restTemplate:
   connectTimeout: 2000
   #读取超时默认30s
   readTimeout: 30000
+xxlJob:
+  #xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+  admin.addresses: http://172.16.20.188:8083/hisc-job
+  #xxl-job 执行器AppName[选填]，为空则关闭自动注册
+  executor.appname: hisc-v3
+  #xxl-job 执行器IP[选填]，为空则自动获取
+  executor.ip:
+  #xxl-job 执行器端口号[必须]
+  executor.port: 9999
+  # xxl-job 访问令牌，非空则进行匹配校验[选填]
+  accessToken: HiscJobTokenTest
+  # xxl-job 执行器日志路径
+  executor.logpath: D:\\jeebase\\xxl-job\\jobhandler
+  # xxl-job log retention days
+  executor.logretentiondays: -1
 weixin:
   backUrl: http://127.0.0.1:9527/oauth2
   api.appId:
