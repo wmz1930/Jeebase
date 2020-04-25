@@ -57,7 +57,7 @@ function assembleAsyncRoutes(resources) {
     } else if (resource.resourceUrl.indexOf('nested') >= 0 && resource.children && resource.children.length) { // 包含子菜单的二级以下菜单
       route = {
         path: resource.resourcePath,
-        component: () => import(`@/views/${resource.resourceUrl}`),
+        component: (resolve) => require([`@/views/${resource.resourceUrl}`], resolve),
         redirect: resource.children[0].resourceUrl,
         name: resource.resourcePageName,
         meta: {
@@ -70,7 +70,7 @@ function assembleAsyncRoutes(resources) {
     } else { // 最后一层菜单
       route = {
         path: resource.resourcePath,
-        component: () => import(`@/views/${resource.resourceUrl}`),
+        component: (resolve) => require([`@/views/${resource.resourceUrl}`], resolve),
         name: resource.resourcePageName,
         meta: {
           title: resource.resourceName,
