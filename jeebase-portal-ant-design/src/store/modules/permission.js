@@ -1,6 +1,6 @@
 import { asyncRouterMap, constantRouterMap } from '@/config/router.config'
 import { RouteView } from '@/layouts'
-
+import * as icons from '@/core/icons'
 /**
  * 过滤账户是否拥有某一个权限，并将菜单从加载列表移除
  *
@@ -54,6 +54,7 @@ function assembleAsyncRoutes (resources) {
   const accessedRouters = []
   resources.forEach(resource => {
     var route = {}
+    var resourceIcon = icons[resource.resourceIcon] ? icons[resource.resourceIcon] : resource.resourceIcon
     if (resource.resourceUrl.indexOf('Layout') >= 0) {
       route = {
         path: '/' + resource.resourcePath,
@@ -62,7 +63,7 @@ function assembleAsyncRoutes (resources) {
         name: resource.resourcePageName,
         meta: {
           title: resource.resourceName,
-          icon: resource.resourceIcon
+          icon: resourceIcon
         }
       }
     } else if (resource.resourceUrl.indexOf('nested') >= 0 && resource.children && resource.children.length) { // 包含子菜单的二级以下菜单
@@ -74,7 +75,7 @@ function assembleAsyncRoutes (resources) {
         meta: {
           title: resource.resourceName,
           noCache: !resource.resourceCache,
-          icon: resource.resourceIcon
+          icon: resourceIcon
         },
         hidden: !resource.resourceShow
       }
@@ -86,7 +87,7 @@ function assembleAsyncRoutes (resources) {
         meta: {
           title: resource.resourceName,
           keepAlive: resource.resourceCache,
-          icon: resource.resourceIcon
+          icon: resourceIcon
         },
         hidden: !resource.resourceShow
       }

@@ -69,7 +69,7 @@ service.interceptors.response.use((response) => {
     } else {
       notification.error({
         message: '操作失败',
-        description: 'res.msg'
+        description: res.msg
       })
     }
     return Promise.reject(new Error(res.message || 'Error'))
