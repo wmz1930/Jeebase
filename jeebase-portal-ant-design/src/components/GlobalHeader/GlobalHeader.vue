@@ -8,6 +8,7 @@
         <div v-if="mode === 'sidemenu'" class="header">
           <a-icon v-if="device==='mobile'" class="trigger" :type="collapsed ? 'menu-fold' : 'menu-unfold'" @click="toggle"/>
           <a-icon v-else class="trigger" :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="toggle"/>
+          <s-breadcrumb style="float: left;display: inline-block;font-size: 14px;line-height: 59px;"/>
           <user-menu></user-menu>
         </div>
         <div v-else :class="['top-nav-header-index', theme]">
@@ -17,6 +18,7 @@
               <s-menu v-if="device !== 'mobile'" mode="horizontal" :menu="menus" :theme="theme" />
               <a-icon v-else class="trigger" :type="collapsed ? 'menu-fold' : 'menu-unfold'" @click="toggle" />
             </div>
+            <s-breadcrumb />
             <user-menu class="header-index-right"></user-menu>
           </div>
         </div>
@@ -30,13 +32,15 @@ import UserMenu from '../tools/UserMenu'
 import SMenu from '../Menu/'
 import Logo from '../tools/Logo'
 import { mixin } from '@/utils/mixin'
+import Breadcrumb from '@/components/tools/Breadcrumb'
 
 export default {
   name: 'GlobalHeader',
   components: {
     UserMenu,
     SMenu,
-    Logo
+    Logo,
+    's-breadcrumb': Breadcrumb
   },
   mixins: [mixin],
   props: {

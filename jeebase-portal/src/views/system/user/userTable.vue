@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container content">
     <div class="filter-container-card">
       <div class="text item">
         <el-form label-width="80px">
@@ -154,7 +154,7 @@
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.current" :limit.sync="listQuery.size" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form ref="userForm" :model="userForm" :rules="rules" label-width="100px" class="userForm" style="width: 400px; margin-left:50px;">
         <el-form-item :label="$t('userTable.organization')" prop="userAccount">
           <el-cascader
@@ -220,7 +220,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogDataPermissionVisible" title="设置用户数据权限">
+    <el-dialog :visible.sync="dialogDataPermissionVisible" title="设置用户数据权限" :close-on-click-modal="false">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>组织机构列表</span>

@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false">
+  <a-card :bordered="false" class="content">
     <div class="table-page-search-wrapper">
       <a-form-model layout="inline">
         <a-row :gutter="48">
@@ -64,12 +64,12 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-model-item label="开始时间">
-                <a-date-picker v-model.trim="listQuery.startDate" placeholder="开始时间" format="YYYY-MM-DD HH:mm:ss" style="width:100%;"/>
+                <a-date-picker v-model.trim="listQuery.startDate" placeholder="开始时间" valueFormat="YYYY-MM-DD" style="width:100%;"/>
               </a-form-model-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-model-item label="结束时间">
-                <a-date-picker v-model.trim="listQuery.endDate" placeholder="结束时间" format="YYYY-MM-DD HH:mm:ss" style="width:100%;"/>
+                <a-date-picker v-model.trim="listQuery.endDate" placeholder="结束时间" valueFormat="YYYY-MM-DD" style="width:100%;"/>
               </a-form-model-item>
             </a-col>
           </template>
@@ -93,7 +93,7 @@
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1"><a-icon type="delete" />删除</a-menu-item>
-          <a-menu-item key="2"><a-icon type="lock" />锁定</a-menu-item>
+          <a-menu-item key="2"><a-icon type="lock" />禁用</a-menu-item>
         </a-menu>
         <a-button style="margin-left: 8px">
           批量操作 <a-icon type="down" />
@@ -109,9 +109,10 @@
       :columns="columns"
       :data="loadData"
       showPagination="auto"
+      :pagination="userPagination"
       :rowSelection="{ selectedRowKeys: this.selectedRowKeys, onChange: this.onSelectChange }"
     >
-      <div
+      <!-- <div
         slot="expandedRowRender"
         slot-scope="record"
         style="margin: 0">
@@ -128,7 +129,7 @@
             <a-col :span="20" v-else>-</a-col>
           </a-col>
         </a-row>
-      </div>
+      </div> -->
       <span slot="userSex" slot-scope="text, record">
         <span>{{ record.userSex | sexNameFilter }}</span>
       </span>
@@ -150,6 +151,9 @@
               <a href="javascript:;" @click="handleDataPermission(record)">数据权限</a>
             </a-menu-item>
             <a-menu-item>
+              <a href="javascript:;" @click="handleDataPermission(record)">重置密码</a>
+            </a-menu-item>
+            <a-menu-item>
               <a href="javascript:;" v-if="record.userStatus!='1'" size="mini" type="success" @click="handleModifyStatus(record,'1')">启用
               </a>
               <a href="javascript:;" v-if="record.userStatus!='0' && record.userStatus!='2'" size="mini" @click="handleModifyStatus(record,'0')">禁用
@@ -163,7 +167,7 @@
       </span>
     </s-table>
 
-    <a-modal :title="textMap[dialogStatus]" :visible="dialogFormVisible" :width="800" @cancel="() => dialogFormVisible = false">
+    <a-modal :title="textMap[dialogStatus]" :maskClosable="false" :visible="dialogFormVisible" :width="800" @cancel="() => dialogFormVisible = false">
       <a-form-model
         ref="userForm"
         :model="userForm"
@@ -244,24 +248,21 @@
       </div>
     </a-modal>
 
-    <a-modal v-model="dialogDataPermissionVisible" title="设置用户数据权限">
+    <a-modal v-model="dialogDataPermissionVisible" :maskClosable="false" :destroyOnClose="true" title="设置用户数据权限">
       <a-card class="box-card">
         <div slot="header" class="clearfix">
           <span>组织机构列表</span>
         </div>
         <div class="text item">
           <a-tree
-            ref="tree"
-            :data="orgList"
-            :props="propsOrg"
+            ref="orgTree"
+            checkable
+            :tree-data="orgTreeList"
+            :replace-fields="treeProps"
+            :check-strictly="true"
             :default-expanded-keys="userCheckOrgPermission"
             :default-checked-keys="userCheckOrgPermission"
-            show-checkbox
-            check-strictly
-            node-key="id"
-            class="filter-container-card"
-            highlight-current
-            @check-change="computeOrgPermission"
+            @check="computeOrgPermission"
           />
         </div>
       </a-card>
@@ -387,8 +388,8 @@ export default {
       tableKey: 0,
       roleList: null,
       provinceOptions: null,
-      props: {
-        children: 'children'
+      treeProps: {
+        children: 'children', title: 'organizationName', key: 'id'
       },
       list: null,
       total: 0,
@@ -559,11 +560,18 @@ export default {
         children: 'children'
       },
       orgList: [],
+      orgTreeList: [],
       userCheckOrgPermission: [],
       addOrgPermission: [],
       removeOrgPermission: [],
       selectedRowKeys: [],
       selectedRows: [],
+      userPagination: {
+        defaultPageSize: 10,
+        showQuickJumper: true,
+        defaultCurrent: 1,
+        showTotal: (total, range) => `共 ${total} 条`
+      },
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         if (this.selectedOrgOptionsQuery.length > 0) {
@@ -571,9 +579,9 @@ export default {
         } else {
           this.listQuery.organizationId = ''
         }
-        debugger
         return fetchList(Object.assign(parameter, this.listQuery))
           .then(res => {
+            this.list = res.data
             return res
           })
       }
@@ -612,6 +620,8 @@ export default {
       this.listLoading = true
       fetchOrgList({ parentId: 0 }).then(response => {
         this.orgList = response.data
+        var orgListStr = JSON.stringify(this.orgList)
+        this.orgTreeList = JSON.parse(orgListStr.replace(/"isLeaf":1/g, '"isLeaf":true').replace(/"isLeaf":0/g, '"isLeaf":false'))
         this.listLoading = false
       })
     },
@@ -620,6 +630,12 @@ export default {
       var orgStr = ''
       if (orgList) {
         for (var org of orgList) {
+          // a-tree的isLeaf必须为boolean类型，这里需要转换一下
+          if (org.isLeaf === 1) {
+            org.isLeaf = true
+          } else {
+            org.isLeaf = false
+          }
           if (lastId === org.id) {
             return lastId
           } else if (org.children) {
@@ -633,24 +649,26 @@ export default {
       }
       return orgStr
     },
-    computeOrgPermission (item, node) {
-      if (node) {
+    computeOrgPermission (item, e) {
+      var node = e.node
+      var checked = e.checked
+      if (checked) {
         // 如果原先不存在，则添加到新增列表
-        if (this.userCheckOrgPermission.indexOf(item.id) === -1) {
-          this.addOrgPermission.push(item.id)
+        if (this.userCheckOrgPermission.indexOf(node.dataRef.id) === -1) {
+          this.addOrgPermission.push(node.dataRef.id)
         }
         // 如果在删除列表中，则从删除列表中删除
-        var removeIndex = this.removeOrgPermission.indexOf(item.id)
+        var removeIndex = this.removeOrgPermission.indexOf(node.dataRef.id)
         if (removeIndex > -1) {
           this.removeOrgPermission.splice(removeIndex, 1)
         }
       } else {
         // 如果原先存在，则添加到删除列表
-        if (this.userCheckOrgPermission.indexOf(item.id) > -1) {
-          this.removeOrgPermission.push(item.id)
+        if (this.userCheckOrgPermission.indexOf(node.dataRef.id) > -1) {
+          this.removeOrgPermission.push(node.dataRef.id)
         }
         // 如果在新增列表中，则从新增列表中删除
-        var addIndex = this.addOrgPermission.indexOf(item.id)
+        var addIndex = this.addOrgPermission.indexOf(node.dataRef.id)
         if (addIndex > -1) {
           this.addOrgPermission.splice(addIndex, 1)
         }
@@ -789,9 +807,7 @@ export default {
       this.dialogDataPermissionVisible = true
       this.resetDataPermissionForm()
       this.userForm = Object.assign({}, row)
-      if (this.$refs['tree']) {
-        this.$refs['tree'].setCheckedKeys([])
-      }
+
       this.addOrgPermission = []
       this.removeOrgPermission = []
       if (this.userForm.dataPermission) {
