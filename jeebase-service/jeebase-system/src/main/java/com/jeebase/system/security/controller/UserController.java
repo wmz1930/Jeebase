@@ -117,7 +117,7 @@ public class UserController {
         }
         UpdateUser user = new UpdateUser();
         user.setId(tempUser.getId());
-        user.setUserPassword(tempUser.getUserAccount() + newPwd);
+        user.setUserPassword(newPwd);
         boolean result = userService.updateUser(user);
         if (result) {
             return new Result<>().success("修改成功");

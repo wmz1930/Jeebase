@@ -177,14 +177,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User userEntity = new User();
         BeanCopier.create(UpdateUser.class, User.class, false).copy(user, userEntity, null);
         String pwd = userEntity.getUserPassword();
+        User oldInfo = this.getById(userEntity.getId());
         if (!StringUtils.isEmpty(pwd)) {
-            User oldInfo = this.getById(userEntity.getId());
             String cryptPwd = BCrypt.hashpw(oldInfo.getUserAccount() + pwd, BCrypt.gensalt());
             userEntity.setUserPassword(cryptPwd);
         }
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("id", userEntity.getId());
         boolean result = this.update(userEntity, wrapper);
+
+        //修改后更新缓存
+        cacheChannel.evict("users", "account_" + oldInfo.getUserAccount());
+        if (!StringUtils.isEmpty(oldInfo.getUserEmail()))
+        {
+            cacheChannel.evict("users", "account_" + oldInfo.getUserEmail());
+        }
+        if (!StringUtils.isEmpty(oldInfo.getUserMobile()))
+        {
+            cacheChannel.evict("users", "account_" + oldInfo.getUserMobile());
+        }
 
         Integer organizationId = user.getOrganizationId();
         QueryWrapper<OrganizationUser> organizationUserWrapper = new QueryWrapper<>();
@@ -276,8 +287,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     @CacheEvict(value = "users", key = "'id_'.concat(#userId)")
     public boolean deleteUser(Integer userId) {
+        User oldInfo = this.getById(userId);
         boolean result = this.removeById(userId);
         if (result) {
+            cacheChannel.evict("users", "account_" + oldInfo.getUserAccount());
+            if (!StringUtils.isEmpty(oldInfo.getUserEmail()))
+            {
+                cacheChannel.evict("users", "account_" + oldInfo.getUserEmail());
+            }
+            if (!StringUtils.isEmpty(oldInfo.getUserMobile()))
+            {
+                cacheChannel.evict("users", "account_" + oldInfo.getUserMobile());
+            }
             cacheChannel.evict("roles", "user_id_" + userId);
         }
         return result;
@@ -285,14 +306,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public boolean batchDeleteUser(List<Integer> userIds) {
-        boolean result = this.removeByIds(userIds);
-        if (result) {
-            for (Integer userId : userIds)
+        List<User> userList = (List<User>) this.listByIds(userIds);
+        for (User oldInfo : userList)
+        {
+            cacheChannel.evict("users", "account_" + oldInfo.getUserAccount());
+            if (!StringUtils.isEmpty(oldInfo.getUserEmail()))
             {
-                cacheChannel.evict("users", "id_" + userId);
-                cacheChannel.evict("roles", "user_id_" + userId);
+                cacheChannel.evict("users", "account_" + oldInfo.getUserEmail());
             }
+            if (!StringUtils.isEmpty(oldInfo.getUserMobile()))
+            {
+                cacheChannel.evict("users", "account_" + oldInfo.getUserMobile());
+            }
+            cacheChannel.evict("users", "id_" + oldInfo.getId());
+            cacheChannel.evict("roles", "user_id_" + oldInfo.getId());
         }
+        boolean result = this.removeByIds(userIds);
         return result;
     }
 

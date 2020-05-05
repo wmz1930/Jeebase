@@ -41,8 +41,8 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <el-dialog :visible.sync="dialogFormVisible" title="修改密码" width="25%">
-      <el-form ref="changePwdForm" :model="changePwdForm" :rules="rules" label-width="100px" class="changePwdForm" style="width: 400px;">
+    <el-dialog :visible.sync="dialogFormVisible" title="修改密码" width="35%">
+      <el-form ref="changePwdForm" :model="changePwdForm" :rules="rules" label-width="100px" class="changePwdForm">
         <el-form-item label="旧密码" prop="oldPwd">
           <el-input v-model="changePwdForm.oldPwd" placeholder="输入旧密码" maxlength="32" type="password" />
         </el-form-item>
@@ -163,7 +163,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消删除'
+          message: '已取消退出'
         })
       })
     },
