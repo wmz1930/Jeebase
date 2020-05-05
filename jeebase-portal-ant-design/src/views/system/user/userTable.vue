@@ -92,8 +92,7 @@
       <a-button type="primary" icon="cloud-download" @click="handleDownload" style="margin-left: 8px">导出</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
-          <a-menu-item key="1"><a-icon type="delete" />删除</a-menu-item>
-          <a-menu-item key="2"><a-icon type="lock" />禁用</a-menu-item>
+          <a-menu-item key="1" @click="handleBatchDelete"><a-icon type="delete" />删除</a-menu-item>
         </a-menu>
         <a-button style="margin-left: 8px">
           批量操作 <a-icon type="down" />
@@ -151,7 +150,7 @@
               <a href="javascript:;" @click="handleDataPermission(record)">数据权限</a>
             </a-menu-item>
             <a-menu-item>
-              <a href="javascript:;" @click="handleDataPermission(record)">重置密码</a>
+              <a href="javascript:;" @click="handleResetUserPassword(record)">重置密码</a>
             </a-menu-item>
             <a-menu-item>
               <a href="javascript:;" v-if="record.userStatus!='1'" size="mini" type="success" @click="handleModifyStatus(record,'1')">启用
@@ -276,7 +275,7 @@
 
 <script>
 import { STable } from '@/components'
-import { fetchList, createUser, deleteUser, updateUser, updateUserStatus, fetchRoleList, updateUserDataPermission, checkUserAccount, checkUserMobile, checkUserEmail, checkUserNickName } from '@/api/system/user'
+import { fetchList, createUser, resetUserPassword, deleteUser, batchDeleteUser, updateUser, updateUserStatus, fetchRoleList, updateUserDataPermission, checkUserAccount, checkUserMobile, checkUserEmail, checkUserNickName } from '@/api/system/user'
 import { fetchOrgList } from '@/api/system/organization'
 import moment from 'moment'
 import Data from '@/api/pcaa'
@@ -826,6 +825,23 @@ export default {
         this.$message.success('更新成功')
       })
     },
+    handleResetUserPassword (row) {
+      var that = this
+      this.$confirm({
+        title: '该用户密码将被重置：' + row.userAccount + ', 是否继续?',
+        content: '',
+        onOk () {
+          that.listLoading = true
+          resetUserPassword(row.id).then(() => {
+            that.listLoading = false
+            that.$message.success('重置成功!')
+          })
+        },
+        onCancel () {
+          that.$message.info('已取消重置')
+        }
+      })
+    },
     handleDelete (row) {
       var that = this
       this.$confirm({
@@ -837,6 +853,29 @@ export default {
             that.listLoading = false
             that.$message.success('删除成功!')
             this.handleTableRefresh()
+          })
+        },
+        onCancel () {
+          that.$message.info('已取消删除')
+        }
+      })
+    },
+    handleBatchDelete (row) {
+      var accountList = this.selectedRows.map(function (n) {
+        return n.userAccount
+      })
+      var that = this
+      this.$confirm({
+        title: '以下用户将被全部删除，是否继续?',
+        content: accountList.join(','),
+        onOk () {
+          that.listLoading = true
+          batchDeleteUser(that.selectedRowKeys).then(() => {
+            that.listLoading = false
+            that.$message.success('删除成功!')
+            that.selectedRowKeys = []
+            that.selectedRows = []
+            that.handleTableRefresh()
           })
         },
         onCancel () {

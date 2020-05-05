@@ -8,6 +8,8 @@ import com.jeebase.system.security.dto.UpdateUser;
 import com.jeebase.system.security.dto.UserInfo;
 import com.jeebase.system.security.entity.User;
 
+import java.util.List;
+
 /**
  * @ClassName: IUserService
  * @Description: 用户相关操接口
@@ -40,7 +42,14 @@ public interface IUserService extends IService<User> {
      * @return
      */
     boolean deleteUser(Integer userId);
-    
+
+    /**
+     * 批量删除用户
+     * @param userIds
+     * @return
+     */
+    boolean batchDeleteUser(List<Integer> userIds);
+
     /**
      * 根据用户名查询用户
      * 

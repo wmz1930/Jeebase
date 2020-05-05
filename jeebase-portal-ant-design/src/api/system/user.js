@@ -55,10 +55,25 @@ export function updateUserStatus (userId, status) {
   })
 }
 
+export function resetUserPassword (id) {
+  return request({
+    url: '/user/password/' + id,
+    method: 'post'
+  })
+}
+
 export function deleteUser (id) {
   return request({
     url: '/user/delete/' + id,
     method: 'post'
+  })
+}
+
+export function batchDeleteUser (data) {
+  return request({
+    url: '/user/batch/delete',
+    method: 'post',
+    data
   })
 }
 

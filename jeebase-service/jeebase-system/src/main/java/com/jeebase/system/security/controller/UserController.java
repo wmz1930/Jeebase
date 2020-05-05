@@ -19,11 +19,13 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @ClassName: UserController
@@ -137,6 +139,26 @@ public class UserController {
             return new Result<>().error("用户ID不能为空");
         }
         boolean result = userService.deleteUser(userId);
+        if (result) {
+            return new Result<>().success("删除成功");
+        } else {
+            return new Result<>().error("删除失败");
+        }
+    }
+
+    /**
+     * 批量删除用户
+     */
+    @PostMapping("/batch/delete")
+    @RequiresRoles("SYSADMIN")
+    @ApiOperation(value = "批量删除用户")
+    @AroundLog(name = "批量删除用户")
+    @ApiImplicitParam(name = "userIds", value = "用户ID列表", required = true, dataType = "List")
+    public Result<?> batchDelete(@RequestBody List<Integer> userIds) {
+        if (CollectionUtils.isEmpty(userIds)) {
+            return new Result<>().error("用户ID列表不能为空");
+        }
+        boolean result = userService.batchDeleteUser(userIds);
         if (result) {
             return new Result<>().success("删除成功");
         } else {

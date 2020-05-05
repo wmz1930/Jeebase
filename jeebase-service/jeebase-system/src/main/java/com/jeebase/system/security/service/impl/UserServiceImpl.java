@@ -112,7 +112,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             // 初次登录需要修改密码
             // userEntity.setUserStatus( "2" );
         }
-        String cryptPwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
+        String cryptPwd = BCrypt.hashpw(userEntity.getUserAccount() + pwd, BCrypt.gensalt());
         userEntity.setUserPassword(cryptPwd);
         boolean result = this.save(userEntity);
         if (result) {
@@ -178,7 +178,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         BeanCopier.create(UpdateUser.class, User.class, false).copy(user, userEntity, null);
         String pwd = userEntity.getUserPassword();
         if (!StringUtils.isEmpty(pwd)) {
-            String cryptPwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
+            User oldInfo = this.getById(userEntity.getId());
+            String cryptPwd = BCrypt.hashpw(oldInfo.getUserAccount() + pwd, BCrypt.gensalt());
             userEntity.setUserPassword(cryptPwd);
         }
         QueryWrapper<User> wrapper = new QueryWrapper<>();
@@ -277,10 +278,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public boolean deleteUser(Integer userId) {
         boolean result = this.removeById(userId);
         if (result) {
-            QueryWrapper<UserRole> wpd = new QueryWrapper<>();
-            wpd.eq("user_id", userId);
-            userRoleService.remove(wpd);
             cacheChannel.evict("roles", "user_id_" + userId);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean batchDeleteUser(List<Integer> userIds) {
+        boolean result = this.removeByIds(userIds);
+        if (result) {
+            for (Integer userId : userIds)
+            {
+                cacheChannel.evict("users", "id_" + userId);
+                cacheChannel.evict("roles", "user_id_" + userId);
+            }
         }
         return result;
     }
