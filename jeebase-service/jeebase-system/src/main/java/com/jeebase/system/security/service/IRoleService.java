@@ -1,5 +1,7 @@
 package com.jeebase.system.security.service;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jeebase.system.security.dto.CreateRole;
@@ -42,4 +44,11 @@ public interface IRoleService extends IService<Role> {
      * @return
      */
     boolean deleteRole(Integer roleId);
+
+    /**
+     * 批量删除角色
+     * @param roleIds
+     * @return
+     */
+    boolean batchDeleteRole(List<Integer> roleIds);
 }

@@ -1,5 +1,14 @@
 package com.jeebase.system.security.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,14 +22,6 @@ import com.jeebase.system.security.mapper.RoleMapper;
 import com.jeebase.system.security.service.IRoleResourceService;
 import com.jeebase.system.security.service.IRoleService;
 import com.jeebase.system.security.service.IUserRoleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import java.util.List;
 
 /**
  * @ClassName: RoleServiceImpl
@@ -92,6 +93,23 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
             // 删除角色和权限的关联关系
             QueryWrapper<RoleResource> wpdr = new QueryWrapper<>();
             wpdr.eq("role_id", roleId);
+            roleResourceService.remove(wpdr);
+        }
+        return result;
+    }
+
+    @Override
+    @CacheEvict(value = "roles", allEntries = true)
+    public boolean batchDeleteRole(List<Integer> roleIds) {
+        boolean result = this.removeByIds(roleIds);
+        if (result) {
+            // 删除用户和角色的关联关系
+            QueryWrapper<UserRole> wpd = new QueryWrapper<>();
+            wpd.in("role_id", roleIds);
+            userRoleService.remove(wpd);
+            // 删除角色和权限的关联关系
+            QueryWrapper<RoleResource> wpdr = new QueryWrapper<>();
+            wpdr.in("role_id", roleIds);
             roleResourceService.remove(wpdr);
         }
         return result;

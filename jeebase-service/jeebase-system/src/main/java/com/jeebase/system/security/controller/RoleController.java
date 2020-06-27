@@ -1,5 +1,14 @@
 package com.jeebase.system.security.controller;
 
+import java.util.List;
+
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jeebase.common.annotation.log.AroundLog;
@@ -12,17 +21,11 @@ import com.jeebase.system.security.entity.Role;
 import com.jeebase.system.security.entity.RoleResource;
 import com.jeebase.system.security.service.IRoleResourceService;
 import com.jeebase.system.security.service.IRoleService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @ClassName: RoleController
@@ -98,6 +101,26 @@ public class RoleController {
             return new Result<>().error("ID不能为空");
         }
         boolean result = roleService.deleteRole(roleId);
+        if (result) {
+            return new Result<>().success("删除成功");
+        } else {
+            return new Result<>().error("删除失败");
+        }
+    }
+
+    /**
+     * 批量删除角色
+     */
+    @RequiresRoles("SYSADMIN")
+    @PostMapping("/batch/delete")
+    @ApiOperation(value = "批量删除角色")
+    @AroundLog(name = "批量删除角色")
+    @ApiImplicitParam(name = "roleIds", value = "角色ID列表", required = true, dataType = "List")
+    public Result<?> batchDelete(@RequestBody List<Integer> roleIds) {
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return new Result<>().error("角色ID列表不能为空");
+        }
+        boolean result = roleService.batchDeleteRole(roleIds);
         if (result) {
             return new Result<>().success("删除成功");
         } else {
