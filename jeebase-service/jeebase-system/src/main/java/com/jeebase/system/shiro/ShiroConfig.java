@@ -1,9 +1,13 @@
 package com.jeebase.system.shiro;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.jeebase.common.base.Constant;
-import com.jeebase.system.security.entity.Resource;
-import com.jeebase.system.security.service.IResourceService;
+import java.text.MessageFormat;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.Filter;
+
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -16,12 +20,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.Filter;
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jeebase.common.base.Constant;
+import com.jeebase.system.security.entity.Resource;
+import com.jeebase.system.security.service.IResourceService;
 
 /**
  * 
@@ -76,7 +78,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean factory(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         // 添加自己的过滤器并且取名为jwt
-        Map<String, Filter> filterMap = new HashMap<>(Constant.Number.ONE);
+        Map<String, Filter> filterMap = new LinkedHashMap<>(Constant.Number.ONE);
         filterMap.put("jwt", jwtFilter());
         filterMap.put("perms", jwtFilter());
         factoryBean.setFilters(filterMap);
@@ -85,9 +87,7 @@ public class ShiroConfig {
         /*
          * 自定义url规则 http://shiro.apache.org/web.html#urls-
          */
-        Map<String, String> filterRuleMap = new HashMap<>(Constant.Number.TWO);
-        // 所有请求通过我们自己的JWT Filter
-        filterRuleMap.put("/**", "jwt");
+        Map<String, String> filterRuleMap = new LinkedHashMap<>(Constant.Number.TWO);
         // 访问401和404页面不通过我们的Filter
         filterRuleMap.put("/401", "anon");
         filterRuleMap.put("/404", "anon");
@@ -113,6 +113,8 @@ public class ShiroConfig {
                 filterRuleMap.put(pUrl, MessageFormat.format(PERMISSION_STRING, pKey));
             }
         }
+        // 所有请求通过我们自己的JWT Filter
+        filterRuleMap.put("/**", "jwt");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;
     }
