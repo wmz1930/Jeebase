@@ -24,6 +24,14 @@ export function updateRole (data) {
   })
 }
 
+export function batchDeleteRole (data) {
+  return request({
+    url: '/role/batch/delete',
+    method: 'post',
+    data
+  })
+}
+
 export function updateRoleStatus (roleId, status) {
   return request({
     url: '/role/status/' + roleId + '/' + status,
