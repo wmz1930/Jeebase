@@ -44,7 +44,7 @@
           <a-col :md="!advanced && 6 || 24" :sm="24">
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary" @click="handleFilter">查询</a-button>
-              <a-button style="margin-left: 8px" @click="() => listQuery = {}">重置</a-button>
+              <a-button style="margin-left: 8px" @click="resetQuery">重置</a-button>
               <a @click="toggleAdvanced" style="margin-left: 8px">
                 {{ advanced ? '收起' : '展开' }}
                 <a-icon :type="advanced ? 'up' : 'down'"/>
@@ -383,6 +383,16 @@ export default {
     this.getList()
   },
   methods: {
+    resetQuery () {
+      this.listQuery = {
+        current: 1,
+        size: 20,
+        id: '',
+        roleName: '',
+        roleKey: '',
+        roleStatus: ''
+      }
+    },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
