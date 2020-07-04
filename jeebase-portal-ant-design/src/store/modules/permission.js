@@ -82,16 +82,31 @@ function assembleAsyncRoutes (resources) {
         hidden: !resource.resourceShow
       }
     } else { // 最后一层菜单
-      route = {
-        path: '/' + resource.resourcePath,
-        component: () => import(`@/views/${resource.resourceUrl}`),
-        name: resource.resourcePageName,
-        meta: {
-          title: resource.resourceName,
-          keepAlive: resource.resourceCache,
-          icon: resourceIcon
-        },
-        hidden: !resource.resourceShow
+      if (resource.resourcePath.indexOf('https://') === -1 && resource.resourcePath.indexOf('http://') === -1) {
+        route = {
+          path: '/' + resource.resourcePath,
+          component: () => import(`@/views/${resource.resourceUrl}`),
+          name: resource.resourcePageName,
+          meta: {
+            title: resource.resourceName,
+            keepAlive: resource.resourceCache,
+            icon: resourceIcon
+          },
+          hidden: !resource.resourceShow
+        }
+      } else {
+        route = {
+          path: resource.resourcePath,
+          component: () => import(`@/views/${resource.resourceUrl}`),
+          name: resource.resourcePageName,
+          meta: {
+            title: resource.resourceName,
+            keepAlive: resource.resourceCache,
+            target: '_blank',
+            icon: resourceIcon
+          },
+          hidden: !resource.resourceShow
+        }
       }
     }
 
