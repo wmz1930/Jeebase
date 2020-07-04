@@ -18,7 +18,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'Ant Design Pro',
+      default: 'Jeebase管理系统',
       required: false
     },
     showTitle: {
