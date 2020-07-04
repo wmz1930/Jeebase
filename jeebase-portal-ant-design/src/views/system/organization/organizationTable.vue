@@ -1,114 +1,117 @@
 <template>
-  <div class="app-container">
-    <div class="filter-container">
-      <el-input v-model.trim="treeQuery.organizationName" :placeholder="$t('organizationTable.organizationName')" style="width: 150px;" class="filter-item" maxlength="32" />
-      <el-input v-model.trim="treeQuery.organizationKey" :placeholder="$t('organizationTable.organizationKey')" style="width: 150px;" class="filter-item" maxlength="11" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="searchTreeData()">{{ $t('table.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate(false)">{{ $t('table.add') }}</el-button>
+  <a-card :bordered="false" class="content">
+    <div class="table-page-search-wrapper">
+      <a-form-model layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="6" :sm="24">
+            <a-form-model-item label="组织名称">
+              <a-input
+                v-model.trim="treeQuery.organizationName"
+                placeholder="请输入组织名称"
+                :max-length="32"
+                @keyup.enter.native="searchTreeData" />
+            </a-form-model-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-model-item label="组织标识">
+              <a-input
+                v-model.trim="treeQuery.organizationKey"
+                placeholder="请输入组织标识"
+                :max-length="32"
+                @keyup.enter.native="searchTreeData" />
+            </a-form-model-item>
+          </a-col>
+          <a-col :md="!advanced && 6 || 24" :sm="24">
+            <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
+              <a-button type="primary" @click="searchTreeData">查询</a-button>
+              <a-button style="margin-left: 8px" @click="resetQuery">重置</a-button>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form-model>
+    </div>
+    <div class="table-operator">
+      <a-button type="primary" icon="plus" @click="handleCreate(false)">新建</a-button>
+      <!-- <a-button type="primary" icon="cloud-download" @click="handleDownload" style="margin-left: 8px">导出</a-button> -->
     </div>
 
-    <el-table :data="list" row-key="id" border>
-      <el-table-column :label="$t('organizationTable.organizationName')">
-        <template slot-scope="scope">
-          <span :id="scope.row.id">{{ scope.row.organizationName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('organizationTable.organizationKey')">
-        <template slot-scope="scope">
-          <span :id="scope.row.organizationKey">{{ scope.row.organizationKey }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('organizationTable.organizationType')">
-        <template slot-scope="scope">
-          <span>{{ scope.row.organizationType | typeNameFilter }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('organizationTable.organizationIcon')">
-        <template slot-scope="scope">
-          <svg-icon :icon-class="scope.row.organizationIcon" />
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('organizationTable.organizationLevel')">
-        <template slot-scope="scope">
-          <span>{{ scope.row.organizationLevel }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="false" width="110px">
-        <template slot-scope="scope">
-          <span>{{ scope.row.areas }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.actions')" width="300">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleCreate(scope.row)">{{ $t('table.add') }}</el-button>
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <a-table :columns="columns" :rowKey="row=>row.id" :data-source="list" >
+      <span slot="organizationType" slot-scope="text, record">
+        <span>{{ record.organizationType | typeNameFilter }}</span>
+      </span>
+      <span slot="action" slot-scope="text, record">
+        <a @click="handleCreate(record)">新增</a>
+        <a-divider type="vertical" />
+        <a @click="handleUpdate(record)">编辑</a>
+        <a-divider type="vertical" />
+        <a @click="handleDelete(record)">删除</a>
+      </span>
+    </a-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form
+    <a-modal
+      :title="textMap[dialogStatus]"
+      v-model="dialogFormVisible"
+      :width="800"
+      :maskClosable="false"
+      :destroyOnClose="true"
+      @cancel="() => dialogFormVisible = false">
+      <a-form-model
         ref="organizationForm"
         :model="organizationForm"
         :rules="rules"
         label-width="100px"
         class="organizationForm"
-        style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('organizationTable.organizationName')" prop="organizationName">
-          <el-input v-model.trim="organizationForm.organizationName" placeholder="输入组织名称" maxlength="32" />
-        </el-form-item>
-        <el-form-item :label="$t('organizationTable.organizationKey')" prop="organizationKey">
-          <el-input v-model.trim="organizationForm.organizationKey" placeholder="输入组织标识" maxlength="32" />
-        </el-form-item>
-        <el-form-item :label="$t('organizationTable.organizationType')" prop="organizationType">
-          <el-select v-model="organizationForm.organizationType" style="width: 100%" class="filter-item">
-            <el-option v-for="item in typesOption" :key="item.key" :label="item.label" :value="item.key" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('organizationTable.organizationIcon')" prop="organizationIcon">
-          <el-input v-model.trim="organizationForm.organizationIcon" placeholder="输入组织图标" maxlength="11" />
-        </el-form-item>
-        <el-form-item :label="$t('organizationTable.organizationLevel')" prop="organizationLevel">
-          <el-input v-model.number="organizationForm.organizationLevel" placeholder="输入组织排序" maxlength="32" />
-        </el-form-item>
-        <el-form-item :label="$t('organizationTable.area')" prop="province">
-          <el-cascader
+        :label-col="orgLabelCol"
+        :wrapper-col="orgWrapperCol">
+        <a-form-model-item label="组织名称" prop="organizationName">
+          <a-input v-model.trim="organizationForm.organizationName" placeholder="输入组织名称" :maxLength="32" />
+        </a-form-model-item>
+        <a-form-model-item label="组织标识" prop="organizationKey">
+          <a-input v-model.trim="organizationForm.organizationKey" placeholder="输入组织标识" :maxLength="32" />
+        </a-form-model-item>
+        <a-form-model-item label="组织类型" prop="organizationType">
+          <a-select v-model="organizationForm.organizationType" style="width: 100%" class="filter-item">
+            <a-select-option v-for="item in typesOption" :key="item.key" :value="item.key">
+              {{ item.label }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
+        <a-form-model-item label="组织图标" prop="organizationIcon">
+          <a-input v-model.trim="organizationForm.organizationIcon" placeholder="输入组织图标" :maxLength="11" />
+        </a-form-model-item>
+        <a-form-model-item label="组织排序" prop="organizationLevel">
+          <a-input v-model.number="organizationForm.organizationLevel" placeholder="输入组织排序" :maxLength="32" />
+        </a-form-model-item>
+        <a-form-model-item label="组织地区" prop="province">
+          <a-cascader
             v-model="organizationForm.areas"
             :options="provinceOptions"
-            :props="props"
-            clearable
-            filterable
-            change-on-select
-            style="width:100%;" />
-        </el-form-item>
-        <el-form-item :label="$t('organizationTable.street')" prop="street">
-          <el-input v-model="organizationForm.street" placeholder="详细地址" maxlength="120" />
-        </el-form-item>
-        <el-form-item :label="$t('organizationTable.description')">
-          <el-input v-model.trim="organizationForm.description" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请输入备注信息" />
-        </el-form-item>
-      </el-form>
+            placeholder="组织地区" />
+        </a-form-model-item>
+        <a-form-model-item label="详细地址" prop="street">
+          <a-input v-model="organizationForm.street" placeholder="详细地址" :maxLength="120" />
+        </a-form-model-item>
+        <a-form-model-item label="备注信息">
+          <a-input v-model.trim="organizationForm.description" :autoSize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请输入备注信息" />
+        </a-form-model-item>
+      </a-form-model>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{ $t('table.confirm') }}</el-button>
-        <el-button v-else type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
+        <a-button @click="dialogFormVisible = false">取消</a-button>
+        <a-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</a-button>
+        <a-button v-else type="primary" @click="updateData">修改</a-button>
       </div>
-    </el-dialog>
-  </div>
+    </a-modal>
+  </a-card>
 </template>
 
 <script>
-/**
-  Auth: Lei.j1ang
-  Created: 2018/1/19-14:54
-*/
+import { STable } from '@/components'
 import { fetchOrgList, createOrganization, deleteOrganization, updateOrganization, checkOrganizationName, checkOrganizationKey } from '@/api/system/organization'
 import Data from '@/api/pcaa'
 
 export default {
   name: 'OrganizationTable',
-  components: { },
+  components: { STable },
   filters: {
     typeNameFilter (type) {
       const typeNameMap = {
@@ -148,10 +151,19 @@ export default {
       })
     }
     return {
+      orgLabelCol: {
+        xs: { span: 24 },
+        sm: { span: 5 }
+      },
+      orgWrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 }
+      },
+      advanced: false,
       expandAll: false,
       provinceOptions: null,
       props: {
-        children: 'children'
+        children: 'children', title: 'organizationName', key: 'id'
       },
       list: [],
       baseList: [],
@@ -189,6 +201,41 @@ export default {
         children: [], // 必须加，否则新增的节点不显示
         description: ''
       },
+      // 表头
+      columns: [
+        {
+          title: '组织名称',
+          align: 'left',
+          dataIndex: 'organizationName'
+        },
+        {
+          title: '组织标识',
+          align: 'center',
+          dataIndex: 'organizationKey'
+        },
+        {
+          title: '组织类型',
+          align: 'center',
+          dataIndex: 'organizationType',
+          scopedSlots: { customRender: 'organizationType' }
+        },
+        {
+          title: '组织图标',
+          align: 'center',
+          dataIndex: 'organizationIcon'
+        },
+        {
+          title: '组织排序',
+          align: 'center',
+          dataIndex: 'organizationLevel'
+        },
+        {
+          title: '操作',
+          dataIndex: 'action',
+          width: '150px',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
       rules: {
         organizationName: [
           { required: true, message: '请输入组织名称', trigger: 'blur' },
@@ -222,6 +269,17 @@ export default {
     this.getAreaList()
   },
   methods: {
+    resetQuery () {
+      this.treeQuery = {
+        parentId: 0,
+        organizationName: '',
+        organizationKey: ''
+      }
+    },
+    onSelectChange (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
+    },
     getList () {
       this.listLoading = true
       fetchOrgList(this.treeQuery).then(response => {
@@ -273,9 +331,11 @@ export default {
       }
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['organizationForm'].clearValidate()
-      })
+      if (this.$refs['organizationForm']) {
+        this.$nextTick(() => {
+          this.$refs['organizationForm'].clearValidate()
+        })
+      }
     },
     createData () {
       this.$refs['organizationForm'].validate(valid => {
@@ -284,7 +344,7 @@ export default {
             this.dialogFormVisible = false
             this.organizationForm.id = response.data.id
             if (this.rootFlag) {
-              this.organizationForm['children'] = []
+              this.organizationForm['children'] = null
               this.list.push(this.organizationForm)
               this.baseList.push(
                 JSON.parse(JSON.stringify(this.organizationForm))
@@ -293,10 +353,7 @@ export default {
               this.createDataCallBack(this.list)
               this.createDataCallBack(this.baseList)
             }
-            this.$message({
-              message: '创建成功',
-              type: 'success'
-            })
+            this.$message.success('创建成功')
           })
         }
       })
@@ -305,9 +362,9 @@ export default {
       for (const v of dataList) {
         if (v.id === this.organizationForm.parentId) {
           if (!v.children) {
-            v['children'] = []
+            v['children'] = null
           }
-          this.organizationForm['children'] = []
+          this.organizationForm['children'] = null
           v.children.push(JSON.parse(JSON.stringify(this.organizationForm)))
           break
         }
@@ -330,19 +387,16 @@ export default {
       delete this.organizationForm.children
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
+      if (this.$refs['organizationForm']) {
         this.$refs['organizationForm'].clearValidate()
-      })
+      }
     },
     updateData () {
       this.$refs['organizationForm'].validate(valid => {
         if (valid) {
           updateOrganization(this.organizationForm).then(() => {
             this.dialogFormVisible = false
-            this.$message({
-              message: '更新成功',
-              type: 'success'
-            })
+            this.$message.success('更新成功')
             this.updateDataCallBack(this.list)
             this.updateDataCallBack(this.baseList)
           })
@@ -361,33 +415,23 @@ export default {
       }
     },
     handleDelete (row) {
-      this.$confirm(
-        '此操作将永久删除该组织：' + row.organizationName + ', 是否继续?',
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      )
-        .then(() => {
-          this.listLoading = true
+      var that = this
+      this.$confirm({
+        title: '此操作将永久删除该组织：' + row.organizationName + ', 是否继续?',
+        content: '',
+        onOk () {
+          that.listLoading = true
           deleteOrganization(row.id).then(() => {
-            this.listLoading = false
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-            this.deleteDataCallBack(row.id, this.list)
-            this.deleteDataCallBack(row.id, this.baseList)
+            that.listLoading = false
+            that.$message.success('删除成功!')
+            that.deleteDataCallBack(row.id, that.list)
+            that.deleteDataCallBack(row.id, that.baseList)
           })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
+        },
+        onCancel () {
+          that.$message.info('已取消删除')
+        }
+      })
     },
     deleteDataCallBack (id, dataList) {
       for (const v of dataList) {
@@ -489,6 +533,9 @@ export default {
         haveFlag = true
       }
       return haveFlag
+    },
+    filter (inputValue, path) {
+      return path.some(option => option.organizationName.toLowerCase().indexOf(inputValue.toLowerCase()) > -1)
     }
   }
 }
