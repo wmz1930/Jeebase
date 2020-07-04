@@ -1,32 +1,40 @@
 <template>
-  <div class="app-container">
-    <div class="filter-container">
+  <div class="app-container content">
+    <div class="filter-container-card">
       <el-form label-width="80px">
         <el-row>
           <el-col :span="4">
-            <el-input v-model="listQuery.methodName" placeholder="接口名称" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter" />
+            <el-form-item label="接口名称" prop="methodName">
+              <el-input v-model="listQuery.methodName" placeholder="接口名称" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter" />
+            </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-input v-model="listQuery.creator" placeholder="操作人" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter" />
+            <el-form-item label="操作人" prop="creator">
+              <el-input v-model="listQuery.creator" placeholder="操作人" style="width: 150px;" class="filter-item" maxlength="32" @keyup.enter.native="handleFilter" />
+            </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-select v-model="listQuery.logType" placeholder="日志类型" clearable style="width: 150px" class="filter-item">
-              <el-option v-for="item in typeOption" :key="item.key" :label="item.label" :value="item.key" />
-            </el-select>
+            <el-form-item label="日志类型" prop="logType">
+              <el-select v-model="listQuery.logType" placeholder="日志类型" clearable style="width: 150px" class="filter-item">
+                <el-option v-for="item in typeOption" :key="item.key" :label="item.label" :value="item.key" />
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-date-picker
-              v-model="listQuery.dateRange"
-              :picker-options="pickerOptions"
-              type="datetimerange"
-              align="right"
-              class="filter-date-item"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            />
+            <el-form-item label="日志类型" prop="logType">
+              <el-date-picker
+                v-model="dateRange"
+                :picker-options="pickerOptions"
+                type="datetimerange"
+                align="right"
+                class="filter-date-item"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                unlink-panels
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              />
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
@@ -142,10 +150,10 @@ export default {
         methodName: '',
         logType: '',
         operationName: '',
-        dateRange: [],
         startTime: '',
         endTime: ''
       },
+      dateRange: [],
       typeOption: [
         { label: '操作日志', key: '1' }
       ],
@@ -191,9 +199,9 @@ export default {
   },
   methods: {
     getList() {
-      if (this.listQuery.dateRange && this.listQuery.dateRange.length === 2) {
-        this.listQuery.startTime = this.listQuery.dateRange[0]
-        this.listQuery.endTime = this.listQuery.dateRange[1]
+      if (this.dateRange && this.dateRange.length === 2) {
+        this.listQuery.startTime = this.dateRange[0]
+        this.listQuery.endTime = this.dateRange[1]
       }
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
