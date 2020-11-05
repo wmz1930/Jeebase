@@ -1,5 +1,9 @@
 # Jeebase
 
+技术交流群 [ qq群 121623237]
+
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=dp7qMx8ZbZGuZ8QtwnKXLzq8kttbzI1q&jump_from=webapi"><img border="0" src="http://img.jeebase.com/group.png" alt="JeeBase技术交流群" title="JeeBase技术交流群"></a>
+
 #### 项目介绍
 
 &nbsp;&nbsp;&nbsp;&nbsp;Jeebase是一款前后端分离的开源开发框架，基于springboot+vue（vue-element-admin/Ant Design Pro Vue）开发，一套SpringBoot后台，两套前端页面，可以自由选择基于ElementUI或者AntDesign的前端界面。二期会整合react前端框架（Ant Design React）。在实际应用中已经使用这套框架开发了CMS网站系统，社区论坛系统，微信小程序，微信服务号等，后面会逐步整理开源。
