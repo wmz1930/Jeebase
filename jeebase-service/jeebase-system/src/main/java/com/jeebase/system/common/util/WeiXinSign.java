@@ -99,7 +99,6 @@ public class WeiXinSign {
     }
     
     public static void main(String[] args) {
-    	String sin = WeiXinSign.getSha1("{\"nickName\":\"王磊\",\"gender\":1,\"language\":\"zh_CN\",\"city\":\"Nanjing\",\"province\":\"Jiangsu\",\"country\":\"China\",\"avatarUrl\":\"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJ3LCpzy3I5micgjjHHVc5Rc6rSU8rzoVcqV9os0doTC5z9YnXKbsAicnVicfiaQ1DzbiaRo4njRibrMIcg/132\"}yd7UJopUdS4+/9EVfqAkNQ==");
 	System.out.println(sin);
     }
 }
