@@ -51,7 +51,7 @@
         <aliyun-sms-dysmsapi.version>1.0.0</aliyun-sms-dysmsapi.version>
         <easyexcel.version>1.1.2-beta5</easyexcel.version>
         <baidu-ai.version>4.10.0</baidu-ai.version>
-        <xxl-job.version>2.1.0</xxl-job.version>
+        <xxl-job.version>2.3.0</xxl-job.version>
   </properties>
     
   <dependencyManagement>
