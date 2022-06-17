@@ -23,7 +23,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <mybatis-plus-boot-starter.version>3.1.0</mybatis-plus-boot-starter.version>
-        <fastjson.version>1.2.56</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <druid-version>1.1.13</druid-version>
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <reflections.version>0.9.11</reflections.version>
