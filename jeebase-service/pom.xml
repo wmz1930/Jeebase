@@ -29,7 +29,7 @@
         <reflections.version>0.9.11</reflections.version>
         <guava.version>27.0.1-jre</guava.version>
         <commons-lang3.version>3.4</commons-lang3.version>
-        <jsoup.version>1.11.3</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <velocity.version>1.7</velocity.version>
         <shiro-spring.version>1.4.0</shiro-spring.version>
         <java-jwt.version>3.7.0</java-jwt.version>
